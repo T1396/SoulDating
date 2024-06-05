@@ -31,8 +31,8 @@ Hier kommen alle Features rein, welche deine App bietet.
 ## Technischer Aufbau
 
 #### Projektaufbau
-#####Architektur: MVVM für eine Trennung von Logik und UI
-#####Ordnerstruktur: 
+##### Architektur: MVVM für eine Trennung von Logik und UI
+##### Ordnerstruktur: 
 - Models: Datenmodelle für FireBase usw.
 - Views: UI-Komponenten
 - ViewModels: Logik und Datenverarbeitung
