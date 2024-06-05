@@ -20,13 +20,12 @@ Füge hier am Ende die Screenshots deiner App ein (achte hierbei auf die Guideli
 ## Features
 Hier kommen alle Features rein, welche deine App bietet.
 
-**Tipp: Du kannst diese Punkte auch am Anfang ausfüllen und mit der Zeit abhaken, sodass am Ende eine vollständige Liste entsteht.**
-
-- [ ] Standortbasierte Match-Vorschläge: Mithilfe einer Geolocation-API und GeoFire
+- [ ] Standortbasierte Match-Vorschläge
 - [ ] Swiping - Mechanik: Swipe nach rechts für Like und nach links für Pass
 - [ ] Chat-Funktion: Kommuniziere direkt mit deinen Matches über eingebaute Nachrichtenfunktionen.
 - [ ] Anpassbare Benutzerpräferenzen: Ändere deine Vorlieben o.ä., setze einen neuen Standort um Menschen aus einer anderen Umgebung kennenzulernen.
 - [ ] Like-Ansicht: Siehe wer dich geliked hat in einer Übersicht.
+- [ ] Chat-Bot: Lasse dir Flirtsprüche generieren um das Eis zu brechen!
 
 ## Technischer Aufbau
 
@@ -42,15 +41,15 @@ Hier kommen alle Features rein, welche deine App bietet.
 Firestore-Dokumente: Nutzerdaten, Präferenzen und Match/Chat Informationen werden sicher in Firestore gespeichert. Dies bietet eine leichte skalierbare Lösung für Echtzeit-Daten und Updates für z.bsp. die Chats.
 
 #### API Calls
-Geolocation API: Zur Bestimmung der Standorte der Benutzer um diese danach in Firestore zu speichern und später mit GeoFire User in einem Radius ausmachen.
+OpenAI Api, zur generierung von zufälligen Flirtsprüchen als Assistent. Ggf. ein indididuellen Bot für Dating fragen.
 
 #### 3rd-Party Frameworks
 Firebase SDK: Für Benutzerauthentifizierung und Datenbankdienste.
+OpenAI (https://github.com/MacPaw/OpenAI)
 
 
 ## Ausblick
 Beschreibe hier, wo die Reise nach deinem Praxisprojekt hin geht. Was möchtest du in Zukunft noch ergänzen?
 
 - [ ] Apple Maps mit Veranstaltungs Markings die als Date-Locations dienen könnten
-- [ ] Geplantes Feature 2
-- [ ] ...
+- [ ] Bot Generierung von Eisbrechern zugeschnitten auf das jeweilige Userprofil welches angeschrieben werden soll.
