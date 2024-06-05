@@ -1,12 +1,11 @@
-# Name der App
+# SoulDating
 
-**Füge hier einen kurzen, knackigen Slogan ein, um deine App zu bewerben.**
+"Entdecke, verbinde und verliebe dich in deiner Nähe!"
 
-Beschreibe hier in ein paar Sätzen, was deine App bietet.
+## Über die App
 
-Für wen ist sie geeignet? Welches Problem löst sie? Was macht deine App anders/besser als andere Apps?
-Vermeide es, hier allzusehr in technische Details zu gehen.
-
+Soul Dating ist eine moderne iOS- Dating-App die darauf abzielt, Singles zusammenzuführen. Dafür verwendet die App Standorte des Users, um Ihnen potenzielle Matches in ihrem Umkreis vorzuschlagen.
+Die App ist ideal für Personen, die daran interessiert sind, neue Menschen in der Umgebung kennenzulernen. SoulDating bietet eine einfache und nicht zu sehr von Werbung überladene Benutzeroberfläche.
 
 ## Design
 Füge hier am Ende die Screenshots deiner App ein (achte hierbei auf die Guidelines).
@@ -23,29 +22,35 @@ Hier kommen alle Features rein, welche deine App bietet.
 
 **Tipp: Du kannst diese Punkte auch am Anfang ausfüllen und mit der Zeit abhaken, sodass am Ende eine vollständige Liste entsteht.**
 
-- [x] Feature 1
-- [x] Feature 2
-- [ ] ...
-
+- [ ] Standortbasierte Match-Vorschläge: Mithilfe einer Geolocation-API und GeoFire
+- [ ] Swiping - Mechanik: Swipe nach rechts für Like und nach links für Pass
+- [ ] Chat-Funktion: Kommuniziere direkt mit deinen Matches über eingebaute Nachrichtenfunktionen.
+- [ ] Anpassbare Benutzerpräferenzen: Ändere deine Vorlieben o.ä., setze einen neuen Standort um Menschen aus einer anderen Umgebung kennenzulernen.
+- [ ] Like-Ansicht: Siehe wer dich geliked hat in einer Übersicht.
 
 ## Technischer Aufbau
 
 #### Projektaufbau
-Eine kurze Beschreibung deiner Ordnerstruktur und Architektur (MVVM, Repositories) um Außenstehenden zu helfen, sich in deinem Projekt zurecht zu finden.
+#####Architektur: MVVM für eine Trennung von Logik und UI
+#####Ordnerstruktur: 
+- Models: Datenmodelle für FireBase usw.
+- Views: UI-Komponenten
+- ViewModels: Logik und Datenverarbeitung
+- Repositories: Anfragen an APIs
 
 #### Datenspeicherung
-Welche Daten speicherst du? Wo und wie (Firebase, Core Data)? Erkläre hier auch, warum du den jeweiligen Dienst nutzt (offline-first, Sync usw.).
+Firestore-Dokumente: Nutzerdaten, Präferenzen und Match/Chat Informationen werden sicher in Firestore gespeichert. Dies bietet eine leichte skalierbare Lösung für Echtzeit-Daten und Updates für z.bsp. die Chats.
 
 #### API Calls
-Welche APIs verwendest du?
+Geolocation API: Zur Bestimmung der Standorte der Benutzer um diese danach in Firestore zu speichern und später mit GeoFire User in einem Radius ausmachen.
 
 #### 3rd-Party Frameworks
-Verwendest du Frameworks, die nicht von dir stammen? Bspw. Swift Packages für Firebase, fertige SwiftUI-Views o.Ä.? Gib diese hier an.
+Firebase SDK: Für Benutzerauthentifizierung und Datenbankdienste.
 
 
 ## Ausblick
 Beschreibe hier, wo die Reise nach deinem Praxisprojekt hin geht. Was möchtest du in Zukunft noch ergänzen?
 
-- [ ] Geplantes Feature 1
+- [ ] Apple Maps mit Veranstaltungs Markings die als Date-Locations dienen könnten
 - [ ] Geplantes Feature 2
 - [ ] ...
