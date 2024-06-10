@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyD5xQ2l1_w_0f80xsY0FomdIvNHbdDZ59k</string>
+	<key>GCM_SENDER_ID</key>
+	<string>195698858379</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.syntax.SoulDating</string>
+	<key>PROJECT_ID</key>
+	<string>souldating-b6486</string>
+	<key>STORAGE_BUCKET</key>
+	<string>souldating-b6486.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:195698858379:ios:a141bdb5cc5b22e566378e</string>
+</dict>
+</plist>
