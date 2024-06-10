@@ -27,11 +27,11 @@
 		720DDF892C167E0600A1098B /* ProfileSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDF882C167E0600A1098B /* ProfileSection.swift */; };
 		720DDF8B2C167E3000A1098B /* ProfileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDF8A2C167E3000A1098B /* ProfileItem.swift */; };
 		720DDF8D2C1683E000A1098B /* EditLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDF8C2C1683E000A1098B /* EditLocationView.swift */; };
-		720DDF912C1685E500A1098B /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDF902C1685E500A1098B /* LocationManager.swift */; };
 		720DDF942C16875700A1098B /* LocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDF932C16875700A1098B /* LocationPickerView.swift */; };
 		720DDF982C16F2E200A1098B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDF972C16F2E200A1098B /* User.swift */; };
 		720DDF9A2C16F2F400A1098B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 720DDF992C16F2F400A1098B /* Preview Assets.xcassets */; };
 		720DDF9C2C16F30100A1098B /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDF9B2C16F30100A1098B /* FirebaseManager.swift */; };
+		720DDFA22C1743BC00A1098B /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDFA12C1743BB00A1098B /* LocationManager.swift */; };
 		7271D41D2C10DDD900E473B6 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7271D41C2C10DDD900E473B6 /* FirebaseAuth */; };
 		7271D41F2C10DDD900E473B6 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7271D41E2C10DDD900E473B6 /* FirebaseCrashlytics */; };
 		7271D4212C10DDD900E473B6 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 7271D4202C10DDD900E473B6 /* FirebaseDatabase */; };
@@ -88,11 +88,11 @@
 		720DDF882C167E0600A1098B /* ProfileSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSection.swift; sourceTree = "<group>"; };
 		720DDF8A2C167E3000A1098B /* ProfileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileItem.swift; sourceTree = "<group>"; };
 		720DDF8C2C1683E000A1098B /* EditLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLocationView.swift; sourceTree = "<group>"; };
-		720DDF902C1685E500A1098B /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		720DDF932C16875700A1098B /* LocationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerView.swift; sourceTree = "<group>"; };
 		720DDF972C16F2E200A1098B /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		720DDF992C16F2F400A1098B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		720DDF9B2C16F30100A1098B /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		720DDFA12C1743BB00A1098B /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationManager.swift; path = LocationManag/LocationManager.swift; sourceTree = SOURCE_ROOT; };
 		7271D4342C10E08A00E473B6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7271D4362C10E21600E473B6 /* OpenAiTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAiTest.swift; sourceTree = "<group>"; };
 		7271D4382C10E27200E473B6 /* OpenAITestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAITestView.swift; sourceTree = "<group>"; };
@@ -243,20 +243,20 @@
 			path = Tabs;
 			sourceTree = "<group>";
 		};
-		720DDF8F2C16857400A1098B /* LocationManager */ = {
-			isa = PBXGroup;
-			children = (
-				720DDF902C1685E500A1098B /* LocationManager.swift */,
-			);
-			path = LocationManager;
-			sourceTree = "<group>";
-		};
 		720DDF922C16873D00A1098B /* Location */ = {
 			isa = PBXGroup;
 			children = (
 				720DDF932C16875700A1098B /* LocationPickerView.swift */,
 			);
 			path = Location;
+			sourceTree = "<group>";
+		};
+		720DDFA42C1743DD00A1098B /* LocationManager */ = {
+			isa = PBXGroup;
+			children = (
+				720DDFA12C1743BB00A1098B /* LocationManager.swift */,
+			);
+			path = LocationManager;
 			sourceTree = "<group>";
 		};
 		7271D43A2C11032000E473B6 /* Enums */ = {
@@ -344,8 +344,8 @@
 				729074032C0F447C00C5A997 /* NavigationView.swift */,
 				7290742E2C10A6A200C5A997 /* OpenAiTest */,
 				729074202C0F45BF00C5A997 /* FirebaseManager */,
+				720DDFA42C1743DD00A1098B /* LocationManager */,
 				7271D4482C11123B00E473B6 /* Modifier */,
-				720DDF8F2C16857400A1098B /* LocationManager */,
 				7271D4472C11123300E473B6 /* Extensions */,
 				7271D43A2C11032000E473B6 /* Enums */,
 				729074262C0F48A700C5A997 /* Models */,
@@ -494,6 +494,7 @@
 				720DDF642C153CF300A1098B /* DateFromTimestamp.swift in Sources */,
 				7271D43C2C11032700E473B6 /* AuthMode.swift in Sources */,
 				720DDF832C167CD100A1098B /* DetailEditView.swift in Sources */,
+				720DDFA22C1743BC00A1098B /* LocationManager.swift in Sources */,
 				720DDF8D2C1683E000A1098B /* EditLocationView.swift in Sources */,
 				7271D4392C10E27200E473B6 /* OpenAITestView.swift in Sources */,
 				728BC6FA2C15152700254AEE /* OnboardingGenderView.swift in Sources */,
@@ -516,7 +517,6 @@
 				720DDF9C2C16F30100A1098B /* FirebaseManager.swift in Sources */,
 				728BC6F82C15145100254AEE /* BelowTextFieldTextStyle.swift in Sources */,
 				7271D4412C11048700E473B6 /* OnboardingLocationView.swift in Sources */,
-				720DDF912C1685E500A1098B /* LocationManager.swift in Sources */,
 				720DDF8B2C167E3000A1098B /* ProfileItem.swift in Sources */,
 				728BC6F22C12F8A300254AEE /* OnboardingViewModel.swift in Sources */,
 				728BC6F42C15131500254AEE /* TitleStyle.swift in Sources */,
