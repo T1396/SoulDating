@@ -26,47 +26,15 @@ struct OnboardingGenderView: View {
                 
                 Spacer()
                 
-                HStack {
-                    Text("Wähle dein Geschlecht")
-                    Spacer()
-                    Picker("", selection: $viewModel.gender) {
-                        ForEach(Gender.allCases) { gender in
-                            Text(gender.title).tag(gender)
-                        }
-                    }
-                }
-                .itemBackgroundStyle()
-                
-                HStack {
-                    Text("Nach was suchst du?")
-                    Spacer()
-                    Picker("", selection: $viewModel.preferredGender) {
-                        ForEach(Gender.allCases) { gender in
-                            Text(gender.title).tag(gender)
-                        }
-                    }
-                }
-                .itemBackgroundStyle()
-                
-                VStack {
-                    HStack {
-                        DatePicker("Wann wurdest du geboren?", selection: $viewModel.birthDate, displayedComponents: .date)
-                            .datePickerStyle(.compact)
-                    }
-                    if !viewModel.userIsOldEnough {
-                        Text("Du musst mindestens 16 Jahre alt sein.")
-                            .font(.caption)
-                            .foregroundStyle(.red)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                }
-                .itemBackgroundStyle()
-                
+                ownGenderPicker()
+                preferredGenderPicker()
+                birthDatePicker()
+                RangeSliderView(userLowerbound: $viewModel.selectedMinAge, userUpperbound: $viewModel.selectedMaxAge)
                 
                 Spacer()
                 Spacer()
                 
-                NavigationLink(destination: OnboardingLocationView(viewModel: viewModel)) {
+                NavigationLink(destination: OnboardingPictureView(viewModel: viewModel)) {
                     Text("Weiter")
                         .textButtonStyle(color: buttonBackground)
                 }
@@ -76,6 +44,52 @@ struct OnboardingGenderView: View {
             .padding()
         }
     }
+    
+    @ViewBuilder
+    private func ownGenderPicker() -> some View {
+        HStack {
+            Text("Wähle dein Geschlecht")
+            Spacer()
+            Picker("", selection: $viewModel.gender) {
+                ForEach(Gender.allCases) { gender in
+                    Text(gender.title).tag(gender)
+                }
+            }
+        }
+        .itemBackgroundStyle()
+    }
+    
+    @ViewBuilder
+    private func preferredGenderPicker() -> some View {
+        HStack {
+            Text("Nach was suchst du?")
+            Spacer()
+            Picker("", selection: $viewModel.preferredGender) {
+                ForEach(Gender.allCases) { gender in
+                    Text(gender.title).tag(gender)
+                }
+            }
+        }
+        .itemBackgroundStyle()
+    }
+    
+    @ViewBuilder
+    private func birthDatePicker() -> some View {
+        VStack {
+            HStack {
+                DatePicker("Wann wurdest du geboren?", selection: $viewModel.birthDate, displayedComponents: .date)
+                    .datePickerStyle(.compact)
+            }
+            if !viewModel.userIsOldEnough {
+                Text("Du musst mindestens 16 Jahre alt sein.")
+                    .font(.caption)
+                    .foregroundStyle(.red)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .itemBackgroundStyle()
+    }
+    
 }
 
 #Preview {

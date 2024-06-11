@@ -23,7 +23,7 @@ struct SignInView: View {
             }
             .sheet(isPresented: $showSignInSheet) {
                 SignInSheet()
-                    .presentationDetents([.medium])
+                    .presentationDetents([.medium, .large])
             }
         }
     }

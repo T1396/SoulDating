@@ -13,12 +13,9 @@ struct OnboardingLocationView: View {
     @ObservedObject var viewModel: OnboardingViewModel
     @EnvironmentObject var userViewModel: UserViewModel
     
-    @State private var searchQuery = ""
-    @State private var places = [MKMapItem]()
-    @State private var place: MKMapItem? = nil
     @State private var navigate = false
-    @State private var radius: Double = 100 // in km
     
+    // MARK: body
     var body: some View {
         NavigationStack {
             VStack {
@@ -27,62 +24,37 @@ struct OnboardingLocationView: View {
                 Text("Wir benötigen den Standort um dir Nutzer in der Umgebung anzuzeigen")
                     .subTitleStyle()
                 
-                LocationPickerView(searchQuery: $searchQuery, places: $places, selectedPlace: $place) { place in
-                    saveLocation(place: place)
-                }
+                Text("Radius: \(Int(viewModel.radius))km")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Slider(value: $viewModel.radius, in: 50...400, step: 1)
                 
-                Slider(value: $radius, in: 50...400, step: 20)
-                Text("Radius: \(Int(radius))m")
-                    .padding()
+                LocationPickerView(
+                    searchQuery: $viewModel.locationQuery,
+                    places: $viewModel.suggestions,
+                    selectedPlace: $viewModel.selectedSuggestion,
+                    onPlaceSelected: saveLocation
+                )
                 
                 Button("Abschließen") {
                     viewModel.updateUserDocument()
                     navigate.toggle()
                 }
-                
-
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.vertical)
+                .buttonStyle(.borderedProminent)
+                .disabled(viewModel.location == nil)
             }
             .navigationDestination(isPresented: $navigate) {
                 NavigationView()
                     .environmentObject(userViewModel)
             }
         }
+        .padding(.horizontal)
     }
     
     // MARK: functions
-    private func locationList() -> some View {
-        List(places, id: \.self) { place in
-            Button {
-                saveLocation(place: place)
-            } label: {
-                VStack(alignment: .leading) {
-                    Text(place.name ?? "Unbekannter Ort")
-                    Text(place.placemark.title ?? "")
-                        .font(.subheadline)
-                        .foregroundStyle(.gray)
-                }
-            }
-        }
-    }
-    
-    private func search() {
-        let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = searchQuery
-        
-        let search = MKLocalSearch(request: request)
-        search.start { response, error in
-            guard let response = response else {
-                print("Error", error?.localizedDescription ?? "Unbekannter Fehler")
-                return
-            }
-            
-            self.places = response.mapItems
-        }
-    }
-    
-    func saveLocation(place: MKMapItem) {
-        viewModel.location = LocationPreference(latitude: place.placemark.coordinate.latitude, longitude: place.placemark.coordinate.longitude, name: place.name ?? "Unknown place", radius: radius)
-        self.place = place
+    func saveLocation(place: MKLocalSearchCompletion) {
+        viewModel.togglePlace(completion: place)
     }
 }
 

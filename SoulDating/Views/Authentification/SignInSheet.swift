@@ -14,6 +14,7 @@ enum SignInState {
 struct SignInSheet: View {
     @EnvironmentObject var userViewModel: UserViewModel
     @State private var signInState: SignInState = .showSignOptions
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         NavigationStack {
@@ -31,6 +32,7 @@ struct SignInSheet: View {
                         .padding()
                 }
                 .navigationTitle(userViewModel.mode.title)
+                .navigationBarTitleDisplayMode(.inline)
             }
         }
     }
@@ -43,7 +45,6 @@ struct SignInSheet: View {
     
     var authOptionsView: some View {
         VStack {
-            
             HStack(spacing: 30) {
                 VStack {
                     Image(systemName: "phone.fill")
@@ -90,24 +91,39 @@ struct SignInSheet: View {
         VStack(spacing: 12) {
             Button(action: showSignInOptions) {
                 Image(systemName: "chevron.backward")
-                Text("Zurück zu Anmeldeoptionen")
+                Text("Anmeldeoptionen")
             }
-            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
             
-            TextField("E-Mail", text: $userViewModel.email)
-                .textFieldStyle(AppTextFieldStyle())
-            SecureField("Passwort", text: $userViewModel.password)
-                .textFieldStyle(AppTextFieldStyle())
+            AppTextField(
+                "E-Mail",
+                text: $userViewModel.email,
+                error: userViewModel.email.count < 6,
+                errorMessage: "Das ist keine gültige E-Mail Adresse"
+            )
+            
+            AppTextField(
+                "Passwort",
+                text: $userViewModel.password,
+                error: userViewModel.password.count < 5,
+                errorMessage: "Das Passwort muss mindestens 6 zeichen lang sein.",
+                isSecure: true
+            )
             
             if userViewModel.mode == .register {
-                SecureField("Passwort wiederholen", text: $userViewModel.passwordRepeat)
-                    .textFieldStyle(AppTextFieldStyle())
+                AppTextField(
+                    "Passwort wiederholen",
+                    text: $userViewModel.passwordRepeat,
+                    error: !userViewModel.passwordMatches,
+                    errorMessage: "Die Passwörter stimmen nicht überein",
+                    isSecure: true
+                )
             }
             
             // Login or Sign in Button
-            Button(userViewModel.mode.title, action: userViewModel.mode == .login ? userViewModel.login : userViewModel.register)
+            Button(userViewModel.mode.title, action: userViewModel.signIn)
                 .buttonStyle(.borderedProminent)
-                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                .frame(maxWidth: .infinity)
                 .foregroundStyle(.white)
         }
         .padding(.horizontal, 24)

@@ -6,16 +6,20 @@
 //
 
 import Foundation
+import Firebase
 
 struct User: Codable {
     let id: String
     var userName: String?
-    var birthDate: Date?
+    var profileImageUrl: String?
+    var birthDate: Timestamp?
     var gender: Gender?
     var preferredGender: Gender?
     var onboardingCompleted: Bool?
     var location: LocationPreference?
-    var interests: [String] = []
+    var interests: [String]?
+    var minAge: Double?
+    var maxAge: Double?
 }
 
 struct LocationPreference: Codable {
