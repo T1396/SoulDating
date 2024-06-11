@@ -29,7 +29,6 @@ struct EditTextView: View {
                 errorMessage: "Dein Name muss mindestens 4 Zeichen haben",
                 supportText: "Das wird dein neuer Anzeigename"
             )
-
             
             Spacer()
             

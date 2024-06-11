@@ -8,6 +8,8 @@
 import Foundation
 import Combine
 import Firebase
+import MapKit
+import Contacts
 
 class SwipeViewModel: ObservableObject {
     private let firebaseManager = FirebaseManager.shared
@@ -74,5 +76,7 @@ extension SwipeViewModel {
                 self?.user = newUser
             }
             .store(in: &cancellables)
+        
+       
     }
 }
