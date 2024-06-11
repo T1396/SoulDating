@@ -38,14 +38,14 @@ enum ProfileSection: Identifiable {
             return [
                 .general([
                     .name(profile.userName ?? ""),
-                    .birthdate(profile.birthDate ?? .now),
+                    .birthdate(profile.birthDate ?? .init(date: .now)),
                     .lookingFor(profile.preferredGender ?? .male)
                 ]),
                 .about([
-                    .location(profile.location ?? Location(latitude: 0, longitude: 0, name: "Kein Standort eingetragen"))
+                    .location(profile.location ?? LocationPreference(latitude: 0, longitude: 0, name: "Kein Standort eingetragen", radius: profile.location?.radius ?? 0))
                 ]),
                 .preferences([
-                    .interests(profile.interests)
+                    .interests(profile.interests ?? [])
                 ])
             ]
         }

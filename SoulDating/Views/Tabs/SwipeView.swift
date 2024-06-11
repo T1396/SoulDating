@@ -4,13 +4,16 @@
 //
 //  Created by Philipp Tiropoulos on 10.06.24.
 //
+import SwiftUI
 
 struct SwipeView: View {
+    @EnvironmentObject var userViewModel: UserViewModel
+    @StateObject private var swipeViewModel = SwipeViewModel()
+
     @State private var dragAmount = CGSize.zero
 
     private let treshold: CGFloat = 100
     private let maxRotation: Double = 15 // max rotation angle
-
 
     var colorOverlay: Color {
         if dragAmount.width > 0 {
@@ -81,6 +84,9 @@ struct SwipeView: View {
                         Image(systemName: "arrowshape.turn.up.backward.fill")
                     }
                 }
+            }
+            .onAppear {
+                //swipeViewModel.configure(with: userViewModel)
             }
         }
     }

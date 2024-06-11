@@ -13,7 +13,7 @@ struct ProfileView: View {
 
     var body: some View {
         VStack {
-            RoundedImageView(progress: 0.1)
+            RoundedAsyncImage(imageUrl: userViewModel.user?.profileImageUrl)
 
             Text(userViewModel.user?.userName ?? "")
                 .font(.largeTitle.bold())

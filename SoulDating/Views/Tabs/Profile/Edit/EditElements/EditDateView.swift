@@ -6,14 +6,16 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct EditDateView: View {
-    var date: Date
+    var date: Timestamp
+
     var body: some View {
         Text("Bearbeiten Datum: \(date)")
     }
 }
 
 #Preview {
-    EditDateView(date: .now)
+    EditDateView(date: .init(date: .now))
 }

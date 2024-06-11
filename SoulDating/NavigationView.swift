@@ -12,30 +12,29 @@ struct NavigationView: View {
     @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
-        
-        TabView {
-            ForEach(Tab.allCases) { tab in
-                NavigationStack {
-                    tab.view
-                        .environmentObject(userViewModel)
-                        .navigationTitle(tab.title)
+        NavigationStack {
+            TabView {
+                ForEach(Tab.allCases) { tab in
+                    NavigationStack {
+                        tab.view
+                            .environmentObject(userViewModel)
+                            .navigationTitle(tab.title)
+                    }
+                    .tabItem {
+                        Label(tab.title, systemImage: tab.icon)
+                    }
+                    .tag(tab)
                 }
-                .tabItem {
-                    Label(tab.title, systemImage: tab.icon)
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: userViewModel.logout) {
+                        Image(systemName: "power")
+                    }
                 }
-                .tag(tab)
             }
         }
-        //            .toolbar {
-        //                ToolbarItem(placement: .topBarTrailing) {
-        //                    Button(action: userViewModel.logout) {
-        //                        Image(systemName: "power")
-        //                    }
-        //                }
-        //            }
-        
     }
-    
 }
 
 #Preview {

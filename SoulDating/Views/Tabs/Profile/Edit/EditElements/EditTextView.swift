@@ -22,7 +22,14 @@ struct EditTextView: View {
         VStack {
             Spacer()
             
-            ErrorTextField(text: $text, placeholder: "Anzeigename", error: text.count < 4, errorMessage: "Dein Name muss länger als 3 Zeichen sein", supportText: "Dies wird dein neuer Anzeigename")
+            AppTextField(
+                "Anzeigename",
+                text: $text,
+                error: text.count < 4,
+                errorMessage: "Dein Name muss mindestens 4 Zeichen haben",
+                supportText: "Das wird dein neuer Anzeigename"
+            )
+
             
             Spacer()
             

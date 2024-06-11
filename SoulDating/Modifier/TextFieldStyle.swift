@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AppTextFieldStyle: TextFieldStyle {
     var error: Bool = false
+    @Environment(\.colorScheme) var colorScheme
         
     var strokeGradient: LinearGradient {
         LinearGradient(gradient: Gradient(colors: error ? [.red] : [.blue, .purple]), startPoint: .leading, endPoint: .trailing)
@@ -21,7 +22,8 @@ struct AppTextFieldStyle: TextFieldStyle {
             .padding(.horizontal, 20)
             .background(
                 RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.white)
+                    .fill(colorScheme == .light ? .gray.opacity(0.12) : .black.opacity(0.8))
+
                     .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 2)
             )
             .overlay(

@@ -11,7 +11,7 @@ import FirebaseAuth
 class UserViewModel: ObservableObject {
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
-    
+
     @Published var user: User? {
         didSet {
             if let user {
@@ -20,16 +20,27 @@ class UserViewModel: ObservableObject {
         }
     }
     @Published var mode: AuthMode = .login
-    @Published var name = ""
+    @Published var isAuthentificating = true
+    @Published var onboardingCompleted = false
     @Published var email = ""
     @Published var password = ""
     @Published var passwordRepeat = ""
-    @Published var isAuthentificating = true
-    @Published var onboardingCompleted = false
+
+    
+    // MARK: init
+    init() {
+        checkAuth()
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdate(_:)), name: .userDocumentUpdated, object: nil)
+    }
+    
+    @objc
+    private func didUpdate(_ notification: Notification) {
+        fetchUser()
+    }
     
     // MARK: computed properties
     var disableAuth: Bool {
-        email.isEmpty || password.isEmpty || name.isEmpty
+        email.isEmpty || password.isEmpty
     }
     
     var emailModeText: String {
@@ -47,12 +58,7 @@ class UserViewModel: ObservableObject {
     var passwordMatches: Bool {
         passwordRepeat.count > 0 && passwordRepeat == password
     }
-    
-    // MARK: init
-    init() {
-        checkAuth()
-    }
-    
+
     func switchAuthMode() {
         mode = mode == .login ? .register : .login
     }
@@ -71,7 +77,11 @@ extension UserViewModel {
         self.fetchUser()
     }
     
-    func login() {
+    func signIn() {
+        mode == .login ? login() : register()
+    }
+    
+    private func login() {
         firebaseManager.auth.signIn(withEmail: email, password: password) { authResult, error in
             if let error {
                 print("Login failed", error.localizedDescription)
@@ -84,7 +94,7 @@ extension UserViewModel {
         }
     }
     
-    func register() {
+    private func register() {
         firebaseManager.auth.createUser(withEmail: email, password: password) { authResult, error in
             if let error {
                 print("Register failed", error.localizedDescription)
@@ -119,14 +129,13 @@ extension UserViewModel {
                 print("Fehler beim fetchen", error.localizedDescription)
             }
             
-            guard let document, let data = document.data() else {
+            guard let document else {
                 print("Dokument existiert nicht")
                 return
             }
             
             do {
-                let jsonData = try JSONSerialization.data(withJSONObject: data)
-                self.user = try JSONDecoder.firestoreDecoder.decode(User.self, from: jsonData)
+                self.user = try document.data(as: User.self)
             } catch {
                 print("Error while decoding document into User Struct", error.localizedDescription)
             }

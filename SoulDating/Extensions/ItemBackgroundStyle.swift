@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct ItemBackgroundStyle: ViewModifier {
+    @Environment(\.colorScheme) var colorScheme
+    
+    var backgroundColor: Color {
+        colorScheme == .light ? .gray.opacity(0.1) : .gray.opacity(0.3)
+    }
+    
     func body(content: Content) -> some View {
         content
             .padding(8)
-            .background(Color.gray.opacity(0.1))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .background(backgroundColor, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 }
 

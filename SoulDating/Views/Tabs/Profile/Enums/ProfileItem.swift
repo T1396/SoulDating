@@ -6,11 +6,12 @@
 //
 
 import Foundation
+import Firebase
 
 enum ProfileItem: Identifiable {
     case name(String)
-    case birthdate(Date)
-    case location(Location)
+    case birthdate(Timestamp)
+    case location(LocationPreference)
     case lookingFor(Gender)
     case interests([String])
 
