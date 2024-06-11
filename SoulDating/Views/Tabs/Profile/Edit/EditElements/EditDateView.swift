@@ -10,6 +10,7 @@ import Firebase
 
 struct EditDateView: View {
     var date: Timestamp
+
     var body: some View {
         Text("Bearbeiten Datum: \(date)")
     }

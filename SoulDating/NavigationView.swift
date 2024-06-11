@@ -35,7 +35,6 @@ struct NavigationView: View {
             }
         }
     }
-    
 }
 
 #Preview {

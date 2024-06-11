@@ -26,11 +26,3 @@ extension View {
         self.modifier(ItemBackgroundStyle())
     }
 }
-
-
-#Preview {
-    VStack {
-        Text("Hallo World")
-    }
-    .itemBackgroundStyle()
-}

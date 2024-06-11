@@ -11,8 +11,7 @@ import FirebaseAuth
 class UserViewModel: ObservableObject {
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
-    
-    
+
     @Published var user: User? {
         didSet {
             if let user {
@@ -59,8 +58,7 @@ class UserViewModel: ObservableObject {
     var passwordMatches: Bool {
         passwordRepeat.count > 0 && passwordRepeat == password
     }
-    
-    // MARK: functions
+
     func switchAuthMode() {
         mode = mode == .login ? .register : .login
     }
