@@ -28,11 +28,12 @@ struct OnboardingUsernameView: View {
                     .subTitleStyle()
                 
                 Spacer()
-                ErrorTextField(
+                
+                AppTextField(
+                    "Benutzername",
                     text: $onboardingViewModel.userDisplayName,
-                    placeholder: "Benutzername",
                     error: !onboardingViewModel.isValidUserName,
-                    errorMessage: "Dein Name muss länger als 3 Zeichen sein.",
+                    errorMessage: "Dein Name muss länger als 3 Zeichen sein",
                     supportText: "Dies wird dein öffentlicher Profilname"
                 )
                 

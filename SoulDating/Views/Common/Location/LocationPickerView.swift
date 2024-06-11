@@ -10,49 +10,55 @@ import MapKit
 
 struct LocationPickerView: View {
     @Binding var searchQuery: String
-    @Binding var places: [MKMapItem]
-    @Binding var selectedPlace: MKMapItem?
-    var onPlaceSelected: (MKMapItem) -> Void
+    @Binding var places: [MKLocalSearchCompletion]
+    @Binding var selectedPlace: MKLocalSearchCompletion?
+
+    var onPlaceSelected: (MKLocalSearchCompletion) -> Void
     
     var body: some View {
         VStack {
-            TextField("Gib deinen ungefährten Standort an...", text: $searchQuery, onCommit: search)
+            TextField("Gib deinen ungefährten Standort an...", text: $searchQuery)
                 .textFieldStyle(AppTextFieldStyle())
                 .textInputAutocapitalization(.never)
-                .padding()
             
-            List(places, id: \.self) { place in
-                Button {
-                    onPlaceSelected(place)
-                } label: {
-                    VStack(alignment: .leading) {
-                        Text(place.name ?? "Unbekannter Ort")
-                        Text(place.placemark.title ?? "")
-                            .font(.subheadline)
-                            .foregroundStyle(.gray)
+            ScrollView {
+                ForEach(places, id: \.self) { place in
+                    Button {
+                        onPlaceSelected(place)
+                    } label: {
+                        LocationRow(place: place, selectedPlace: $selectedPlace)
                     }
                 }
             }
         }
     }
+}
+
+struct LocationRow: View {
+    let place: MKLocalSearchCompletion
+    @Binding var selectedPlace: MKLocalSearchCompletion?
     
-    private func search() {
-        let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = searchQuery
-        
-        let search = MKLocalSearch(request: request)
-        search.start { response, error in
-            guard let response else {
-                print("Error", error?.localizedDescription ?? "Unknown error")
-                return
+    @Environment(\.colorScheme) var colorScheme
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(place.title)
+                Text(place.subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(.gray)
             }
-            
-            self.places = response.mapItems
+            Spacer()
+            if let selectedPlace, selectedPlace == place {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(.green)
+            }
         }
-        
+        .padding()
+        .background(colorScheme == .light ? .gray.opacity(0.1) : .gray.opacity(0.3), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
     }
 }
 
 #Preview {
-    LocationPickerView(searchQuery: .constant("Hallo"), places: .constant([]), selectedPlace: .constant(nil), onPlaceSelected: {_ in })
+    LocationPickerView(searchQuery: .constant(""), places: .constant([]),selectedPlace: .constant(MKLocalSearchCompletion()) ,onPlaceSelected: { _ in })
 }
