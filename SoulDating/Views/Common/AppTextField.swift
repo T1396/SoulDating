@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AppTextField: View {
+    // MARK: properties
     var placeholder: String
     @Binding var text: String
     var error: Bool
@@ -15,22 +16,36 @@ struct AppTextField: View {
     var supportText: String
     var isSecure: Bool
     
+    // MARK: computed properties
     var textToShow: String? {
         error ? errorMessage : supportText
     }
     
+    // MARK: body
     var body: some View {
         VStack(alignment: .leading) {
             textField()
                 .textFieldStyle(AppTextFieldStyle(error: error))
                 .animation(.default, value: error)
-            
             Text(((error == true && errorMessage != nil) ? errorMessage : supportText) ?? "")
-                .font(.caption)
+                .appFont(size: 12)
                 .foregroundStyle(error ? .red : .primary)
                 .padding(.leading)
         }
     }
+    
+    @ViewBuilder
+    private func textField() -> some View {
+        if isSecure {
+            SecureField(placeholder, text: $text)
+                .appFont(textWeight: .medium)
+        } else {
+            TextField(placeholder, text: $text)
+                .appFont(textWeight: .medium)
+        }
+    }
+    
+    // MARK: init
     init(_ placeholder: String, text: Binding<String>, error: Bool = false, errorMessage: String? = nil, supportText: String = "", isSecure: Bool = false) {
         self.placeholder = placeholder
         self._text = text
@@ -39,18 +54,8 @@ struct AppTextField: View {
         self.supportText = supportText
         self.isSecure = isSecure
     }
-    
-    
-    @ViewBuilder
-    private func textField() -> some View {
-        if isSecure {
-            SecureField(placeholder, text: $text)
-        } else {
-            TextField(placeholder, text: $text)
-        }
-    }
 }
 
 #Preview {
-    AppTextField("nutzername", text: .constant(""))
+    AppTextField("nutzername", text: .constant(""), error: true, errorMessage: "Kein gültiger Username")
 }

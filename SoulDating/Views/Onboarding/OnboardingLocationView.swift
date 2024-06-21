@@ -18,36 +18,51 @@ struct OnboardingLocationView: View {
     // MARK: body
     var body: some View {
         NavigationStack {
-            VStack {
-                Text("Dein Standort")
-                    .titleStyle()
-                Text("Wir benötigen den Standort um dir Nutzer in der Umgebung anzuzeigen")
-                    .subTitleStyle()
+            VStack(spacing: 16) {
+                Text("Your location")
+                    .appFont(size: 32, textWeight: .bold)
                 
-                Text("Radius: \(Int(viewModel.radius))km")
+                Image(systemName: "location.square.fill")
+                    .font(.system(size: 80))
+                    .foregroundStyle(.cyan)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
+                Text("We need a location to show you users in this area")
+                    .appFont(size: 14, textWeight: .light)
+                
+                
+                Text("In which radius do you want to search?")
+                    .appFont(size: 16)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Slider(value: $viewModel.radius, in: 50...400, step: 1)
+        
+                HStack {
+                    Text("\(Int(viewModel.radius))km")
+                        .appFont(size: 16)
+
+                    Slider(value: $viewModel.radius, in: 10...400, step: 1)
+                }
                 
                 LocationPickerView(
                     searchQuery: $viewModel.locationQuery,
-                    places: $viewModel.suggestions,
-                    selectedPlace: $viewModel.selectedSuggestion,
+                    suggestions: $viewModel.suggestions,
+                    selectedSuggestion: $viewModel.selectedSuggestion,
                     onPlaceSelected: saveLocation
                 )
-                
-                Button("Abschließen") {
+            
+                    
+                Button("Finish") {
                     viewModel.updateUserDocument()
                     navigate.toggle()
                 }
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .padding(.vertical)
-                .buttonStyle(.borderedProminent)
-                .disabled(viewModel.location == nil)
+                .appButtonStyle(fullWidth: true)
+                .buttonStyle(PressedButtonStyle())
+          
             }
             .navigationDestination(isPresented: $navigate) {
                 NavigationView()
                     .environmentObject(userViewModel)
             }
+            .navigationBarBackButtonHidden(true)
         }
         .padding(.horizontal)
     }
@@ -60,4 +75,5 @@ struct OnboardingLocationView: View {
 
 #Preview {
     OnboardingLocationView(viewModel: OnboardingViewModel())
+        .environmentObject(UserViewModel())
 }

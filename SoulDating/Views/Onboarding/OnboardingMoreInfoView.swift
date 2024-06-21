@@ -7,8 +7,12 @@
 
 import SwiftUI
 
-struct OnboardingGenderView: View {
+struct OnboardingMoreInfoView: View {
     @ObservedObject var viewModel: OnboardingViewModel
+    
+    enum GenderPickerCase {
+        case own, preferred
+    }
     
     // MARK: computed properties
     var buttonBackground: Color {
@@ -19,23 +23,30 @@ struct OnboardingGenderView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Erzähl uns etwas mehr von dir")
-                    .titleStyle()
-                Text("Diese Informationen dienen dazu dir Nutzer vorzuschlagen und für andere Nutzer bessere vorschläge zu liefern.")
+                
+                Text("Tell us more about you")
+                    .appFont(size: 40, textWeight: .bold)
+                    .multilineTextAlignment(.center)
+                Image(systemName: "shareplay")
+                    .onboardingIconStyle()
+                    .padding(.top, 24)
+                
+                Text("This information is used to suggest users to you and provide better suggestions for other users.")
                     .subTitleStyle()
                 
                 Spacer()
                 
-                ownGenderPicker()
+                genderPicker()
                 preferredGenderPicker()
                 birthDatePicker()
-                RangeSliderView(userLowerbound: $viewModel.selectedMinAge, userUpperbound: $viewModel.selectedMaxAge)
+                //age range slider
+                AgeRangeSliderView(userLowerbound: $viewModel.selectedMinAge, userUpperbound: $viewModel.selectedMaxAge)
                 
                 Spacer()
                 Spacer()
                 
                 NavigationLink(destination: OnboardingPictureView(viewModel: viewModel)) {
-                    Text("Weiter")
+                    Text("Continue")
                         .textButtonStyle(color: buttonBackground)
                 }
                 .disabled(!viewModel.userIsOldEnough)
@@ -45,10 +56,9 @@ struct OnboardingGenderView: View {
         }
     }
     
-    @ViewBuilder
-    private func ownGenderPicker() -> some View {
+    private func genderPicker() -> some View {
         HStack {
-            Text("Wähle dein Geschlecht")
+            Text("Choose your gender")
             Spacer()
             Picker("", selection: $viewModel.gender) {
                 ForEach(Gender.allCases) { gender in
@@ -58,11 +68,11 @@ struct OnboardingGenderView: View {
         }
         .itemBackgroundStyle()
     }
+
     
-    @ViewBuilder
     private func preferredGenderPicker() -> some View {
         HStack {
-            Text("Nach was suchst du?")
+            Text("Choose your preferred gender(s)")
             Spacer()
             Picker("", selection: $viewModel.preferredGender) {
                 ForEach(Gender.allCases) { gender in
@@ -77,11 +87,14 @@ struct OnboardingGenderView: View {
     private func birthDatePicker() -> some View {
         VStack {
             HStack {
-                DatePicker("Wann wurdest du geboren?", selection: $viewModel.birthDate, displayedComponents: .date)
-                    .datePickerStyle(.compact)
+                DatePicker("Tell us your date of birth",
+                    selection: $viewModel.birthDate,
+                    displayedComponents: .date
+                )
+                .datePickerStyle(.compact)
             }
             if !viewModel.userIsOldEnough {
-                Text("Du musst mindestens 16 Jahre alt sein.")
+                Text("You must be at least 16 years old...")
                     .font(.caption)
                     .foregroundStyle(.red)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -93,5 +106,5 @@ struct OnboardingGenderView: View {
 }
 
 #Preview {
-    OnboardingGenderView(viewModel: OnboardingViewModel())
+    OnboardingMoreInfoView(viewModel: OnboardingViewModel())
 }

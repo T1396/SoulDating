@@ -20,31 +20,38 @@ struct OnboardingUsernameView: View {
     // MARK: body
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(alignment: .leading, spacing: 10) {
                 ProgressView(value: 0.2)
-                Text("Wie ist dein Name?")
-                    .titleStyle()
-                Text("Anhand dieses Namens können dich andere Nutzer finden oder sehen")
-                    .subTitleStyle()
+                    .tint(.cyan)
+                Text("Welcome!")
+                    .appFont(size: 40, textWeight: .bold)
+                    .frame(maxWidth: .infinity, alignment: .center)
                 
-                Spacer()
+                Image(systemName: "hand.raised.app.fill")
+                    .onboardingIconStyle()
                 
+                Text("Lets get started")
+                    .appFont(size: 30, textWeight: .bold)
+                
+                Text("What is your name?")
+                    .appFont(size: 24, textWeight: .medium)
+                
+
                 AppTextField(
-                    "Benutzername",
+                    "Username",
                     text: $onboardingViewModel.userDisplayName,
-                    error: !onboardingViewModel.isValidUserName,
-                    errorMessage: "Dein Name muss länger als 3 Zeichen sein",
-                    supportText: "Dies wird dein öffentlicher Profilname"
+                    error: false,
+                    errorMessage: "Your name must have at least 4 character",
+                    supportText: "This will be your public profile name"
                 )
                 
                 Spacer()
                 
-                NavigationLink(destination: OnboardingGenderView(viewModel: onboardingViewModel)) {
-                    Text("Weiter")
-                        .textButtonStyle(color: buttonBackground)
+                NavigationLink(destination: OnboardingMoreInfoView(viewModel: onboardingViewModel)) {
+                    Text("Continue")
+                        .appButtonStyle(fullWidth: true)
                 }
                 .disabled(!onboardingViewModel.isValidUserName)
-                .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .padding()
         }
