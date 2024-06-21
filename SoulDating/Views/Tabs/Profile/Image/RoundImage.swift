@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RoundedImageView: View {
+struct RoundImage: View {
     var uiImage: UIImage = UIImage(named: "profileimage") ?? UIImage()
     var progress: Double = 0
     var width: Int = 200
@@ -16,7 +16,7 @@ struct RoundedImageView: View {
     var body: some View {
         Image(uiImage: uiImage)
             .resizable()
-            .scaledToFit()
+            .scaledToFill()
             .clipShape(Circle())
             .padding(3)
             .overlay(
@@ -28,10 +28,15 @@ struct RoundedImageView: View {
                     .animation(.linear, value: progress)
                     .blendMode(.sourceAtop)
             )
-            .frame(width: 200, height: 200)
+            .frame(width: CGFloat(width), height: CGFloat(height))
     }
 }
 
 #Preview {
-    RoundedImageView()
+    VStack {
+        RoundImage(progress: 80)
+            .background(.blue.opacity(0.2))
+        
+        Text("Hallo")
+    }
 }

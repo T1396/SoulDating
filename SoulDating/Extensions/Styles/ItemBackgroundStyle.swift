@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ItemBackgroundStyle: ViewModifier {
+    var padding: CGFloat = 8
     @Environment(\.colorScheme) var colorScheme
     
     var backgroundColor: Color {
@@ -16,14 +17,14 @@ struct ItemBackgroundStyle: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .padding(8)
+            .padding(padding)
             .background(backgroundColor, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 }
 
 extension View {
-    func itemBackgroundStyle() -> some View {
-        self.modifier(ItemBackgroundStyle())
+    func itemBackgroundStyle(padding: CGFloat = 8) -> some View {
+        self.modifier(ItemBackgroundStyle(padding: padding))
     }
 }
 

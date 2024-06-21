@@ -91,7 +91,7 @@ struct SignInSheet: View {
         VStack(spacing: 12) {
             Button(action: showSignInOptions) {
                 Image(systemName: "chevron.backward")
-                Text("Anmeldeoptionen")
+                Text("Sign in options")
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
@@ -99,14 +99,14 @@ struct SignInSheet: View {
                 "E-Mail",
                 text: $userViewModel.email,
                 error: userViewModel.email.count < 6,
-                errorMessage: "Das ist keine gültige E-Mail Adresse"
+                errorMessage: "This is no valid E-Mail"
             )
             
             AppTextField(
                 "Passwort",
                 text: $userViewModel.password,
                 error: userViewModel.password.count < 5,
-                errorMessage: "Das Passwort muss mindestens 6 zeichen lang sein.",
+                errorMessage: "The password must contain at least 6 chraracters",
                 isSecure: true
             )
             
@@ -115,7 +115,7 @@ struct SignInSheet: View {
                     "Passwort wiederholen",
                     text: $userViewModel.passwordRepeat,
                     error: !userViewModel.passwordMatches,
-                    errorMessage: "Die Passwörter stimmen nicht überein",
+                    errorMessage: "The passwords are not equal",
                     isSecure: true
                 )
             }

@@ -10,23 +10,23 @@ import MapKit
 
 struct LocationPickerView: View {
     @Binding var searchQuery: String
-    @Binding var places: [MKLocalSearchCompletion]
-    @Binding var selectedPlace: MKLocalSearchCompletion?
+    @Binding var suggestions: [MKLocalSearchCompletion]
+    @Binding var selectedSuggestion: MKLocalSearchCompletion?
 
     var onPlaceSelected: (MKLocalSearchCompletion) -> Void
     
     var body: some View {
         VStack {
-            TextField("Gib deinen ungefährten Standort an...", text: $searchQuery)
+            TextField("Enter your approximate address", text: $searchQuery)
                 .textFieldStyle(AppTextFieldStyle())
                 .textInputAutocapitalization(.never)
             
             ScrollView {
-                ForEach(places, id: \.self) { place in
+                ForEach(suggestions, id: \.self) { place in
                     Button {
                         onPlaceSelected(place)
                     } label: {
-                        LocationRow(place: place, selectedPlace: $selectedPlace)
+                        LocationRow(place: place, selectedPlace: $selectedSuggestion)
                     }
                 }
             }
@@ -60,5 +60,5 @@ struct LocationRow: View {
 }
 
 #Preview {
-    LocationPickerView(searchQuery: .constant(""), places: .constant([]),selectedPlace: .constant(MKLocalSearchCompletion()) ,onPlaceSelected: { _ in })
+    LocationPickerView(searchQuery: .constant(""), suggestions: .constant([]),selectedSuggestion: .constant(MKLocalSearchCompletion()) ,onPlaceSelected: { _ in })
 }

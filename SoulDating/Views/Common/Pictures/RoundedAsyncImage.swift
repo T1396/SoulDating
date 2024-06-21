@@ -2,10 +2,9 @@
 //  RoundedAsyncImage.swift
 //  SoulDating
 //
-//  Created by Philipp Tiropoulos on 11.06.24.
+//  Created by Philipp Tiropoulos on 14.06.24.
 //
 
-import Foundation
 import SwiftUI
 
 struct RoundedAsyncImage: View {
@@ -18,15 +17,17 @@ struct RoundedAsyncImage: View {
         if let imageUrl {
             AsyncImage(url: URL(string: imageUrl)) { image in
                 image
-                    .circularImageStyle(progress: progress)
+                    .roundedImageStyle(width: CGFloat(width), height: CGFloat(height))
             } placeholder: {
                 ProgressView()
             }
-            .frame(width: 250, height: 250)
-            .clipped()
         } else {
             Image("profileimage")
-                .circularImageStyle(progress: progress)
+                .roundedImageStyle(width: CGFloat(width), height: CGFloat(height))
         }
     }
+}
+
+#Preview {
+    RoundedAsyncImage()
 }
