@@ -15,16 +15,11 @@ enum Tab: String, CaseIterable, Identifiable {
     
     var title: String {
         switch self {
-        case .swipe:
-            "Swipes"
-        case .likes:
-            "Likes"
-        case .messages:
-            "Nachrichten"
-        case .radar:
-            "Radar"
-        case .profile:
-            "Profil"
+        case .swipe: "Swipe"
+        case .likes: "Likes"
+        case .messages: "Messages"
+        case .radar: "Radar"
+        case .profile: "Profile"
         }
     }
     
@@ -44,13 +39,13 @@ enum Tab: String, CaseIterable, Identifiable {
     }
     
     @ViewBuilder
-        var view: some View {
-            switch self {
-            case .swipe: SwipeView()
-            case .likes: LikesView()
-            case .messages: MessagesView()
-            case .radar: RadarView()
-            case .profile: ProfileView()
-            }
+    func view(user: User) -> some View {
+        switch self {
+        case .swipe: SwipeView(user: user)
+        case .likes: LikesView()
+        case .messages: ChatsView()
+        case .radar: RadarView(user: user)
+        case .profile: ProfileView(user: user)
         }
+    }
 }

@@ -7,19 +7,32 @@
 
 import Foundation
 
-enum Gender: String, Codable, Identifiable, CaseIterable {
+enum Gender: String, EditableItem, Codable, Identifiable, CaseIterable {
     case male, female, divers
     
     var id: String { rawValue }
     
     var title: String {
         switch self {
-        case .male: "Männlich"
-        case .female: "Weiblich"
+        case .male: "Male"
+        case .female: "Female"
         case .divers: "Divers"
         }
     }
     
+    var secTitle: String {
+        switch self {
+        case .male: "Men"
+        case .female: "Woman"
+        case .divers: "Non-Binary"
+        }
+    }
+    
+    var icon: String {
+        switch self {
+        case .male, .female, .divers: ""
+        }
+    }
 }
 
 extension Gender {

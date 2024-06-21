@@ -6,18 +6,18 @@
 //
 
 import Foundation
+import SwiftUI
 
-enum ProfileTab: String, CaseIterable, Identifiable {
-    case aboutyou, fotos
-    
-    var id: String { rawValue }
-    
-    var title: String {
-        switch self {
-        case .aboutyou:
-            "Über dich"
-        case .fotos:
-            "Fotos"
-        }
-    }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
