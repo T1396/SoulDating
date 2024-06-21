@@ -10,6 +10,8 @@ import SwiftUI
 
 struct AppTextFieldStyle: TextFieldStyle {
     var error: Bool = false
+    var paddingHorizontal: CGFloat = 20
+    var paddingVertical: CGFloat = 12
     @Environment(\.colorScheme) var colorScheme
         
     var strokeGradient: LinearGradient {
@@ -18,11 +20,12 @@ struct AppTextFieldStyle: TextFieldStyle {
     
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .padding(.vertical, 12)
-            .padding(.horizontal, 20)
+            .padding(.vertical)
+            .padding(.horizontal, paddingHorizontal)
+            .appFont(size: 14)
             .background(
                 RoundedRectangle(cornerRadius: 15)
-                    .fill(colorScheme == .light ? .gray.opacity(0.12) : .black.opacity(0.8))
+                    .fill(colorScheme == .light ? .gray.opacity(0.08) : .black.opacity(0.8))
                     .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 2)
             )
             .overlay(
