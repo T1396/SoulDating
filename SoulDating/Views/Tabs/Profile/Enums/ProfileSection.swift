@@ -11,6 +11,7 @@ enum ProfileSection: Identifiable {
     case general([ProfileItem])
     case about([ProfileItem])
     case preferences([ProfileItem])
+ 
     
     var id: String {
         self.title
@@ -18,12 +19,9 @@ enum ProfileSection: Identifiable {
     
     var title: String {
         switch self {
-        case .general(_):
-            "Allgemein"
-        case .about(_):
-            "Weitere Infos über dich"
-        case .preferences(_):
-            "Preferenzen"
+        case .general(_): "General"
+        case .about(_): "More about you"
+        case .preferences(_): "Preferences"
         }
     }
     
@@ -37,15 +35,24 @@ enum ProfileSection: Identifiable {
     static func allSections(profile: User) -> [ProfileSection] {
             return [
                 .general([
-                    .name(profile.userName ?? ""),
-                    .birthdate(profile.birthDate ?? .init(date: .now)),
-                    .lookingFor(profile.preferredGender ?? .male)
+                    .name(profile.name ?? ""),
+                    .birthdate(profile.birthDate ?? .now.subtractYears(18)),
+                    .gender(profile.gender ?? .male),
+                    .location(profile.location ?? LocationPreference(latitude: 0, longitude: 0, name: "", radius: profile.location?.radius ?? 0)),
+                    .ageRangePreference(profile.preferences?.agePreferences)
                 ]),
                 .about([
-                    .location(profile.location ?? LocationPreference(latitude: 0, longitude: 0, name: "Kein Standort eingetragen", radius: profile.location?.radius ?? 0))
+                    .description(profile.general?.description),
+                    .height(profile.look?.height),
+                    .job(profile.general?.job),
+                    .languages(profile.general?.languages ?? []),
+                    .smokingStatus(profile.general?.smokingStatus ?? .none),
+                    .interests(profile.general?.interests ?? []),
+                    
                 ]),
                 .preferences([
-                    .interests(profile.interests ?? [])
+                    .preferredGender(profile.preferences?.gender?.first ?? Gender.randomGender()),
+                    .heightPreference(profile.preferences?.height)
                 ])
             ]
         }

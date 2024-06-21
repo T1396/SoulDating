@@ -10,29 +10,21 @@ import Firebase
 
 struct NavigationView: View {
     @EnvironmentObject var userViewModel: UserViewModel
+    @StateObject private var chatViewModel = ChatViewModel()
     
     var body: some View {
-        NavigationStack {
             TabView {
                 ForEach(Tab.allCases) { tab in
                     NavigationStack {
-                        tab.view
+                        tab.view(user: userViewModel.user)
                             .environmentObject(userViewModel)
-                            .navigationTitle(tab.title)
+                            .environmentObject(chatViewModel)
                     }
-                    .tabItem {
-                        Label(tab.title, systemImage: tab.icon)
-                    }
-                    .tag(tab)
+                        .tabItem {
+                            Label(tab.title, systemImage: tab.icon)
+                        }
+                        .tag(tab)
                 }
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: userViewModel.logout) {
-                        Image(systemName: "power")
-                    }
-                }
-            }
         }
     }
     
