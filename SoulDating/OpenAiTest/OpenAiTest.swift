@@ -13,17 +13,17 @@ import Foundation
 import Combine
 import OpenAI
 
-struct Message {
+struct OpenAIMessage {
     var id: String
     var role: ChatQuery.ChatCompletionMessageParam.Role
     var content: String
     var createdAt: Date
 }
 
-extension Message: Equatable, Codable, Hashable, Identifiable {}
+extension OpenAIMessage: Equatable, Codable, Hashable, Identifiable {}
 
 struct Conversation {
-    init(id: String, messages: [Message] = []) {
+    init(id: String, messages: [OpenAIMessage] = []) {
         self.id = id
         self.messages = messages
     }
@@ -31,7 +31,7 @@ struct Conversation {
     typealias ID = String
     
     let id: String
-    var messages: [Message]
+    var messages: [OpenAIMessage]
 }
 
 extension Conversation: Equatable, Identifiable {}
@@ -82,7 +82,7 @@ public final class ChatStore: ObservableObject {
     
     @MainActor
     func sendMessage(
-        _ message: Message,
+        _ message: OpenAIMessage,
         conversationId: Conversation.ID,
         model: Model
     ) async {
@@ -156,7 +156,7 @@ public final class ChatStore: ObservableObject {
                             messageText += "Function call: name=\(name) arguments=\(argument ?? "")\n"
                         }
                     }
-                    let message = Message(
+                    let message = OpenAIMessage(
                         id: partialChatResult.id,
                         role: choice.delta.role ?? .assistant,
                         content: messageText,
@@ -165,7 +165,7 @@ public final class ChatStore: ObservableObject {
                     if let existingMessageIndex = existingMessages.firstIndex(where: { $0.id == partialChatResult.id }) {
                         // Meld into previous message
                         let previousMessage = existingMessages[existingMessageIndex]
-                        let combinedMessage = Message(
+                        let combinedMessage = OpenAIMessage(
                             id: message.id, // id stays the same for different deltas
                             role: message.role,
                             content: previousMessage.content + message.content,

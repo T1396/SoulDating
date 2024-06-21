@@ -10,20 +10,20 @@ import SwiftUI
 
 
 
-enum AuthMode {
+enum AuthentificationView {
     case login, register
     
     var title: String {
         switch self {
-        case .login: "Anmelden"
-        case .register: "Registrieren"
+        case .login: "Login"
+        case .register: "Register"
         }
     }
     
     var altTitle: String {
         switch self {
-        case .login: "Noch kein Konto? Registrieren"
-        case .register: "Schon registriert? Anmelden"
+        case .login: "Not registered yet? Click here"
+        case .register: "Already have an account? Click here to login"
         }
     }
 }

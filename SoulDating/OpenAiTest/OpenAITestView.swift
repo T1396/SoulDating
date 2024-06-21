@@ -16,7 +16,7 @@ struct OpenAITestView: View {
         VStack {
             ScrollView {
                 ForEach(chatStore.conversations.flatMap { $0.messages }) { message in
-                    MessageView(message: message)
+                    OpenAIMessageView(message: message)
                         .padding(5)
                 }
             }
@@ -29,7 +29,7 @@ struct OpenAITestView: View {
                 Button {
                     print("Button pressed JO")
                     if let selectedConversationID = chatStore.selectedConversationID {
-                        let newMessage = Message(id: UUID().uuidString, role: .user, content: input, createdAt: Date())
+                        let newMessage = OpenAIMessage(id: UUID().uuidString, role: .user, content: input, createdAt: Date())
                         print(newMessage)
                         Task {
                             await chatStore.sendMessage(newMessage, conversationId: selectedConversationID, model: .gpt3_5Turbo)
@@ -54,8 +54,8 @@ struct OpenAITestView: View {
     }
 }
 
-struct MessageView: View {
-    var message: Message
+struct OpenAIMessageView: View {
+    var message: OpenAIMessage
     
     var body: some View {
         Group {

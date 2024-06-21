@@ -23,25 +23,22 @@ struct SoulDatingApp: App {
             if !userViewModel.userIsLoggedIn {
                 if userViewModel.isAuthentificating {
                     ProgressView()
-                }
-                
-                ProgressView()
-            } else {
-                
-            }
-            
-            
-            if userViewModel.userIsLoggedIn {
-                if userViewModel.onboardingCompleted {
-                    NavigationView()
-                        .environmentObject(userViewModel)
                 } else {
-                    OnboardingUsernameView()
+                    SignInView()
                         .environmentObject(userViewModel)
                 }
             } else {
-                SignInView()
-                    .environmentObject(userViewModel)
+                if !userViewModel.isAuthentificating {
+                    if userViewModel.onboardingCompleted {
+                        NavigationView()
+                            .environmentObject(userViewModel)
+                    } else {
+                        OnboardingUsernameView()
+                            .environmentObject(userViewModel)
+                    }
+                } else {
+                    ProgressView()
+                }
             }
         }
     }

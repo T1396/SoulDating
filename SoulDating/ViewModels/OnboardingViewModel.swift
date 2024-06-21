@@ -13,21 +13,19 @@ import MapKit
 class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
+    private var searchCancellable: AnyCancellable?
+    private var completer: MKLocalSearchCompleter
     
     @Published var imageData: Data?
-    @Published var birthDate = Date()
+    @Published var birthDate = Date().subtractYears(18)
     @Published var gender: Gender = .randomGender()
     @Published var preferredGender: Gender = .randomGender()
     @Published var userDisplayName = ""
     @Published var selectedMinAge: Double = 19
     @Published var selectedMaxAge: Double = 60
     
-    //Location elements
     @Published var location: LocationPreference?
     @Published var radius: Double = 100
-    @Published var places: [MKMapItem] = []
-    var searchCancellable: AnyCancellable?
-    private var completer: MKLocalSearchCompleter
     @Published var locationQuery = ""
     @Published var suggestions: [MKLocalSearchCompletion] = []
     @Published var selectedSuggestion: MKLocalSearchCompletion?
@@ -38,7 +36,6 @@ class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDel
         super.init()
         completer.delegate = self
         completer.resultTypes = .address
-        
         // react to changes in searchField
         searchCancellable = $locationQuery
             .debounce(for: 0.5, scheduler: RunLoop.main)
@@ -46,7 +43,7 @@ class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDel
                 self?.completer.queryFragment = query
             }
     }
-
+    
     // MARK: computed properties
     var isValidUserName: Bool {
         userDisplayName.count > 3
@@ -60,7 +57,9 @@ class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDel
         return age >= 16
     }
     
+    
     // MARK: functions
+    /// Updates the user document in firebase with the values chosen in the onboarding
     func updateUserDocument() {
         guard let userId = firebaseManager.userId else { return }
         
@@ -68,29 +67,24 @@ class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDel
             switch result {
             case .success(let url):
                 guard let self else { return }
-                let db = self.firebaseManager.database
-                let userRef = db.collection("users").document(userId)
-                var updatedDict = getUpdatedValueDictionary()
-                
-                // add image url to dictionary
-                updatedDict["profileImageUrl"] = url.absoluteString
-                
-                userRef.updateData(updatedDict) { error in
-                    if let error = error {
-                        print("Fehler beim Aktualisieren des Dokuments: \(error.localizedDescription)")
-                    } else {
-                        print("Dokument erfolgreich aktualisiert.")
-                        NotificationCenter.default.post(name: .userDocumentUpdated, object: nil)
-                    }
+                let user = getUpdatedUser(userId: userId, imageUrl: url.absoluteString)
+                let userRef = self.firebaseManager.database.collection("users").document(userId)
+                do {
+                    try userRef.setData(from: user, merge: false)
+                    print("userdocument updated successfully.")
+                    self.resetValues()
+                    NotificationCenter.default.post(name: .userDocumentUpdated, object: nil, userInfo: ["user": user])
+                } catch {
+                    print("Erroc updating userdocument: \(error.localizedDescription)")
                 }
+              
             case .failure(let failure):
                 print("Error while uploading user image", failure.localizedDescription)
             }
         }
-        
-       
     }
     
+    /// Uploads the selected image into firebase storage and calls the closure when completed with the result
     func uploadImageToStorage(for userId: String, completion: @escaping (Result<URL, Error>) -> Void) {
         guard let imageData else {
             completion(.failure(FirebaseError.nopicturechosen))
@@ -98,6 +92,7 @@ class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDel
         }
         let filename = UUID().uuidString + ".jpg"
         let userRef = firebaseManager.storage.reference().child("profileImages/\(userId)/\(filename)")
+        
         userRef.putData(imageData, metadata: nil) { metadata, error in
             if let error {
                 completion(.failure(error))
@@ -113,55 +108,48 @@ class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDel
             }
         }
     }
-}
-
-extension Notification.Name {
-    static let userDocumentUpdated = Notification.Name("userDocumentUpdated")
+    
+    /// Resets all onboarding values to their initial state
+    private func resetValues() {
+        imageData = nil
+        birthDate = .now.subtractYears(18)
+        userDisplayName = ""
+        location = nil
+        locationQuery = ""
+        suggestions = []
+        selectedSuggestion = nil
+    }
 }
 
 // MARK: dictionaries functions
 extension OnboardingViewModel {
-    private func getUpdatedValueDictionary() -> [String: Any] {
-        let dict: [String: Any] = [
-            "userName": userDisplayName,
-            "location": location?.toDictionary(),
-            "minAge": selectedMinAge,
-            "maxAge": selectedMaxAge,
-            "gender": gender.rawValue,
-            "preferredGender": preferredGender.rawValue,
-            "onboardingCompleted" : true
-        ]
-        return dict
-    }
-}
-
-extension LocationPreference {
-    func toDictionary() -> [String: Any] {
-        return [
-            "latitude": latitude,
-            "longitude": longitude,
-            "name": name,
-            "radius": radius
-        ]
+    /// creates a user struct from all selected values in onboarding
+    private func getUpdatedUser(userId: String, imageUrl: String) -> User {
+        location?.radius = radius // update radius in location
+        let preferences = Preferences(agePreferences: AgePreference(minAge: selectedMinAge, maxAge: selectedMaxAge))
+        let user = User(id: userId, name: userDisplayName, profileImageUrl: imageUrl, birthDate: birthDate, gender: gender, onboardingCompleted: true, location: location, preferences: preferences, registrationDate: .now)
+        return user
     }
 }
 
 // MARK: MapKit functions
 extension OnboardingViewModel {
     func togglePlace(completion: MKLocalSearchCompletion) {
+        // uncheck suggestion
         if selectedSuggestion == completion {
             selectedSuggestion = nil
             return
         }
         
+        // build MKLocalSearch and start search
         let searchRequest = MKLocalSearch.Request(completion: completion)
         let search = MKLocalSearch(request: searchRequest)
         search.start { (response, error) in
             guard let response = response, error == nil else {
-                print("Fehler beim Abrufen der Details: \(error?.localizedDescription ?? "Unbekannter Fehler")")
+                print("Error fetching MkLocalSearch: \(error?.localizedDescription ?? "unknown error")")
                 return
             }
-
+            
             if let item = response.mapItems.first {
                 // save location with coordinates
                 self.selectedSuggestion = completion
@@ -175,12 +163,13 @@ extension OnboardingViewModel {
         }
     }
     
+    
+    // MARK: delegated functions for MKLocalSearchCompleterDelegate
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         DispatchQueue.main.async {
             self.suggestions = completer.results
         }
     }
-    
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: any Error) {
         print("Error with MKLocalSearchCompleter", error.localizedDescription)
     }
