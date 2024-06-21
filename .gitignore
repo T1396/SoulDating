@@ -40,7 +40,6 @@ xcuserdata/
 *.DS_Store
 *.swp
 *~.nib
-*.plist
 
 # Compiled source #
 ###################
