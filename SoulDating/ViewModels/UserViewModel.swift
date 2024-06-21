@@ -7,36 +7,43 @@
 
 import Foundation
 import FirebaseAuth
+import Firebase
 
 class UserViewModel: ObservableObject {
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
     
     
-    @Published var user: User? {
-        didSet {
-            if let user {
-                onboardingCompleted = user.onboardingCompleted ?? false
-            }
-        }
-    }
-    @Published var mode: AuthMode = .login
+    @Published var user: User
+    @Published var mode: AuthentificationView = .login
     @Published var isAuthentificating = true
     @Published var onboardingCompleted = false
     @Published var email = ""
     @Published var password = ""
     @Published var passwordRepeat = ""
-
+        
+    var agePreferences: AgePreference? {
+        user.preferences?.agePreferences
+    }
+    
     
     // MARK: init
     init() {
+        user = User(id: "", registrationDate: .now)
         checkAuth()
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdate(_:)), name: .userDocumentUpdated, object: nil)
     }
     
     @objc
     private func didUpdate(_ notification: Notification) {
-        fetchUser()
+        guard let userInfo = notification.userInfo,
+              let updatedUser = userInfo["user"] as? User else { 
+            print("Update user with notification failed")
+            return
+        }
+        
+        print("Updated with user notification successfully")
+        self.user = updatedUser
     }
     
     // MARK: computed properties
@@ -53,7 +60,7 @@ class UserViewModel: ObservableObject {
     }
     
     var userIsLoggedIn: Bool {
-        user != nil
+        firebaseManager.auth.currentUser != nil
     }
     
     var passwordMatches: Bool {
@@ -75,7 +82,6 @@ extension UserViewModel {
             print("Not logged in")
             return
         }
-        
         self.fetchUser()
     }
     
@@ -113,7 +119,9 @@ extension UserViewModel {
     func logout() {
         do {
             try firebaseManager.auth.signOut()
-            self.user = nil
+            print("signed out")
+            isAuthentificating = false
+            print(userIsLoggedIn)
         } catch {
             print("Error signing out: ", error.localizedDescription)
         }
@@ -124,20 +132,20 @@ extension UserViewModel {
 extension UserViewModel {
     private func fetchUser() {
         guard let id = firebaseManager.userId else { return }
-        print(id)
         firebaseManager.database.collection("users").document(id).getDocument { document, error in
-            defer { self.isAuthentificating = false }
             if let error {
-                print("Fehler beim fetchen", error.localizedDescription)
+                print("Error while fetching user", error.localizedDescription)
             }
             
             guard let document else {
-                print("Dokument existiert nicht")
+                print("user document doesnt exist")
                 return
             }
             
             do {
                 self.user = try document.data(as: User.self)
+                self.onboardingCompleted = self.user.onboardingCompleted ?? false
+                self.isAuthentificating = false
             } catch {
                 print("Error while decoding document into User Struct", error.localizedDescription)
             }
@@ -146,59 +154,28 @@ extension UserViewModel {
     
     func createUserDocument() {
         guard let userId = firebaseManager.userId else { return }
-        let dict = ["id": userId]
+        let user = User(id: userId, registrationDate: .now)
         do {
-            try firebaseManager.database.collection("users").document(userId).setData(from: dict)
+            try firebaseManager.database.collection("users").document(userId).setData(from: user)
             print("user successfully created")
         } catch {
-            print("Fehler beim Speichern des Users", error)
+            print("error saving user \(user)", error)
         }
     }
     
-    func updateProfileItem(_ item: ProfileItem) {
-        switch item {
-        case .name(let newName):
-            self.user?.userName = newName
-            updateUserDocumentField(field: "userName", value: newName)
-        case .birthdate(let newDate):
-            user?.birthDate = newDate
-            updateUserDocumentField(field: "birthdate", value: newDate)
-        case .location(let newLocation):
-            user?.location = newLocation
-            updateUserDocumentField(field: "location", value: newLocation)
-        case .lookingFor(let newLookingFor):
-            user?.preferredGender = newLookingFor
-            updateUserDocumentField(field: "lookingFor", value: newLookingFor)
-        case .interests(let newInterests):
-            user?.interests = newInterests
-            updateUserDocumentField(field: "interests", value: newInterests)
-        }
-    }
-    
-    private func updateUserDocumentField(field: String, value: Any) {
-        let db = firebaseManager.database
+    func updateAgePreference(_ agePreference: AgePreference) {
         guard let userId = firebaseManager.userId else { return }
-        db.collection("users").document(userId).updateData([field: value]) { error in
-            if let error = error {
-                print("Error updating Firestore: \(error)")
-            } else {
-                print("\(field) successfully updated in Firestore")
+        firebaseManager.database.collection("users").document(userId)
+            .updateData(["preferences.agePreferences": agePreference]) { error in
+                if let error {
+                    print("Error updating age preference")
+                    return
+                }
+                
+                self.user.preferences?.agePreferences = agePreference
             }
-        }
     }
 }
 
-// MARK: onboarding
-extension UserViewModel {
-    func updateOnboardingStatus(userId: String, completed: Bool) {
-        firebaseManager.database.collection("users").document(userId).setData(["onboardingCompleted": completed], merge: true)
-    }
-    
-    func completeOnboarding() {
-        guard let userId = firebaseManager.userId else { return }
-        updateOnboardingStatus(userId: userId, completed: true)
-        self.onboardingCompleted = true
-    }
-}
 
 
