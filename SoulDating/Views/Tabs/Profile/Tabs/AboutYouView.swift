@@ -30,8 +30,6 @@ struct AboutYouView: View {
                         }
                         .padding(.horizontal)
                         .padding(.vertical, 6)
-                        .id(item.id)
-
                     }
                 }
             }

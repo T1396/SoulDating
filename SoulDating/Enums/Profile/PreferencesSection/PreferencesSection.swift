@@ -9,9 +9,7 @@ import Foundation
 
 enum PreferencesSection: String, Identifiable, CaseIterable {
     case datingPreferences, lifestylePreferences
-    
-    typealias Item = PreferencesItem
-    
+        
     var id: String { rawValue }
     
     var displayName: String {

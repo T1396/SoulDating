@@ -10,22 +10,29 @@ import SwiftUI
 struct PreferencesView: View {
     @EnvironmentObject var userViewModel: UserViewModel
     @State private var showSheet = false
-    @StateObject private var prefVm: PreferencesViewModel
     
     init(user: User) {
-        self._prefVm = StateObject(wrappedValue: PreferencesViewModel(user: user))
+        print(user)
     }
     
     var body: some View {
-        LazyVStack {
-            ForEach(PreferencesSection.allCases) { section in
-                ForEach(section.items(user: userViewModel.user)) { item in
+        ScrollView {
+            VStack(alignment: .leading) {
+                ForEach(PreferencesSection.allCases) { section in
+                   
+                    Text(section.displayName)
+                        .appFont(size: 20, textWeight: .bold)
+                        .padding(.horizontal)
                     
-                    SettingsElement(title: item.title, value: item.valueString, content: {
-                        item.view(user: userViewModel.user)
-                    })
+                    ForEach(section.items(user: userViewModel.user)) { item in
+                        
+                        SettingsElement(title: item.title, value: item.valueString) {
+                            item.editView(user: userViewModel.user)
+                                .presentationDetents([.medium, .large])
+                        }
                         .padding(.horizontal)
                         .padding(.vertical, 6)
+                    }
                 }
             }
         }

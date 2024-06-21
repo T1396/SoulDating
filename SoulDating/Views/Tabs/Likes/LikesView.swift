@@ -11,7 +11,7 @@ struct LikesView: View {
     var body: some View {
         VStack {
             Text("Your latest likes")
-            
+                .appFont()
         }
         .navigationTitle(Tab.likes.title)
         .navigationBarTitleDisplayMode(.inline)
