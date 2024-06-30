@@ -6,21 +6,52 @@
 //
 
 import Foundation
+import Firebase
 
 struct UserDetail: Codable {
     let id: String
     let name: String
     let profileImageUrl: String
 }
+
+
 /// viewModel for all chats with other users
 class ChatViewModel: BaseAlertViewModel {
+    // MARK: properties
+    private let firebaseManager = FirebaseManager.shared
+    private var listener: ListenerRegistration?
+    
+    private var chats: [Chat] = [] {
+        didSet {
+            fetchUserDetails()
+        }
+    }
+    @Published var chatUserDetails: [Chat: UserDetail] = [:]
+    
+    // MARK: computed properties
+    var userId: String? {
+        firebaseManager.userId
+    }
+    // MARK: init
+    override init() {
+        super.init()
+        listenForChats()
+//        let sampleChatUserDetails: [Chat: UserDetail] = [
+//            sampleChats[0]: sampleUserDetails[1], // Chat1 mit Bob
+//            sampleChats[1]: sampleUserDetails[2], // Chat2 mit Charlie
+//            sampleChats[2]: sampleUserDetails[2]  // Chat3 mit Charlie
+//        ]
+//        self.chatUserDetails = sampleChatUserDetails
+    }
+    
     
     let sampleChats: [Chat] = [
-        Chat(id: "chat1", participantKey: "key1", participantIds: ["user1", "user2"], lastMessageContent: "Hey, how are you?", lastMessageTimestamp: Date(), lastMessageSenderId: "user1"),
-        Chat(id: "chat2", participantKey: "key2", participantIds: ["user1", "user3"], lastMessageContent: "Are we meeting tomorrow?", lastMessageTimestamp: Date(), lastMessageSenderId: "user3"),
-        Chat(id: "chat3", participantKey: "key3", participantIds: ["user2", "user3"], lastMessageContent: "Don't forget the meeting.", lastMessageTimestamp: Date(), lastMessageSenderId: "user2")
+        Chat(id: "chat1", participantKey: "1", participantIds: ["user1", "user2"], unreadCount: ["user1": 3, "user2": 0], lastMessageContent: "Hey, how are you?", lastMessageTimestamp: Date(), lastMessageSenderId: "user1"),
+        Chat(id: "chat1", participantKey: "2", participantIds: ["user1", "user2"], unreadCount: ["user1": 3, "user2": 0], lastMessageContent: "Hey, how are you?", lastMessageTimestamp: Date(), lastMessageSenderId: "user1"),
+        Chat(id: "chat1", participantKey: "3", participantIds: ["user1", "user2"], unreadCount: ["user1": 3, "user2": 0], lastMessageContent: "Hey, how are you?", lastMessageTimestamp: Date(), lastMessageSenderId: "user1"),
+        Chat(id: "chat1", participantKey: "4", participantIds: ["user1", "user2"], unreadCount: ["user1": 3, "user2": 0], lastMessageContent: "Hey, how are you?", lastMessageTimestamp: Date(), lastMessageSenderId: "user1")
     ]
-
+    
     let sampleUserDetails: [UserDetail] = [
         UserDetail(id: "user1", name: "Alice", profileImageUrl: "https://example.com/alice.jpg"),
         UserDetail(id: "user2", name: "Bob", profileImageUrl: "https://example.com/bob.jpg"),
@@ -30,76 +61,57 @@ class ChatViewModel: BaseAlertViewModel {
     
     
     // MARK: functions
-    private let firebaseManager = FirebaseManager.shared
-    
-    @Published var chats: [Chat] = [] {
-        didSet {
-            print("Neue Chats: \(chats)")
-            fetchUserDetails()
-        }
-    }
-    @Published var chatUserDetails: [Chat: UserDetail] = [:]
-    
-    var userId: String? {
-        firebaseManager.userId
-    }
-    
-    func fetchAndReturnUser(userId: String, completion: @escaping (User) -> Void) {
-        print("Started fetching user: \(userId)")
-        firebaseManager.database.collection("users")
-            .whereField("id", isEqualTo: userId)
-            .getDocuments { querySnapshot, error in
+    func fetchAndReturnUser(userId: String, completion: @escaping (User?) -> Void) {
+        firebaseManager.database.collection("users").document(userId)
+            .getDocument { docSnapshot, error in
                 if let error {
-                    print("Error while fetching user in chat view model", error.localizedDescription)
-                    return
+                    print("Failed to fetch user", error.localizedDescription)
+                    completion(nil)
                 }
-                
-                guard let querySnapshot = querySnapshot, let document = querySnapshot.documents.first else {
-                    print("User does not exist")
-                    self.createAlert(title: "Error", message: "The user could not be found.")
-                    return
-                }
-                
                 do {
-                    let user = try document.data(as: User.self)
+                    let user = try docSnapshot?.data(as: User.self)
                     completion(user)
                 } catch {
-                    print("Decoding user failed (chatViewModel)", error.localizedDescription)
+                    print("ChatViewModel - Error decoding user into struct", error.localizedDescription)
+                    completion(nil)
                 }
             }
     }
     
-    // MARK: init
-    override init() {
-        super.init()
-        fetchChats { _ in }
-//        let sampleChatUserDetails: [Chat: UserDetail] = [
-//            sampleChats[0]: sampleUserDetails[1], // Chat1 mit Bob
-//            sampleChats[1]: sampleUserDetails[2], // Chat2 mit Charlie
-//            sampleChats[2]: sampleUserDetails[2]  // Chat3 mit Charlie
-//        ]
-//        self.chatUserDetails = sampleChatUserDetails
-    }
     
-    // MARK: functions
-    private func fetchChats(completion: @escaping (Bool) -> Void) {
+    /// starts a snapshotlistener to get chat updates
+    private func listenForChats() {
         guard let userId = firebaseManager.userId else { return }
-        print(userId)
-        firebaseManager.database.collection("chats")
+        listener = firebaseManager.database.collection("chats")
             .whereField("participantIds", arrayContains: userId)
-            .addSnapshotListener { querySnapshot, error in
-                if let error {
-                    completion(false)
-                    print("error with snapshotlistener in 'fetch Chats'", error.localizedDescription)
+            .addSnapshotListener { [weak self] querySnapshot, error in
+                guard let querySnapshot else {
+                    print("Error listening for chat updates", error?.localizedDescription ?? "Unknown error")
                     return
                 }
                 
-                guard let chatDocs = querySnapshot?.documents else { return }
-                
-                self.chats = chatDocs.compactMap { doc in
-                    try? doc.data(as: Chat.self)
+                querySnapshot.documentChanges.forEach { change in
+                    switch change.type {
+                    case .added:
+                        if let newChat = try? change.document.data(as: Chat.self) {
+                            self?.chats.append(newChat)
+                            self?.showOverlayWithMessage(message: newChat.lastMessageContent)
+                        }
+                    case .modified:
+                        let chat = try? change.document.data(as: Chat.self)
+                        if let chat, let oldIndex = self?.chats.firstIndex(where: { $0.id == chat.id }) {
+                            self?.chats[oldIndex] = chat
+                            if chat.unreadCount[userId, default: 0] > 0 {
+                                self?.showOverlayWithMessage(message: chat.lastMessageContent)
+                            }
+                        }
+                    case .removed:
+                        if let index = self?.chats.firstIndex(where: { $0.id == change.document.documentID }) {
+                            self?.chats.remove(at: index)
+                        }
+                    }
+
                 }
-                completion(true)
             }
     }
     
@@ -109,18 +121,19 @@ class ChatViewModel: BaseAlertViewModel {
         // only load details for users that are not already loaded
         let alreadyLoadedIds = chatUserDetails.map { $0.value.id }
         userIds = userIds.subtracting(alreadyLoadedIds)
-        print("User Ids to fetch User Details for chats: \(userIds)")
         if !userIds.isEmpty { // only if there are existing chats
             loadUserDetailsForChats(for: Array(userIds))
         }
     }
     
-    /// loads user details for every chat to connect them
+    /// loads user details for every chat from firestore to create a map of containing chat to user,
+    /// with helper function mapDetailsToChats
+    /// - Parameters:
+    /// - userIds - the ids of all users the current users has associated chats with
     private func loadUserDetailsForChats(for userIds: [String]) {
-        print(userIds)
         firebaseManager.database.collection("users")
             .whereField("id", in: userIds)
-            .getDocuments { querySnapshot, error in
+            .getDocuments { [weak self] querySnapshot, error in
                 if let error {
                     print("Error while fetching for profile image urls", error.localizedDescription)
                     return
@@ -131,35 +144,37 @@ class ChatViewModel: BaseAlertViewModel {
                     do {
                         let detail = try doc.data(as: UserDetail.self)
                         details.append(detail)
-                        print("Appended user detail: \(detail)")
                     } catch {
                         print("Error decoding user document into 'UserDetail' struct" , error.localizedDescription)
                     }
                 }
                 
-                let chatDetailDict = self.mapDetailsToChats(details: details)
-                self.chatUserDetails = chatDetailDict
-                print("\nAppended userdetails: \(details)")
+                let chatUserDict = self?.mapDetailsToChats(details: details)
+                self?.chatUserDetails = chatUserDict ?? [:]
             }
     }
     
+    /// accepts a list of user details (name, id, imageUrl) to loop through every user  to find the corresponding chat
+    /// and fills a dictionary with every chat and userDetail that is returned
     func mapDetailsToChats(details: [UserDetail]) -> [Chat: UserDetail] {
         var chatUserDetails: [Chat: UserDetail] = [:]
         details.forEach { userDetail in
-            if let chat = findChat(for: userDetail) {
+            if let chat = findChat(for: userDetail.id) {
                 chatUserDetails[chat] = userDetail
             }
         }
         return chatUserDetails
     }
     
-    func findChat(for userDetail: UserDetail) -> Chat? {
-        chats.first(where: { $0.participantIds.contains([userDetail.id])})
+    
+    /// accepts a userId and returns the corresponding chat or nil if not found
+    private func findChat(for userId: String) -> Chat? {
+        chats.first(where: { $0.participantIds.contains([userId])})
     }
     
-    func returnChatIdIfExists(for userId: String) -> String? {
-        chats.first(where: { $0.participantIds.contains { id in
-            id == userId
-        }})?.id
+    /// accepts a userId and returns the chatId for that chat with that user, and if not found nil
+    func returnChatIdIfExists(for targetId: String) -> String? {
+        chats.first(where: { $0.participantIds.contains(targetId) })?.id
     }
+    
 }

@@ -10,12 +10,14 @@ import MapKit
 import Combine
 
 class LocationViewModel: BaseNSViewModel, MKLocalSearchCompleterDelegate {
+    // MARK: properties
     private let firebaseManager = FirebaseManager.shared
     private var searchCancellable: AnyCancellable?
     private var completer: MKLocalSearchCompleter
     
     private var user: User
-    @Published var oldLocation: LocationPreference?
+    private var oldLocation: LocationPreference
+    
     @Published var newLocation: LocationPreference?
     @Published var places: [MKMapItem] = []
     @Published var locationQuery = ""
@@ -27,27 +29,36 @@ class LocationViewModel: BaseNSViewModel, MKLocalSearchCompleterDelegate {
         }
     }
     
-    var hasMadeChanges: Bool {
-        newLocation != nil && oldLocation != newLocation
+    // MARK: computed properties
+    var isValidNewLocation: Bool {
+        oldLocation != newLocation && newLocation != nil && isPossibleLatitude
     }
     
-    init(location: LocationPreference?, user: User) {
+    private var isPossibleLatitude: Bool {
+        if let newLocation {
+            return newLocation.latitude >= -90 && newLocation.latitude <= 90
+        }
+        return false
+    }
+    
+    // MARK: init
+    init(location: LocationPreference, user: User) {
         self.oldLocation = location
-        self.newLocation = location
-        self.radius = location?.radius ?? 100
-        self.completer = MKLocalSearchCompleter()
+        // if latitude is lower than -90 its a base value meaning location must be initially set
+        self.newLocation = location.latitude >= -90 ? location : nil
         self.user = user
+        self.radius = location.radius
+        self.completer = MKLocalSearchCompleter()
         super.init()
-        
         // delegates all MKLocalSearch results to self (this viewModel instance)
         self.completer.delegate = self
         self.completer.resultTypes = .address
         
         // subscription on locationQuery
         self.searchCancellable = $locationQuery
-            // delay search until no changes have been made for 0.5 seconds
+        // delay search until no changes have been made for 0.5 seconds
             .debounce(for: 0.5, scheduler: RunLoop.main)
-            // creates a subscription to locationQuery
+        // creates a subscription to locationQuery
             .sink { [weak self] query in // weak reference to prevent retain cycles
                 // needed because sink has its own life-cycle and
                 // searchCancellable holds the .sink active even when viewModel is destroyed
@@ -56,19 +67,30 @@ class LocationViewModel: BaseNSViewModel, MKLocalSearchCompleterDelegate {
             }
     }
     
-    func updateLocation(completion: @escaping (Bool) -> Void) {
-        guard let userId = firebaseManager.userId, let locationData = getLocationDict() else { return }
+    // MARK: functions
+    func updateLocation(completion: @escaping () -> Void) {
+        guard let userId = firebaseManager.userId,
+              let locationData = getLocationDict(),
+              let newLocation else {
+            completion()
+            return
+        }
+        
         firebaseManager.database.collection("users").document(userId)
             .updateData(locationData) { error in
                 if let error {
                     print("Failed to update Location for userId: \(userId)", error.localizedDescription)
-                    self.createAlert(title: "Error.", message: "Updating the location data failed. Would you like to try again?")
+                    self.createAlert(title: "Error", message: "Updating the location data failed. Please try again or contact support.")
                 } else {
                     print("Location successfully updated")
-                    self.user.location = self.newLocation
-                    NotificationCenter.default.post(name: .userDocumentUpdated, object: nil, userInfo: ["user": self.user])
+                    if let newLocation = self.newLocation {
+                        self.user.location = newLocation
+                        NotificationCenter.default.post(name: .userDocumentUpdated, object: nil, userInfo: ["user": self.user])
+                    } else {
+                        self.createAlert(title: "Error", message: "")
+                    }
                 }
-                completion(error == nil)
+                completion()
             }
     }
 }
