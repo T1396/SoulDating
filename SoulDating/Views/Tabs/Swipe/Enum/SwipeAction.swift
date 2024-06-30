@@ -8,7 +8,7 @@
 import Foundation
 
 /// enum for all possible swipe actions in the swipe view
-enum SwipeAction: String, CaseIterable, Identifiable {
+enum SwipeAction: String, CaseIterable, Identifiable, Codable {
     case like, dislike, superlike
     
     var id: String { rawValue }
