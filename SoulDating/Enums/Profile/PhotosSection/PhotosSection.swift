@@ -14,9 +14,7 @@ enum PhotosSection: String, Identifiable, CaseIterable {
     var id: String { rawValue }
     
     func items(user: User) -> [PhotosItem] {
-        [
-            .images([user.profileImageUrl ?? ""])
-        ]
+        [.images([user.profileImageUrl ?? ""])]
     }
     
     var displayName: String {

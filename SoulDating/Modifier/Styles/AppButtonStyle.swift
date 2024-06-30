@@ -27,7 +27,7 @@ struct AppButtonStyle: ViewModifier {
         func foregroundColor(isEnabled: Bool) -> Color {
             switch self {
             case .primary:
-                return isEnabled ? Color("buttonText") : .gray
+                return isEnabled ? .buttonText : .gray
             case .secondary:
                 return isEnabled ? .primary.opacity(0.9) : .gray
             }
@@ -55,11 +55,12 @@ struct AppButtonStyle: ViewModifier {
                     cornerRadius: cornerRadius
                 )
             )
+            .contentShape(Rectangle())
     }
 }
 
 extension View {
-    func appButtonStyle(color: Color = .cyan, type: AppButtonStyle.ButtonType = .primary, textSize: CGFloat = 18, cornerRadius: CGFloat = 14, fullWidth: Bool = false) -> some View {
+    func appButtonStyle(color: Color = .accentColor, type: AppButtonStyle.ButtonType = .primary, textSize: CGFloat = 18, cornerRadius: CGFloat = 14, fullWidth: Bool = false) -> some View {
         self.modifier(AppButtonStyle(color: color, type: type, textSize: textSize, cornerRadius: cornerRadius, fullWidth: fullWidth))
     }
 }

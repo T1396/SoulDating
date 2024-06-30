@@ -8,37 +8,46 @@
 import SwiftUI
 
 struct PreferencesView: View {
+    // MARK: properties
     @EnvironmentObject var userViewModel: UserViewModel
-    @State private var showSheet = false
+    @State private var isSheetPresented = false
+    @State private var activeSheetElement: PreferencesItem?
     
-    init(user: User) {
-        print(user)
+    init() {
+        print("View new initialized")
     }
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                ForEach(PreferencesSection.allCases) { section in
-                   
-                    Text(section.displayName)
-                        .appFont(size: 20, textWeight: .bold)
-                        .padding(.horizontal)
+        Form {
+            ForEach(PreferencesSection.allCases) { section in
+                
+                Section(section.displayName) {
+                    
                     
                     ForEach(section.items(user: userViewModel.user)) { item in
                         
-                        SettingsElement(title: item.title, value: item.valueString) {
-                            item.editView(user: userViewModel.user)
-                                .presentationDetents([.medium, .large])
+                        Button {
+                            self.activeSheetElement = item
+                            self.isSheetPresented = true
+                        } label: {
+                            SettingsElement(title: item.title, value: item.valueString, icon: item.icon)
                         }
-                        .padding(.horizontal)
-                        .padding(.vertical, 6)
                     }
                 }
             }
         }
+        .sheet(isPresented: Binding(
+            get: { isSheetPresented },
+            set: { isSheetPresented = $0 }
+        ), onDismiss: { activeSheetElement = nil }, content: {
+            activeSheetElement?.editView(user: userViewModel.user)
+                .presentationDetents([.medium, .large])
+        })
+        .listStyle(.insetGrouped)
     }
 }
 
+
 #Preview {
-    PreferencesView(user: User(id: "djsak", name: "klausd"))
+    PreferencesView()
 }

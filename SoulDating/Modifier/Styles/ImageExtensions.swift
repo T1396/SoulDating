@@ -19,9 +19,9 @@ extension Image {
                 Circle()
                     .trim(from: 0, to: progress)
                     .stroke(style: StrokeStyle(lineWidth: 4, lineCap: .round))
-                    .foregroundStyle(.green)
+                    .foregroundStyle(.accent)
                     .rotationEffect(Angle(degrees: -90))
-                    .animation(.linear, value: progress)
+                    .animation(.linear(duration: 1), value: progress)
                     .blendMode(.sourceAtop)
             )
     }
@@ -41,3 +41,4 @@ extension Image {
             .frame(width: CGFloat(width), height: CGFloat(height))
     }
 }
+

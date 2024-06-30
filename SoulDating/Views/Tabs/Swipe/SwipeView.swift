@@ -30,8 +30,8 @@ struct SwipeView: View {
                     noUserOptionsAndText
                         .padding()
                 } else {
-                    ForEach(swipeViewModel.allSwipeableUsers) { user in
-                        SwipeCardView(swipeViewModel: swipeViewModel, targetUser: user, activeCardID: $activeCardID)
+                    ForEach(swipeViewModel.allSwipeableUs) { userVm in
+                        SwipeCardView(viewModel: userVm, activeCardID: $activeCardID)
                             .onTapGesture {
                                 activeCardID = user.id
                             }
@@ -44,9 +44,7 @@ struct SwipeView: View {
             .sheet(item: $swipeSheet) { sheet in
                 switch sheet {
                 case .editRadiusOrLocation:
-                    if let location = userViewModel.user.location {
-                        EditLocationRangeView(location: location, user: user)
-                    }
+                    EditLocationRangeView(location: user.location, user: user)
                 case .editAgeRange:
                     let item = PreferencesItem.ageRange(nil)
                     EditAgeRangeView(title: item.title, agePreference: userViewModel.agePreferences, path: item.firebaseFieldName)

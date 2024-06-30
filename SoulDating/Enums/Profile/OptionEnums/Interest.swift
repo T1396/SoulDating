@@ -9,7 +9,7 @@ import Foundation
 
 
 enum Interest: String, EditableItem, CaseIterable, Identifiable, Codable {
-    case sports, reading, gaming, traveling, cooking, photography, music, movies, art, gardening, technology, fashion, fitness, politics, history, animals, volunteering, dancing, writing, meditation, astrology, birdwatching, hiking, DIY, knitting
+    case sports, reading, gaming, traveling, cooking, photography, music, movies, art, gardening, technology, fashion, fitness, politics, history, animals, volunteering, dancing, writing, meditation, astrology, birdwatching, hiking, diy, knitting
     
     var id: String { rawValue }
     
@@ -38,7 +38,7 @@ enum Interest: String, EditableItem, CaseIterable, Identifiable, Codable {
         case .astrology: "Astrology"
         case .birdwatching: "Birdwatching"
         case .hiking: "Hiking"
-        case .DIY: "Do It Yourself"
+        case .diy: "Do It Yourself"
         case .knitting: "Knitting"
         }
     }
@@ -68,7 +68,7 @@ enum Interest: String, EditableItem, CaseIterable, Identifiable, Codable {
         case .astrology: "star"
         case .birdwatching: "binoculars"
         case .hiking: "map"
-        case .DIY: "hammer"
+        case .diy: "hammer"
         case .knitting: "scissors"
         }
     }

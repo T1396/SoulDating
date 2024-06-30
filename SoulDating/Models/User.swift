@@ -8,22 +8,39 @@
 import Foundation
 import Firebase
 
-
-
 struct User: Codable, Identifiable, Equatable, Hashable {
     let id: String
     var name: String?
     var profileImageUrl: String?
     var birthDate: Date?
     var gender: Gender?
-    var wantChilds: Bool?
     var onboardingCompleted: Bool?
-    var general: UserGeneral?
-    var location: LocationPreference?
-    var look: Look?
-    var preferences: Preferences?
+    var general: UserGeneral = UserGeneral()
+    var location: LocationPreference = LocationPreference()
+    var look: Look = Look()
+    var preferences: Preferences = Preferences()
     var blockedUsers: [String]?
     var registrationDate: Date?
+}
+
+
+
+extension User {
+    var age: Int? {
+        guard let birthDate else { return nil }
+        let calendar = Calendar.current
+        let now = Date()
+        let ageComponents = calendar.dateComponents([.year], from: birthDate, to: now)
+        return ageComponents.year
+    }
+    
+    var nameAgeString: String {
+        if let age, let name {
+            return "\(name), \(age)"
+        } else {
+            return "Anonymous"
+        }
+    }
 }
 
 struct UserGeneral: Codable, Equatable, Hashable {
@@ -38,7 +55,7 @@ struct UserGeneral: Codable, Equatable, Hashable {
 }
 
 struct Look: Codable, Equatable, Hashable {
-    var height: Int?
+    var height: Double?
     var bodyType: BodyType?
     var fashionStyle: FashionStyle?
     var fitnessLevel: FitnessLevel?
@@ -63,10 +80,10 @@ struct AgePreference: Codable ,Equatable, Hashable {
 }
 
 struct LocationPreference: Codable, Equatable, Hashable {
-    var latitude: Double
-    var longitude: Double
-    var name: String
-    var radius: Double // in km
+    var latitude: Double = -100
+    var longitude: Double = 133.0
+    var name: String = "No location set."
+    var radius: Double = 100 // in km
 }
 
 
@@ -80,7 +97,11 @@ extension AgePreference {
     }
     
     var rangeString: String {
-        "\(minAge) - \(maxAge)"
+        if let minAgeStr = minAge.formatted(as: .decimal, maxFractionDigits: 0, locale: .autoupdatingCurrent),
+           let maxAgeStr = maxAge.formatted(as: .decimal, maxFractionDigits: 0, locale: .autoupdatingCurrent) {
+            return "\(minAgeStr) - \(maxAgeStr)"
+        }
+        return "all"
     }
 }
 
@@ -89,26 +110,10 @@ extension LocationPreference {
         return [
             "latitude": latitude,
             "longitude": longitude,
-            "name": name,
+            "name": name as Any,
             "radius": radius
         ]
     }
 }
 
-extension User {
-    var age: Int? {
-        guard let birthDate else { return nil }
-        let calendar = Calendar.current
-        let now = Date()
-        let ageComponents = calendar.dateComponents([.year], from: birthDate, to: now)
-        return ageComponents.year
-    }
-    
-    var nameAgeString: String {
-        if let age, let name {
-            return "\(name), \(age)"
-        } else {
-            return "Anonymous"
-        }
-    }
-}
+

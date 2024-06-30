@@ -7,20 +7,21 @@
 
 import SwiftUI
 
+
 enum AboutYouItem: Identifiable {
     /// general
     case name(String?)
     case birthDate(Date?)
     case gender(Gender?)
     case sex(Sexuality?)
-    case location(LocationPreference?)
+    case location(LocationPreference)
     case description(String?)
     /// look and lifestyle
-    case height(Int?)
+    case height(Double?)
     case bodyType(BodyType?)
     case job(String?)
     case education(EducationLevel?)
-    case alcohol(Bool?)
+    case drinkingBehaviour(DrinkingBehaviour?)
     /// interests
     case interests([Interest])
     case languages([String])
@@ -46,11 +47,11 @@ enum AboutYouItem: Identifiable {
         case .bodyType: "Your body type"
         case .job: "Your current job"
         case .education: "Your education level"
-        case .alcohol: "Your alcohol behaviour"
+        case .drinkingBehaviour: "Your alcohol behaviour"
             /// interests
         case .interests: "Your interests"
         case .languages: "Your spoken languages"
-        case .fashionStyle: "What kind of fashion style do you meet"
+        case .fashionStyle: "Your fashion style"
         case .fitnessLevel: "How fit are you?"
         }
     }
@@ -67,7 +68,7 @@ enum AboutYouItem: Identifiable {
         case .bodyType: "look.bodyType"
         case .job: "general.job"
         case .education: "general.education"
-        case .alcohol: "general.drinkingBehaviour"
+        case .drinkingBehaviour: "general.drinkingBehaviour"
         case .interests: "general.interests"
         case .languages: "general.languages"
         case .fashionStyle: "look.fashionStyle"
@@ -78,18 +79,18 @@ enum AboutYouItem: Identifiable {
     var icon: String {
         switch self {
             /// general
-        case .name: "person.fill"
+        case .name: "person.crop.square.fill"
         case .birthDate: "calendar"
         case .gender: "person.2.fill"
         case .sex: "flame.fill"
         case .location: "map.fill"
         case .description: "text.quote"
             /// look and lifestyle
-        case .height: "arrow.up.arrow.down"
+        case .height: "pencil.and.ruler.fill"
         case .bodyType: "figure.walk"
         case .job: "briefcase.fill"
         case .education: "graduationcap.fill"
-        case .alcohol: "cup.and.saucer.fill"
+        case .drinkingBehaviour: "waterbottle.fill"
             /// interests
         case .interests: "heart.circle.fill"
         case .languages: "globe"
@@ -110,7 +111,7 @@ enum AboutYouItem: Identifiable {
         case .sex(let sex):
             return sex?.title
         case .location(let locationPreference):
-            return locationPreference != nil ? "\(String(describing: locationPreference?.name)), +\(String(describing: locationPreference?.radius)) km" : nil
+            return "\(locationPreference.name), +\(locationPreference.radius) km"
         case .description(let description):
             return description
             ///  look and lifestyle
@@ -122,17 +123,44 @@ enum AboutYouItem: Identifiable {
             return job
         case .education(let educationLevel):
             return educationLevel?.title
-        case .alcohol(let drinkingPreference):
-            return drinkingPreference == nil ? "Not specified" : String(describing: drinkingPreference)
+        case .drinkingBehaviour(let drinkingPreference):
+            return drinkingPreference == nil ? "Not specified" : String(drinkingPreference!.title)
             /// interests
         case .interests(let interestList):
-            return interestList.map { $0.title }.seperated(emptyText: "No languages")
+            return interestList.map { $0.title }.seperated(emptyText: "No interests")
         case .languages(let languages):
             return languages.seperated(emptyText: "No languages selected")
         case .fashionStyle(let fashionStyle):
             return fashionStyle?.title
         case .fitnessLevel(let fitnessLevel):
             return fitnessLevel?.title
+        }
+    }
+    
+    var errorText: String {
+        switch self {
+        case .name: "Your name must contain at least 3 Characters"
+        case .job: "Your job must contain at least 4 characters"
+        case .description: "Your description should be at least 10 characters long..."
+        default: ""
+        }
+    }
+    
+    var placeholderText: String {
+        switch self {
+        case .name: "Enter your name"
+        case .job: "Enter your job"
+        case .description: "Enter a description about you"
+        default: ""
+        }
+    }
+    
+    var supportText: String? {
+        switch self {
+        case .gender, .sex: "This will change how you are suggested to others"
+        case .location: "This will change your suggestions of users"
+        case .description: "A good description can help you find more matches, write something special about you"
+        default: nil
         }
     }
     
@@ -150,7 +178,7 @@ enum AboutYouItem: Identifiable {
         case .bodyType: "Update your body type"
         case .job: "Update your current job"
         case .education: "Update your level of education"
-        case .alcohol: "Update your alcoholic behaviour"
+        case .drinkingBehaviour: "Update your alcoholic behaviour"
             /// interests
         case .interests: "Update your interests"
         case .languages: "Update what languages you speak"
@@ -159,33 +187,19 @@ enum AboutYouItem: Identifiable {
         }
     }
     
-    var supportText: String? {
-        switch self {
-            /// general
-        case .name: nil
-        case .birthDate: nil
-        case .gender, .sex: "This will change how you are suggestes to others"
-        case .location: "This will change your suggestions of users"
-        case .description: "A good description can help you find more matches, write something special about you"
-            /// look and lifestyle
-        case .height: nil
-        case .bodyType: nil
-        case .job: nil
-        case .education: nil
-        case .alcohol: nil
-            /// inerests
-        case .interests: nil
-        case .languages: nil
-        case .fashionStyle: nil
-        case .fitnessLevel: nil
-        }
-    }
     @ViewBuilder
     func editView(user: User) -> some View {
         switch self {
         // general
         case .name(let value), .job(let value):
-            EditNameView(title: updateText, path: firebaseFieldName, text: value ?? "")
+            EditTextFieldView(
+                title: updateText,
+                path: firebaseFieldName,
+                text: value ?? "",
+                placeholder: placeholderText,
+                errorMessage: errorText,
+                supportText: supportText
+            )
             
         case .birthDate(let date):
             EditDateView(title: updateText, date: date ?? Date().subtractYears(18), path: firebaseFieldName)
@@ -194,7 +208,14 @@ enum AboutYouItem: Identifiable {
             EditGenderView(title: updateText, supportText: supportText, initialGender: gender, path: firebaseFieldName)
             
         case .sex(let sexuality):
-            EditListView(items: Sexuality.allCases, initialSelected: [sexuality ?? .hetero], title: updateText, subTitle: supportText, path: firebaseFieldName)
+            EditListView(
+                items: Sexuality.allCases,
+                initialSelected: sexuality == nil ? [] : [sexuality!],
+                title: updateText,
+                subTitle: supportText,
+                path: firebaseFieldName,
+                allowsMultipleSelection: false
+            )
             
         case .location(let location):
             EditLocationRangeView(location: location, user: user)
@@ -224,7 +245,14 @@ enum AboutYouItem: Identifiable {
                 path: firebaseFieldName
             )
             
-        case .alcohol(let drinkingBehaviour):
+        case .drinkingBehaviour(let drinkingBehaviour):
+            EditListView(
+                items: DrinkingBehaviour.allCases,
+                initialSelected: drinkingBehaviour == nil ? [] : [drinkingBehaviour!],
+                title: updateText,
+                subTitle: supportText,
+                path: firebaseFieldName
+            )
             EmptyView()
             
         /// interests
@@ -234,7 +262,8 @@ enum AboutYouItem: Identifiable {
                 initialSelected: interests,
                 title: updateText,
                 subTitle: supportText,
-                path: firebaseFieldName
+                path: firebaseFieldName,
+                allowsMultipleSelection: true
             )
             
         case .languages(let array):
@@ -259,60 +288,5 @@ enum AboutYouItem: Identifiable {
             )
         }
     }
-    //    @ViewBuilder
-    //    func editView() -> some View {
-    //        switch self {
-    //            /// general
-    //        case .name(let name):
-    //            //
-    //            EmptyView()
-    //
-    //        case .birthDate(let date):
-    //            //
-    //            EmptyView()
-    //
-    //        case .gender(let gender):
-    //            //
-    //            EmptyView()
-    //        case .sex(let sex):
-    //            // MARK: Edit Sex View
-    ////            EditListView(items: Sexuality.allCases, title: updateText, subTitle: nil, path: firebaseFieldName)
-    //            EmptyView()
-    //
-    //        case .location(let location):
-    //            //
-    //        case .description(let newDescription):
-    //            // MARK: edit description view
-    //            //
-    //            EmptyView()
-    //
-    //            /// look and lifestyle
-    //        case .height(let height):
-    //            EmptyView()
-    //        case .bodyType(let bodyType):
-    ////
-    //            EmptyView()
-    //        case .job(let job):
-    //            //
-    //            EmptyView()
-    //        case .education(let educationLevel):
-    ////
-    //            EmptyView()
-    //        case .alcohol(let drinkingPreference):
-    //            EmptyView()
-    //            /// interests
-    //        case .interests():
-    ////
-    //            EmptyView()
-    //        case .languages(let languages):
-    //            // MARK: TODO LANGUAGES JSON
-    //            EmptyView()
-    //        case .fashionStyle(let fashionStyle):
-    ////
-    //            EmptyView()
-    //        case .fitnessLevel(let fitnessLevel):
-    ////
-    //            EmptyView()
-    //        }
-    //    }
+
 }

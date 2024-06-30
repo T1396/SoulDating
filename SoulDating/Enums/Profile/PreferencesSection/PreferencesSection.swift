@@ -23,18 +23,18 @@ enum PreferencesSection: String, Identifiable, CaseIterable {
         switch self {
         case .datingPreferences:
             return [
-                .relationshipType(user.preferences?.relationshipType),
-                .preferredGenders(user.preferences?.gender),
-                .ageRange(user.preferences?.agePreferences),
-                .heightPreference(user.preferences?.height),
-                .distancePreference(user.preferences?.distance)
+                .relationshipType(user.preferences.relationshipType),
+                .preferredGenders(user.preferences.gender),
+                .ageRange(user.preferences.agePreferences),
+                .heightPreference(user.preferences.height),
+                .distancePreference(user.preferences.distance)
             ]
         case .lifestylePreferences:
             return [
-                .smokingPreference(user.preferences?.smoking),
-                .drinkingPreferences(user.preferences?.drinking),
-                .wantChilds(user.wantChilds),
-                .sports(user.preferences?.sports)
+                .smokingPreference(user.preferences.smoking),
+                .drinkingPreferences(user.preferences.drinking),
+                .wantChilds(user.preferences.wantsChilds),
+                .sports(user.preferences.sports)
             ]
         }
     }

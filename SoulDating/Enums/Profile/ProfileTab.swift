@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum ProfileTab: String, CaseIterable, Identifiable {
     case aboutyou, preferences, fotos
@@ -17,6 +18,18 @@ enum ProfileTab: String, CaseIterable, Identifiable {
         case .aboutyou: "About you"
         case .preferences: "Preferences"
         case .fotos: "Photos"
+        }
+    }
+    
+    @ViewBuilder
+    func view() -> some View {
+        switch self {
+        case .aboutyou:
+            AboutYouView()
+        case .preferences:
+            PreferencesView()
+        case .fotos:
+            PhotosView()
         }
     }
 }

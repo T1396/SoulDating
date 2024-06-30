@@ -49,6 +49,31 @@ enum PreferencesItem: Identifiable {
         }
     }
     
+    var icon: String {
+        switch self {
+        case .preferredGenders:
+            return "person.2.fill"
+        case .ageRange:
+            return "calendar"
+        case .heightPreference:
+            return "ruler"
+        case .distancePreference:
+            return "location.north.line"
+        case .smokingPreference:
+            return "smoke.fill"
+        case .drinkingPreferences:
+            return "cup.and.saucer.fill"
+        case .wantChilds:
+            return "poweroutlet.type.k.fill"
+        case .sports:
+            return "sportscourt.fill"
+        case .relationshipType:
+            return "heart.circle"
+        }
+    }
+
+
+    
     var valueString: String? {
         switch self {
         case .preferredGenders(let genders):
@@ -82,7 +107,7 @@ enum PreferencesItem: Identifiable {
         case .drinkingPreferences: "Update "
         case .wantChilds: "Update if you want childs"
         case .sports: "Update if your partner should do sports"
-        case .relationshipType: "What kind of relation shit type fits you the most?"
+        case .relationshipType: "What kind of relationship type fits you the most?"
         }
     }
     
@@ -95,7 +120,8 @@ enum PreferencesItem: Identifiable {
                 initialSelected: genders == nil ? [] : genders!,
                 title: editText,
                 subTitle: nil,
-                path: firebaseFieldName
+                path: firebaseFieldName,
+                allowsMultipleSelection: true
             )
         
         case .ageRange(let agePreference):

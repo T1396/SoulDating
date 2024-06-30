@@ -32,7 +32,6 @@ struct OnboardingPictureView: View {
     // MARK: properties
     @ObservedObject var viewModel: OnboardingViewModel
     @State private var selectedPhotoItem: PhotosPickerItem?
-    @State private var isImagePickerPresented = false
     @State private var shouldNavigate = false
     
     @GestureState private var dragState = CGSize.zero

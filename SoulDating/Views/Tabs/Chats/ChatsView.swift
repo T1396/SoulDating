@@ -11,7 +11,6 @@ struct ChatsView: View {
     @EnvironmentObject var chatViewModel: ChatViewModel
     
     var body: some View {
-        NavigationStack {
             ScrollView {
                 ForEach(Array(chatViewModel.chatUserDetails), id: \.key.id) { chat, userDetail in
                     NavigationLink {
@@ -49,7 +48,7 @@ struct ChatsView: View {
             .scrollIndicators(.hidden)
             .navigationTitle(Tab.messages.title)
 
-        }
+        
     }
 }
 

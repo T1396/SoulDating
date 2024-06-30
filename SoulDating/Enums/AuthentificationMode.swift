@@ -10,7 +10,7 @@ import SwiftUI
 
 
 
-enum AuthentificationView {
+enum AuthentificationMode {
     case login, register
     
     var title: String {

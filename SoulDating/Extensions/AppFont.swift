@@ -24,6 +24,7 @@ extension View {
 }
 
 
+
 extension AppFont {
     enum TextWeight: String {
         case black, blackItalic, bold, bolditalic, extrabold, extrabolditalic, extralight, extralightitalic, italic, light, lightitalic, medium, mediumitalic, regular, semibold, semibolditalic, thin, thinitalic

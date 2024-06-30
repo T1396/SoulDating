@@ -67,4 +67,8 @@ enum EducationLevel: String, EditableItem, CaseIterable, Identifiable, Codable {
             return "briefcase.fill"
         }
     }
+    
+    var generalIcon: String {
+        "graduationcap.fill"
+    }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SmokeLevel: String, CaseIterable, Codable, Identifiable, Equatable {
+enum SmokeLevel: String, EditableItem, CaseIterable, Codable, Identifiable, Equatable {
     case nonSmoker, occasional, social, regular, heavy, chainSmoker
     
     var id: String { rawValue }

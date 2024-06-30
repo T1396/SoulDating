@@ -10,9 +10,38 @@ import Foundation
 import SwiftOpenAI
 
 
-struct BotAnswer: Identifiable, Hashable {
+struct GptAnswer: Identifiable, Hashable {
     let id: String
     let message: String
+}
+
+struct ConversationManager {
+    var conversations: [String: GptConversation] = [:]
+    
+    // creates a new conversation and returns the id of it
+    mutating func addConversation() -> String {
+        let newConversation = GptConversation()
+        conversations[newConversation.id] = newConversation
+        return newConversation.id
+    }
+    
+    func getConversation(by id: String) -> GptConversation? {
+        return conversations[id]
+    }
+    
+    // Aktualisiert eine bestimmte Konversation
+    mutating func updateConversation(_ conversation: GptConversation) {
+        conversations[conversation.id] = conversation
+    }
+}
+
+struct GptConversation {
+    let id = UUID().uuidString
+    var userMessages: [String] = []
+    var botMessages: [String] = []
+    var currentUserMessage: String = ""
+    var currentBotMessage: String = ""
+    let startDate: Date = .now
 }
 
 class GptViewModel: ObservableObject {
@@ -20,23 +49,63 @@ class GptViewModel: ObservableObject {
     private let service: OpenAIService
     
     // the pick up line options
-    @Published var lineOptions: [BotAnswer] = []
+    @Published var lineOptions: [GptAnswer] = []
     @Published var isWaitingForBotAnswer = false
     @Published var errorMessage: String?
+    
+    
+    @Published var conversations: [GptConversation] = []
+    @Published var conversationErrors: [String: Error] = [:]
+    @Published var selectedConversationID: String?
     
     init() {
         let apiKey = "sk-proj-hHYZSumagF1RmnIiN5kgT3BlbkFJk64kg1PrNAVqjOLo9RSj"
         service = OpenAIServiceFactory.service(apiKey: apiKey)
     }
     
+    func startConversation(conversationManager: inout ConversationManager) async {
+        let prompt = "Tell me joke"
+        let parameters = ChatCompletionParameters(messages: [.init(role: .user, content: .text(prompt))], model: .gpt35Turbo)
+        let conversationId = conversationManager.addConversation()
+        addUserMessage(prompt, to: conversationId, in: &conversationManager)
 
+        do {
+            let chatCompletionObject = try await service.startStreamedChat(parameters: parameters)
+            
+            for try await chunk in chatCompletionObject {
+                saveConversationChunk(from: chunk, conversationManager: &conversationManager, conversationId: conversationId)
+                
+            }
+
+        } catch {
+            print("Error with chatcompletion Object", error.localizedDescription)
+        }
+    }
+    
+    private func saveConversationChunk(from chatCompletionChunk: ChatCompletionChunkObject, conversationManager: inout ConversationManager, conversationId: String) {
+        guard var conversation = conversationManager.getConversation(by: conversationId) else {
+            return
+        }
+        
+        for choice in chatCompletionChunk.choices {
+            if let delta = choice.delta.content {
+                conversation.currentBotMessage += delta
+            }
+            
+            if choice.finishReason != nil {
+                conversation.botMessages.append(conversation.currentBotMessage)
+            }
+        }
+        
+        conversationManager.updateConversation(conversation)
+    }
     
     func generatePickupLines(user: User, completion: @escaping () -> Void) async {
         isWaitingForBotAnswer = true
         let prompt = buildQueryForUser(user: user)
         let parameters = ChatCompletionParameters(messages: [
             .init(role: .user, content: .text(prompt))
-        ], model: .gpt35Turbo)
+        ], model: .gpt4)
         
         do {
             // wait for answer
@@ -63,7 +132,7 @@ class GptViewModel: ObservableObject {
     
     /// parses a bot answer which has different answers in a single string into an array with the seperated answers
     ///  e.g. "1. XYZ"  "2. ABC" " 3. DEF" gets parsed into an array containing each number and string
-    private func parseBotAnswers(from text: String) throws -> [BotAnswer] {
+    private func parseBotAnswers(from text: String) throws -> [GptAnswer] {
         let pattern = #"(\d+)\.\s*"(.*?)""#
         let regex = try NSRegularExpression(pattern: pattern)
         let range = NSRange(text.startIndex..., in: text)
@@ -76,10 +145,19 @@ class GptViewModel: ObservableObject {
                 
                 let content = String(text[itemRange])
                 let number = String(text[numberRange])
-                return BotAnswer(id: number, message: content)
+                return GptAnswer(id: number, message: content)
             }
             return nil
         }
+    }
+    
+    func addUserMessage(_ message: String, to conversationId: String, in conversationManager: inout ConversationManager) {
+        guard var conversation = conversationManager.getConversation(by: conversationId) else {
+            return
+        }
+        
+        conversation.userMessages.append(message)
+        conversationManager.updateConversation(conversation)
     }
     
     

@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct BotConversationView: View {
+    @ObservedObject var gptViewModel: GptViewModel
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading) {
+            Text("Get help by ChatGPT!")
+                .appFont(size: 20, textWeight: .bold)
+            
+
+        }
     }
 }
 
 #Preview {
-    BotConversationView()
+    BotConversationView(gptViewModel: GptViewModel())
 }

@@ -26,15 +26,19 @@ struct EditDateView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             Text(title)
-                .appFont(size: 32, textWeight: .bold)
-            
-            DatePicker(title, selection: $newDate)
-                .datePickerStyle(.wheel)
+                .appFont(size: 28, textWeight: .bold)
+
+            DatePicker(selection: $newDate, displayedComponents: .date) {
+                
+            }
+            .labelsHidden()
+            .frame(maxWidth: .infinity, alignment: .center)
+            .datePickerStyle(.wheel)
             
             HStack {
-                Button("Cancel", action: { dismiss() })
+                Button("Cancel") { dismiss() }
                 Spacer()
                 Button(action: save) {
                     Text("Update")
@@ -43,6 +47,7 @@ struct EditDateView: View {
                 .disabled(newDate == oldDate)
             }
         }
+        .padding()
     }
     
     private func save() {
