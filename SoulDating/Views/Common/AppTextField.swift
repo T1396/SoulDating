@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct AppTextField: View {
+    enum TextFieldType { case normal, email, password }
     // MARK: properties
     var placeholder: String
     @Binding var text: String
     var error: Bool
     var errorMessage: String?
     var supportText: String
-    var isSecure: Bool
+    var type: TextFieldType = .normal
     
     // MARK: computed properties
     var textToShow: String? {
@@ -26,33 +27,45 @@ struct AppTextField: View {
         VStack(alignment: .leading) {
             textField()
                 .textFieldStyle(AppTextFieldStyle(error: error))
+                .keyboardType(.emailAddress)
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+                .appFont(textWeight: .medium)
                 .animation(.default, value: error)
-            Text(((error == true && errorMessage != nil) ? errorMessage : supportText) ?? "")
-                .appFont(size: 12)
-                .foregroundStyle(error ? .red : .primary)
-                .padding(.leading)
+            if let errorMessage, !supportText.isEmpty {
+                Text(error == true ? errorMessage : supportText)
+                    .appFont(size: 12)
+                    .foregroundStyle(error ? .red : .primary)
+                    .padding(.leading)
+            }
         }
+        
     }
     
     @ViewBuilder
     private func textField() -> some View {
-        if isSecure {
-            SecureField(placeholder, text: $text)
-                .appFont(textWeight: .medium)
-        } else {
+        switch type {
+        case .normal:
             TextField(placeholder, text: $text)
-                .appFont(textWeight: .medium)
+        case .email:
+            TextField(placeholder, text: $text)
+                .keyboardType(.emailAddress)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+        case .password:
+            SecureField(placeholder, text: $text)
         }
+        
     }
     
     // MARK: init
-    init(_ placeholder: String, text: Binding<String>, error: Bool = false, errorMessage: String? = nil, supportText: String = "", isSecure: Bool = false) {
+    init(_ placeholder: String, text: Binding<String>, error: Bool = false, errorMessage: String? = nil, supportText: String = "", type: TextFieldType = .normal) {
         self.placeholder = placeholder
         self._text = text
         self.error = error
         self.errorMessage = errorMessage
         self.supportText = supportText
-        self.isSecure = isSecure
+        self.type = type
     }
 }
 

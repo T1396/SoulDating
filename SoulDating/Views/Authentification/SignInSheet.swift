@@ -107,7 +107,7 @@ struct SignInSheet: View {
                 text: $userViewModel.password,
                 error: userViewModel.password.count < 5,
                 errorMessage: "The password must contain at least 6 chraracters",
-                isSecure: true
+                type: .password
             )
             
             if userViewModel.mode == .register {
@@ -116,7 +116,7 @@ struct SignInSheet: View {
                     text: $userViewModel.passwordRepeat,
                     error: !userViewModel.passwordMatches,
                     errorMessage: "The passwords are not equal",
-                    isSecure: true
+                    type: .password
                 )
             }
             
