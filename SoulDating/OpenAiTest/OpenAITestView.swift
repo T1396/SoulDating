@@ -9,7 +9,7 @@ import SwiftUI
 import OpenAI
 
 struct OpenAITestView: View {
-    @StateObject private var chatStore = ChatStore(openAIClient: OpenAI(apiToken: "sk-proj-F7AAaOMdznxwL2ziwQFfT3BlbkFJZHRb5hJOLyhgrIj9ZfTX"), idProvider: { UUID().uuidString })
+    @StateObject private var chatStore = OpenAIChatstore(openAIClient: OpenAI(apiToken: "sk-proj-hHYZSumagF1RmnIiN5kgT3BlbkFJk64kg1PrNAVqjOLo9RSj"), idProvider: { UUID().uuidString })
     @State private var input = ""
     
     var body: some View {

@@ -37,7 +37,7 @@ struct Conversation {
 extension Conversation: Equatable, Identifiable {}
 
 
-public final class ChatStore: ObservableObject {
+public final class OpenAIChatstore: ObservableObject {
     public var openAIClient: OpenAIProtocol
     let idProvider: () -> String
 
