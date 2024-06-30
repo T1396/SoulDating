@@ -19,6 +19,8 @@ protocol AlertableViewModel: ObservableObject {
     var status: Status { get set }
     var resultMessage: String { get set }
     var loadingMessage: String { get set }
+    var showOverlay: Bool { get set }
+    var overlayMessage: String? { get set }
     
     func showLoading(message: String)
     func showSuccess(message: String)
@@ -40,7 +42,8 @@ class BaseAlertViewModel: AlertableViewModel {
     @Published var status: Status = .none
     @Published var resultMessage = ""
     @Published var loadingMessage = ""
-    
+    @Published var showOverlay = false
+    @Published var overlayMessage: String?
     func showLoading(message: String) {
         loadingMessage = message
         status = .loading
@@ -75,6 +78,13 @@ class BaseAlertViewModel: AlertableViewModel {
     func executeDelayed(completion: @escaping () -> Void, delay: Double = 1.0) {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             completion()
+        }
+    }
+    
+    func showOverlayWithMessage(message: String, duration: Double = 2.5) {
+        overlayMessage = message
+        withAnimation {
+            showOverlay = true
         }
     }
 }

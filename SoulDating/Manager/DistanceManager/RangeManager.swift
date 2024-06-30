@@ -36,11 +36,11 @@ class RangeManager {
     /// Builds a Firestore query that searches for documents within a square area around a given center point.
     /// This query provides a rough selection of documents, which should be further filtered to include only those within a circular radius.
     /// - Parameters:
-    ///     - collectionRef: Reference to the firestore collection to query
-    ///     - radius: the search radius in kilometers.
-    ///     - centerLat: the latitude coordinate of the center point
-    ///     - centerLng: the longitude coordinate of the center point
-    ///   - Returns: A firestore query that searches for documents within the defined square area
+    ///    - collectionRef: Reference to the firestore collection to query
+    ///    - radius: the search radius in kilometers.
+    ///    - centerLat: the latitude coordinate of the center point
+    ///    - centerLng: the longitude coordinate of the center point
+    ///  - Returns: A firestore query that searches for documents within the defined square area
     func buildRangeQuery(
         collectionRef: CollectionReference,
         excluding excludedUserIds: [String],
@@ -62,13 +62,27 @@ class RangeManager {
     }
     
     /// returns the distance from the current user to another user as string in kilometers
-    func returnDistance(from user: User, to target: User) -> String? {
-        guard let userLocation = user.location, let targetLocation = target.location else { return nil }
-        let distance = haversineDistance(centerLat: userLocation.latitude, centerLng: userLocation.longitude, targetLat: targetLocation.latitude, targetLon: targetLocation.longitude)
+    func distanceString(from userLocation: LocationPreference, to targetLocation: LocationPreference) -> String? {
+        let distance = haversineDistance(
+            centerLat: userLocation.latitude,
+            centerLng: userLocation.longitude,
+            targetLat: targetLocation.latitude,
+            targetLon: targetLocation.longitude
+        )
         if let stringDistance = distance.formatted(maxFractionDigits: 1) {
             return "\(stringDistance) km"
         }
         return nil
+    }
+    
+    /// returns the distance from the current user location to another user location as double
+    func distance(from userLocation: LocationPreference, to targetLocation: LocationPreference) -> Double {
+        return haversineDistance(
+            centerLat: userLocation.latitude,
+            centerLng: userLocation.longitude,
+            targetLat: targetLocation.latitude,
+            targetLon: targetLocation.longitude
+        )
     }
     
     /// this function checks if another user is in the distance of the current users radius

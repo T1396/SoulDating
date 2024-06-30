@@ -11,18 +11,38 @@ let TAG = "(LikesViewModel)"
 
 class LikesViewModel: ObservableObject {
     private let firebaseManager = FirebaseManager.shared
+    private let rangeManager = RangeManager()
     
-    @Published var usersWhoLikedCurrentUser: [UserDetail] = []
-    private var user: User
+    @Published var usersWhoLikedCurrentUser: [User] = mockUsers
+    @Published var hasNoLikes = false
+    var user: User
     
     var currentUserId: String? {
         firebaseManager.userId
     }
     
+    func distance(to targetLocation: LocationPreference) -> String? {
+        rangeManager.distanceString(from: user.location, to: targetLocation)
+    }
+    
     init(user: User) {
         self.user = user
-        fetchUsersWhoLiked()
+        //fetchUsersWhoLiked()
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdate(_:)), name: .userDocumentUpdated, object: nil)
     }
+    
+    @objc
+    private func didUpdate(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let updatedUser = userInfo["user"] as? User else {
+            print("Update user with notification failed")
+            return
+        }
+        
+        print("Updated with user notification successfully")
+        self.user = updatedUser
+    }
+    
     
     private func fetchUsersWhoLiked() {
         guard let currentUserId else { return }
@@ -35,12 +55,13 @@ class LikesViewModel: ObservableObject {
                 
                 self.usersWhoLikedCurrentUser = docSnapshot?.documents.compactMap { doc in
                     do {
-                        return try doc.data(as: UserDetail.self)
+                        return try doc.data(as: User.self)
                     } catch {
                         print("\(TAG) Error decoding firestore user data to userDetail struct", error.localizedDescription)
                         return nil
                     }
                 } ?? []
+                self.hasNoLikes = self.usersWhoLikedCurrentUser.count > 0
             }
     }
 }

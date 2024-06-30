@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct Message: Codable, Identifiable, Equatable {
+struct Message: Codable, Identifiable {
     @DocumentID var id: String?
     let senderId: String
     let receiverId: String
@@ -17,30 +17,14 @@ struct Message: Codable, Identifiable, Equatable {
     var isRead: Bool
     
     static func ==(lhs: Message, rhs: Message) -> Bool {
-            return lhs.id == rhs.id
-        }
+        return lhs.id == rhs.id
+    }
 }
 
-struct UIChat: Identifiable {
-    var id: String
-       var participantIds: [String]
-       var lastMessageContent: String
-       var lastMessageTimestamp: Date
-       var lastMessageSenderId: String
-       var lastMessageSenderName: String
-       var lastMessageSenderImageUrl: String
-}
 
-struct Chat: Codable, Identifiable, Equatable, Hashable {
-    @DocumentID var id: String?
-    var participantKey: String
-    var participantIds: [String]
-    var lastMessageContent: String
-    var lastMessageTimestamp: Date
-    var lastMessageSenderId: String
-}
 
 extension Message {
+    /// creates a dictionary of the message to insert into firestore
     func toDict() -> [String: Any] {
         let dict: [String: Any] = [
             "senderId": senderId,
@@ -48,19 +32,6 @@ extension Message {
             "timestamp": timestamp,
             "content": content,
             "isRead": isRead
-        ]
-        return dict
-    }
-}
-
-extension Chat {
-    func toDict(lastSenderId: String) -> [String: Any] {
-        let dict: [String: Any] = [
-            "participantIds": participantIds,
-            "lastMessageContent": lastMessageContent,
-            "participantKey": participantKey,
-            "lastMessageTimestamp": lastMessageTimestamp,
-            "lastMessageSenderId": lastSenderId
         ]
         return dict
     }

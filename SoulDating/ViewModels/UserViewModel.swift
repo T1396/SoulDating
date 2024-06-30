@@ -9,13 +9,19 @@ import Foundation
 import FirebaseAuth
 import Firebase
 
-class UserViewModel: ObservableObject {
+class UserViewModel: ObservableObject, RangeCalculating {
+    internal let rangeManager: RangeManager = .init()
+    
+    func distance(to targetLocation: LocationPreference) -> String? {
+        return rangeManager.distanceString(from: user.location, to: targetLocation)
+    }
+    
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
     
     
     @Published var user: User
-    @Published var mode: AuthentificationView = .login
+    @Published var mode: AuthentificationMode = .login
     @Published var isAuthentificating = true
     @Published var onboardingCompleted = false
     @Published var email = ""
@@ -23,7 +29,7 @@ class UserViewModel: ObservableObject {
     @Published var passwordRepeat = ""
         
     var agePreferences: AgePreference? {
-        user.preferences?.agePreferences
+        user.preferences.agePreferences
     }
     
     
@@ -31,20 +37,8 @@ class UserViewModel: ObservableObject {
     init() {
         user = User(id: "", registrationDate: .now)
         checkAuth()
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdate(_:)), name: .userDocumentUpdated, object: nil)
     }
-    
-    @objc
-    private func didUpdate(_ notification: Notification) {
-        guard let userInfo = notification.userInfo,
-              let updatedUser = userInfo["user"] as? User else { 
-            print("Update user with notification failed")
-            return
-        }
-        
-        print("Updated with user notification successfully")
-        self.user = updatedUser
-    }
+
     
     // MARK: computed properties
     var disableAuth: Bool {
@@ -82,7 +76,7 @@ extension UserViewModel {
             print("Not logged in")
             return
         }
-        self.fetchUser()
+        self.setUserListener()
     }
     
     func signIn() {
@@ -98,7 +92,7 @@ extension UserViewModel {
             guard let authResult, let email = authResult.user.email else { return }
             print("User (Email: \(email), id: \(authResult.user.uid)) is logged in")
             
-            self.fetchUser()
+            self.setUserListener()
         }
     }
     
@@ -112,7 +106,7 @@ extension UserViewModel {
             guard let authResult, let email = authResult.user.email else { return }
             print("User (Email: \(email), id: \(authResult.user.uid)) registered himself")
             self.createUserDocument()
-            self.fetchUser()
+            self.setUserListener()
         }
     }
     
@@ -130,26 +124,25 @@ extension UserViewModel {
 
 // MARK: user document functions (crud)
 extension UserViewModel {
-    private func fetchUser() {
-        guard let id = firebaseManager.userId else { return }
-        firebaseManager.database.collection("users").document(id).getDocument { document, error in
-            if let error {
-                print("Error while fetching user", error.localizedDescription)
+    
+    private func setUserListener() {
+        guard let userId = firebaseManager.userId else { return }
+        firebaseManager.database.collection("users").document(userId)
+            .addSnapshotListener { snapshot, error in
+                if let error {
+                    print("Failed to listen to user in firestore", error.localizedDescription)
+                    return
+                }
+                guard let snapshot else { return }
+                do {
+                    self.user = try snapshot.data(as: User.self)
+                    NotificationCenter.default.post(name: .userDocumentUpdated, object: nil, userInfo: ["user": self.user])
+                    self.onboardingCompleted = self.user.onboardingCompleted ?? false
+                    self.isAuthentificating = false
+                } catch {
+                    print("Error decoding document into user struct", error.localizedDescription)
+                }
             }
-            
-            guard let document else {
-                print("user document doesnt exist")
-                return
-            }
-            
-            do {
-                self.user = try document.data(as: User.self)
-                self.onboardingCompleted = self.user.onboardingCompleted ?? false
-                self.isAuthentificating = false
-            } catch {
-                print("Error while decoding document into User Struct", error.localizedDescription)
-            }
-        }
     }
     
     func createUserDocument() {
@@ -168,11 +161,11 @@ extension UserViewModel {
         firebaseManager.database.collection("users").document(userId)
             .updateData(["preferences.agePreferences": agePreference]) { error in
                 if let error {
-                    print("Error updating age preference")
+                    print("Error updating age preference", error.localizedDescription)
                     return
                 }
                 
-                self.user.preferences?.agePreferences = agePreference
+                self.user.preferences.agePreferences = agePreference
             }
     }
 }

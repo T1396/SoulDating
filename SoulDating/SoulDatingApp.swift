@@ -11,8 +11,7 @@ import Firebase
 @main
 struct SoulDatingApp: App {
     @StateObject private var userViewModel = UserViewModel()
-    
-    
+
     init() {
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
@@ -43,3 +42,5 @@ struct SoulDatingApp: App {
         }
     }
 }
+
+

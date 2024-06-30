@@ -16,7 +16,7 @@ class AboutYouViewModel: ObservableObject {
     }
     
     func updateAboutYouSetting(_ setting: AboutYouItem) {
-        var firebaseFieldName = setting.firebaseFieldName
+        let firebaseFieldName = setting.firebaseFieldName
         var updatedItem: Any? = nil
         updatedItem = switch setting {
         case .name(let name): name
@@ -29,7 +29,7 @@ class AboutYouViewModel: ObservableObject {
         case .bodyType(let bodyType): bodyType
         case .job(let newJob): newJob
         case .education(let newEducationLevel): newEducationLevel
-        case .alcohol(let newDrinkingBehaviour): newDrinkingBehaviour
+        case .drinkingBehaviour(let newDrinkingBehaviour): newDrinkingBehaviour
         case .interests(let newInterests): newInterests
         case .languages(let newLanguages): newLanguages
         case .fashionStyle(let newFashionStyle): newFashionStyle
