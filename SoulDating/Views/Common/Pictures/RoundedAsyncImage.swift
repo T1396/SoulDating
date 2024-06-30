@@ -6,25 +6,36 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct RoundedAsyncImage: View {
     var imageUrl: String?
     var progress: Double = 0
-    var width: Int = 250
-    var height: Int = 250
+    var width: CGFloat = 250
+    var height: CGFloat = 250
+    
+    var onAppear: ((Image) -> Void)? = nil
     
     var body: some View {
-        if let imageUrl {
-            AsyncImage(url: URL(string: imageUrl)) { image in
-                image
-                    .roundedImageStyle(width: CGFloat(width), height: CGFloat(height))
-            } placeholder: {
-                ProgressView()
+        VStack {
+            if let imageUrl {
+                WebImage(url: URL(string: imageUrl)) { image in
+                    image
+                        .roundedImageStyle(width: width, height: height)
+                        .onAppear {
+                            if let onAppear {
+                                onAppear(image)
+                            }
+                        }
+                } placeholder: {
+                    ProgressView()
+                }
+            } else {
+                Image("profileimage")
+                    .roundedImageStyle(width: width, height: height)
             }
-        } else {
-            Image("profileimage")
-                .roundedImageStyle(width: CGFloat(width), height: CGFloat(height))
         }
+        .frame(width: width, height: height)
     }
 }
 
