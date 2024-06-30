@@ -8,36 +8,44 @@
 import SwiftUI
 
 struct AboutYouView: View {
+    // MARK: properties
     @EnvironmentObject var userViewModel: UserViewModel
-    @StateObject private var aboutYouVm: AboutYouViewModel
+    @State private var isSheetPresented = false
+    @State private var activeSheetElement: AboutYouItem?
     
-    init(user: User) {
-        self._aboutYouVm = StateObject(wrappedValue: AboutYouViewModel(user: user))
-    }
-    
+    // MARK: body
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                ForEach(AboutYouSection.allCases) { section in
-                    Text(section.displayName)
-                        .appFont(size: 20, textWeight: .bold)
-                        .padding(.horizontal)
-                    
+        Form {
+            ForEach(AboutYouSection.allCases) { section in
+                
+                Section(section.displayName) {
                     ForEach(section.items(user: userViewModel.user)) { item in
-                        SettingsElement(title: item.title, value: item.valueString) {
-                            item.editView(user: userViewModel.user)
-                                .presentationDetents([.medium, .large])
+                        Button(action: {
+                            self.activeSheetElement = item
+                            self.isSheetPresented = true
+                        }) {
+                            SettingsElement(title: item.title, value: item.valueString, icon: item.icon)
                         }
-                        .padding(.horizontal)
-                        .padding(.vertical, 6)
                     }
                 }
             }
+            
+            
         }
-        .scrollIndicators(.hidden)
+        .sheet(isPresented: Binding(
+            get: { isSheetPresented },
+            set: { isSheetPresented = $0 }
+        ), onDismiss: { activeSheetElement = nil }, content: {
+            activeSheetElement?.editView(user: userViewModel.user)
+                .presentationDetents([.medium, .large])
+        })
+        
+        .listStyle(.insetGrouped)
     }
 }
 
+
 #Preview {
-    AboutYouView(user: User(id: "dksal", name: "hsdoak", profileImageUrl: "dlksadkl"))
+    AboutYouView()
+        .environmentObject(UserViewModel())
 }

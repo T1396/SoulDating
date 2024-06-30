@@ -9,13 +9,16 @@ import SwiftUI
 import MapKit
 
 struct EditLocationRangeView: View {
+    // MARK: properties
     @StateObject private var locationViewModel: LocationViewModel
     @Environment(\.dismiss) var dismiss
     
-    init(location: LocationPreference?, user: User) {
+    // MARK: init
+    init(location: LocationPreference, user: User) {
         self._locationViewModel = StateObject(wrappedValue: LocationViewModel(location: location, user: user))
     }
     
+    // MARK: body
     var body: some View {
         VStack {
             Text("Update your location & radius")
@@ -39,20 +42,23 @@ struct EditLocationRangeView: View {
                 Text("Update")
                     .appButtonStyle(fullWidth: true)
             }
-            .disabled(!locationViewModel.hasMadeChanges)
+            .disabled(!locationViewModel.isValidNewLocation)
             .padding(.vertical)
     
         }
+        .alert(locationViewModel.alertTitle, isPresented: $locationViewModel.showAlert, actions: {
+            Button("Ok", role: .destructive, action: { locationViewModel.showAlert = false })
+        }, message: {
+            Text(locationViewModel.alertMessage)
+        })
         .padding()
         
     }
     
     // MARK: functions
     private func updateLocation() {
-        locationViewModel.updateLocation { success in
-            if success {
-                dismiss()
-            }
+        locationViewModel.updateLocation {
+            dismiss()
         }
     }
     

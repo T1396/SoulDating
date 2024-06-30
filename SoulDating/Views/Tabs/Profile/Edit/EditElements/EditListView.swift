@@ -43,7 +43,6 @@ struct EditListView<Option: EditableItem>: View {
                 ScrollView {
                     LazyVStack {
                         ForEach(items) { itemOption in
-                            
                             OptionToggleRow(systemName: itemOption.icon, text: itemOption.title, isSelected: isSelected(itemOption)) {
                                 toggleItem(itemOption)
                             }
@@ -79,8 +78,6 @@ struct EditListView<Option: EditableItem>: View {
     
     private func save() {
         if allowsMultipleSelection {
-            print("PAth: \(path)")
-            print("Selected Items: \(selectedItems)")
             profileViewModel.updateUserField(path, with: selectedItems.map { $0.rawValue })
         } else {
             if let item = selectedItems.first {

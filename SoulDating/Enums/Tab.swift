@@ -42,7 +42,7 @@ enum Tab: String, CaseIterable, Identifiable {
     func view(user: User) -> some View {
         switch self {
         case .swipe: SwipeView(user: user)
-        case .likes: LikesView()
+        case .likes: LikesView(user: user)
         case .messages: ChatsView()
         case .radar: RadarView(user: user)
         case .profile: ProfileView(user: user)

@@ -28,24 +28,24 @@ enum AboutYouSection: String, Identifiable, CaseIterable {
                 .name(user.name),
                 .birthDate(user.birthDate),
                 .gender(user.gender),
-                .sex(user.general?.sexuality),
+                .sex(user.general.sexuality),
                 .location(user.location),
-                .description(user.general?.description)
+                .description(user.general.description)
             ]
         case .lookAndLifestyle:
             return [
-                .height(user.look?.height),
-                .bodyType(user.look?.bodyType),
-                .job(user.general?.job),
-                .education(user.general?.education),
-                .alcohol(user.preferences?.drinking)
+                .height(user.look.height),
+                .bodyType(user.look.bodyType),
+                .job(user.general.job),
+                .education(user.general.education),
+                .drinkingBehaviour(user.general.drinkingBehaviour)
             ]
         case .moreInterests:
             return [
-                .interests(user.general?.interests ?? []),
-                .languages(user.general?.languages ?? []),
-                .fashionStyle(user.look?.fashionStyle),
-                .fitnessLevel(user.look?.fitnessLevel)
+                .interests(user.general.interests ?? []),
+                .languages(user.general.languages ?? []),
+                .fashionStyle(user.look.fashionStyle),
+                .fitnessLevel(user.look.fitnessLevel)
             ]
         }
     }
