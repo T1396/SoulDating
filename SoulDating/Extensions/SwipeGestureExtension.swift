@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 extension View {
-
     func swipeGesture(
         dragAmount: Binding<CGSize>,
         treshold: CGFloat = 100,
@@ -28,6 +27,7 @@ extension View {
             .overlay(
                 Rectangle()
                     .fill(
+                        // changes overlay color to green on right and red on left swipe
                         dragAmount.wrappedValue.width > 0 ?
                         Color.green.opacity(Double(dragAmount.wrappedValue.width / 300)) :
                             Color.red.opacity(Double(-dragAmount.wrappedValue.width / 300))
@@ -52,7 +52,7 @@ extension View {
                     .onEnded { value in
                         let dynamicTreshold = swipeSpeed > 1000 ? treshold * 0.5 : treshold
                         
-                        if (abs(value.translation.width) > dynamicTreshold 
+                        if (abs(value.translation.width) > dynamicTreshold
                             || abs(value.translation.height) > verticalTreshold) {
                             let action = SwipeAction.fromSwipe(dragAmount: value.translation)
                             if let action {
@@ -68,6 +68,10 @@ extension View {
                                         onSwipe(action, user)
                                     }
                                 }
+                            } else {
+                                withAnimation(.spring()) {
+                                    dragAmount.wrappedValue = .zero
+                                }
                             }
                         } else {
                             withAnimation(.spring()) {
@@ -79,6 +83,7 @@ extension View {
     }
 }
 
+/// returns a rotation angle depending on the actual position of an element
 extension CGSize {
     func rotationAngle(for maxRotation: Double) -> Angle {
         let rotation = Double(-self.width / 20)

@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import Firebase
 import MapKit
 
 class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
@@ -24,7 +25,7 @@ class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDel
     @Published var selectedMinAge: Double = 19
     @Published var selectedMaxAge: Double = 60
     
-    @Published var location: LocationPreference?
+    @Published var location: LocationPreference = .init()
     @Published var radius: Double = 100
     @Published var locationQuery = ""
     @Published var suggestions: [MKLocalSearchCompletion] = []
@@ -68,21 +69,47 @@ class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDel
             case .success(let url):
                 guard let self else { return }
                 let user = getUpdatedUser(userId: userId, imageUrl: url.absoluteString)
-                let userRef = self.firebaseManager.database.collection("users").document(userId)
-                do {
-                    try userRef.setData(from: user, merge: false)
-                    print("userdocument updated successfully.")
-                    self.resetValues()
-                    NotificationCenter.default.post(name: .userDocumentUpdated, object: nil, userInfo: ["user": user])
-                } catch {
-                    print("Erroc updating userdocument: \(error.localizedDescription)")
-                }
+                let newSortedImage = SortedImage(imageUrl: url.absoluteString, position: 0)
+                updateImagesAndUserDocument(user: user, newImage: newSortedImage)
               
             case .failure(let failure):
                 print("Error while uploading user image", failure.localizedDescription)
             }
         }
     }
+    
+    
+    /// executes a batch to upload the user document as well as the userImages document with the chosen picture url
+    /// - Parameters:
+    /// - user: the user to upload as user document
+    /// - newImage: struct containing imageurl and position
+    func updateImagesAndUserDocument(user: User, newImage: SortedImage) {
+        let batch = firebaseManager.database.batch()
+        let userRef = firebaseManager.database.collection("users").document(user.id)
+        let userImagesRef = firebaseManager.database.collection("userImages").document(user.id)
+        
+        do {
+            // update user document
+            try batch.setData(from: user, forDocument: userRef)
+            // insert image struct into userImages collection/ user document into "images" array
+            let imageData = ["images": FieldValue.arrayUnion([newImage.toDict(pos: 0)])]
+            batch.setData(imageData, forDocument: userImagesRef)
+            
+            batch.commit { error in
+                if let error {
+                    print("Error writing batch", error.localizedDescription)
+                    return
+                }
+                // success
+                self.resetValues()
+                // send notification for userViewModel with updated user
+                NotificationCenter.default.post(name: .userDocumentUpdated, object: nil, userInfo: ["user": user])
+            }
+        } catch {
+            print("error updating images and user document in firestore", error.localizedDescription)
+        }
+    }
+    
     
     /// Uploads the selected image into firebase storage and calls the closure when completed with the result
     func uploadImageToStorage(for userId: String, completion: @escaping (Result<URL, Error>) -> Void) {
@@ -114,7 +141,7 @@ class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDel
         imageData = nil
         birthDate = .now.subtractYears(18)
         userDisplayName = ""
-        location = nil
+        location = .init()
         locationQuery = ""
         suggestions = []
         selectedSuggestion = nil
@@ -125,9 +152,9 @@ class OnboardingViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDel
 extension OnboardingViewModel {
     /// creates a user struct from all selected values in onboarding
     private func getUpdatedUser(userId: String, imageUrl: String) -> User {
-        location?.radius = radius // update radius in location
+        location.radius = radius // update radius in location
         let preferences = Preferences(agePreferences: AgePreference(minAge: selectedMinAge, maxAge: selectedMaxAge))
-        let user = User(id: userId, name: userDisplayName, profileImageUrl: imageUrl, birthDate: birthDate, gender: gender, onboardingCompleted: true, location: location, preferences: preferences, registrationDate: .now)
+        let user = User(id: userId, name: userDisplayName, profileImageUrl: imageUrl, birthDate: birthDate, gender: gender, onboardingCompleted: true, location: location, preferences: preferences)
         return user
     }
 }

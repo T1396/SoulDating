@@ -47,7 +47,7 @@ struct OnboardingMoreInfoView: View {
                 
                 NavigationLink(destination: OnboardingPictureView(viewModel: viewModel)) {
                     Text("Continue")
-                        .textButtonStyle(color: buttonBackground)
+                        .appButtonStyle()
                 }
                 .disabled(!viewModel.userIsOldEnough)
                 .frame(maxWidth: .infinity, alignment: .trailing)

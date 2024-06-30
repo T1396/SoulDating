@@ -4,18 +4,14 @@
     "" : {
 
     },
-    "%@ away" : {
+    "%.0f%% completed" : {
 
     },
-    "%@ identifies as a %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ identifies as a %2$@"
-          }
-        }
-      }
+    "%.0fcm" : {
+
+    },
+    "%@ away" : {
+
     },
     "%@, %lld" : {
       "localizations" : {
@@ -27,16 +23,38 @@
         }
       }
     },
-    "%@'s education level" : {
+    "%@: " : {
 
     },
     "%lld" : {
 
     },
+    "%lld / %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld / %2$lld"
+          }
+        }
+      }
+    },
     "%lldkm" : {
 
     },
+    "120cm" : {
+
+    },
+    "240cm" : {
+
+    },
+    "About me" : {
+
+    },
     "Apple" : {
+
+    },
+    "Ask ChatGPT" : {
 
     },
     "Block" : {
@@ -45,7 +63,16 @@
     "Button" : {
 
     },
+    "Camera" : {
+
+    },
     "Cancel" : {
+
+    },
+    "Change your description" : {
+
+    },
+    "Choose an option to upload a photo" : {
 
     },
     "Choose your gender" : {
@@ -60,6 +87,9 @@
     "Continue" : {
 
     },
+    "Create Pickup Lines" : {
+
+    },
     "Current: %lld - %lld" : {
       "localizations" : {
         "en" : {
@@ -70,13 +100,34 @@
         }
       }
     },
-    "Enter a message" : {
+    "Delete" : {
+
+    },
+    "Download" : {
+
+    },
+    "Enter a more detailed description" : {
+
+    },
+    "Enter a short description about yourself for other users" : {
 
     },
     "Enter your approximate address" : {
 
     },
+    "Filter by" : {
+
+    },
     "Finish" : {
+
+    },
+    "Gender: %@" : {
+
+    },
+    "Get help by ChatGPT!" : {
+
+    },
+    "Good to know" : {
 
     },
     "Google" : {
@@ -88,13 +139,25 @@
     "Hallo World" : {
 
     },
+    "Height: %lf" : {
+
+    },
     "Hello, World!" : {
 
     },
     "In which radius do you want to search?" : {
 
     },
+    "Interests" : {
+
+    },
+    "Job: %@" : {
+
+    },
     "Lets get started" : {
+
+    },
+    "Library" : {
 
     },
     "Likes" : {
@@ -107,6 +170,12 @@
           }
         }
       }
+    },
+    "Location: %@" : {
+
+    },
+    "Looks for" : {
+
     },
     "Message...." : {
       "localizations" : {
@@ -124,7 +193,19 @@
         }
       }
     },
+    "more" : {
+
+    },
     "More" : {
+
+    },
+    "More about me" : {
+
+    },
+    "Move to first position" : {
+
+    },
+    "Move to last position" : {
 
     },
     "New" : {
@@ -136,7 +217,13 @@
     "Ok" : {
 
     },
+    "OK" : {
+
+    },
     "Or change the age span?" : {
+
+    },
+    "Other photos" : {
 
     },
     "Profilbild" : {
@@ -156,6 +243,9 @@
 
     },
     "Save" : {
+
+    },
+    "Select as display picture" : {
 
     },
     "Select Image" : {
@@ -192,10 +282,25 @@
         }
       }
     },
+    "Share" : {
+
+    },
     "Sign in options" : {
 
     },
+    "Sort by" : {
+
+    },
+    "SoulDating lets you interact with OpenAI ChatGPT! You can either let GPT create pickup lines for you or start a conversation to learn more about dating!" : {
+
+    },
+    "Speed" : {
+
+    },
     "Start" : {
+
+    },
+    "Switch" : {
 
     },
     "Telefon" : {
@@ -241,6 +346,9 @@
     "Update Location or radius?" : {
 
     },
+    "Update picture" : {
+
+    },
     "Update your location & radius" : {
 
     },
@@ -269,6 +377,7 @@
 
     },
     "Your latest likes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
