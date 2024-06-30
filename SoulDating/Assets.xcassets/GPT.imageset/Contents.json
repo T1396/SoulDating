@@ -1,6 +1,7 @@
 {
-  "colors" : [
+  "images" : [
     {
+      "filename" : "ChatGPT_logo.pdf",
       "idiom" : "universal"
     }
   ],
