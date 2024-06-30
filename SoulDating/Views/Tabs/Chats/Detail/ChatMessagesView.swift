@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct ChatMessagesView: View {
-    @EnvironmentObject var chatViewModel: ChatViewModel
+    // MARK: properties
     let userId: String
     let chatId: String
+    
+    @EnvironmentObject var chatViewModel: ChatViewModel
+
     @State private var isLoadingUser = true
     @State private var user: User?
+    
+    // MARK: body
     var body: some View {
         VStack {
             if isLoadingUser {
@@ -20,14 +25,14 @@ struct ChatMessagesView: View {
                     .scaleEffect(1.5)
             } else {
                 if let user {
-                    WriteMessageView(targetUser: user, chatId: chatId, isPresented: .constant(true))
+                    WriteMessageView(targetUser: user, chatId: chatId)
                 }
             }
         }
         .onAppear {
             chatViewModel.fetchAndReturnUser(userId: userId) { user in
-                isLoadingUser = false
                 self.user = user
+                isLoadingUser = false
             }
         }
     }
