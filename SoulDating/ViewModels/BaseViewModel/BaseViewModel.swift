@@ -26,7 +26,7 @@ protocol AlertableViewModel: ObservableObject {
     func showSuccess(message: String)
     func showFailure(message: String)
     func reset()
-    func createAlert(title: String, message: String)
+    func createAlert(title: String, message: String, onAccept: (() -> Void)?)
     func dismissAlert()
 }
 
@@ -44,6 +44,9 @@ class BaseAlertViewModel: AlertableViewModel {
     @Published var loadingMessage = ""
     @Published var showOverlay = false
     @Published var overlayMessage: String?
+
+    var onAcceptAction: (() -> Void)?
+
     func showLoading(message: String) {
         loadingMessage = message
         status = .loading
@@ -63,15 +66,17 @@ class BaseAlertViewModel: AlertableViewModel {
         status = .none
     }
     
-    func createAlert(title: String, message: String) {
+    func createAlert(title: String, message: String, onAccept: (() -> Void)? = nil) {
         alertTitle = title
         alertMessage = message
+        onAcceptAction = onAccept
         showAlert = true
     }
     
     func dismissAlert() {
         showAlert = false
         status = .none
+        onAcceptAction = nil
     }
     
     ///  function to execute an action delayed, used to avoid cutting off certain animations/transitions

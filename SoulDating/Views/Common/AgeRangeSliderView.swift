@@ -89,17 +89,8 @@ struct AgeRangeSliderView: View {
             
         }
         .frame(height: 130)
-        .padding(.horizontal)
         .itemBackgroundStyle()
         .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 0)
-//        .onChange(of: firstSliderPos) { oldValue, newValue in
-//            userLowerbound = Double(positionToValue(value: newValue, from: 0...totalScreen, to: minValue...maxValue).rounded())
-//            print(userLowerbound)
-//        }
-//        .onChange(of: secondSliderPos) { oldValue, newValue in
-//            userUpperbound = Double(positionToValue(value: newValue, from: 0...totalScreen, to: minValue...maxValue).rounded())
-//            print(userUpperbound)
-//        }
     }
     // MARK: view properties
     var backgroundBar: some View {
@@ -111,7 +102,7 @@ struct AgeRangeSliderView: View {
     
     var progressBar: some View {
         Rectangle()
-            .foregroundStyle(.blue.opacity(0.4))
+            .foregroundStyle(.accent.secondary)
             .frame(width: secondSliderPos - firstSliderPos, height: 6)
             .offset(x: firstSliderPos + 20)
     }
@@ -167,7 +158,7 @@ struct DraggableCircle: View {
         ZStack {
             Circle()
                 .frame(width: size.width, height: size.height)
-                .foregroundStyle(.blue)
+                .foregroundStyle(.accent)
             Circle()
                 .frame(width: innerSize.width, height: innerSize.height)
                 .foregroundStyle(.white)
@@ -175,7 +166,7 @@ struct DraggableCircle: View {
         .offset(x: position + (circlePosition == .left ? 0 : -5))
         .gesture(
             DragGesture()
-                .onChanged({ value in
+                .onChanged { value in
                     withAnimation {
                         isDragging = true
                     }
@@ -184,13 +175,13 @@ struct DraggableCircle: View {
                     } else {
                         position = min(max(value.location.x, otherPosition), limit)
                     }
-                })
-                .onEnded({ value in
+                }
+                .onEnded { _ in
                     withAnimation {
                         isDragging = false
                         onDragEnd(positionToValue(value: position, from: 0...limit, to: minValue...maxValue))
                     }
-                })
+                }
         )
     }
     
@@ -216,7 +207,7 @@ struct ValueBox: View {
     var isDragging: Bool
     var value: Int
     var position: CGFloat
-    var xOffset : CGFloat
+    var xOffset: CGFloat
     
     var body: some View {
         ZStack {

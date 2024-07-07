@@ -7,22 +7,29 @@
 
 import SwiftUI
 
+
+
 struct OptionRow: View {
     var systemName: String = ""
     let text: String
     let buttonRole: ButtonRole = .destructive
     var action: () -> Void
     
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         Button(role: buttonRole, action: action) {
-            if !systemName.isEmpty {
-                Image(systemName: systemName)
-                    .resizable()
-                    .frame(width: 16, height: 16)
+            HStack {
+                if !systemName.isEmpty {
+                    Image(systemName: systemName)
+                        .resizable()
+                        .frame(width: 16, height: 16)
+                }
+                Text(text)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption)
             }
-            Text(text)
-            Spacer()
-            Image(systemName: "chevron.right")
         }
         .appFont(size: 16, textWeight: .medium)
         .itemBackgroundStyle(padding: 14)
@@ -62,4 +69,3 @@ struct OptionToggleRow: View {
 #Preview {
     OptionToggleRow(systemName: "heart.fill", text: "Like irgendwas", isSelected: true, action: {})
 }
-

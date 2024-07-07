@@ -15,16 +15,17 @@ import SwiftUI
 struct RadarView: View {
     // MARK: properties
     @EnvironmentObject var userViewModel: UserViewModel
-    @StateObject private var radarViewModel: RadarViewModel
-    @StateObject private var mockVm = MockRadarViewModel(user: User(id: "-1", name: "Josef", location: LocationPreference(latitude: 40.829643, longitude: -73.926175, name: "Bronx", radius: 5)))
+    @EnvironmentObject var chatVm: ChatViewModel
+    // @StateObject private var radarViewModel: RadarViewModel
+    @StateObject private var mockVm: MockRadarViewModel
+    @State private var navigateToUserProfile = false
     
-    private let gridItems = [ GridItem(.flexible()),
-                              GridItem(.flexible())
-    ]
+    private let gridItems = [ GridItem(.flexible()), GridItem(.flexible()) ]
     
     // MARK: init
-    init(user: User) {
-        self._radarViewModel = StateObject(wrappedValue: RadarViewModel(user: user))
+    init(user: FireUser) {
+        // self._radarViewModel = StateObject(wrappedValue: RadarViewModel(user: user))
+        self._mockVm = StateObject(wrappedValue: MockRadarViewModel(user: user))
     }
 
     // MARK: body
@@ -37,11 +38,28 @@ struct RadarView: View {
                 ScrollView {
                     LazyVGrid(columns: gridItems, content: {
                         ForEach(mockVm.filteredUsers) { user in
-                            ImageWithGradientAndName(user: user, distance: mockVm.distance(to: user.location), minWidth: width, minHeight: height)
+                            
+                            
+                            NavigationLink {
+                                let chatId = chatVm.returnChatIdIfExists(for: user.id)
+                                MessageAndProfileView(contentType: .profile, targetUser: user, chatId: chatId, image: .constant(nil))
+                            } label: {
+                                ImageWithGradientAndName(user: user, distance: mockVm.distance(to: user.location), minWidth: width, minHeight: height)
+                            }
+//
+//                            ImageWithGradientAndName(user: user, distance: mockVm.distance(to: user.location), minWidth: width, minHeight: height)
+//                                .onTapGesture {
+//                                    navigateToUserProfile = true
+//                                }
+//                                .navigationDestination(isPresented: $navigateToUserProfile, destination: {
+//                                    OtherUserProfileView(showProfile: $navigateToUserProfile, image: .constant(nil), targetUser: user, user: userViewModel.user)
+//                                        .navigationBarBackButtonHidden()
+//                                })
                         }
                     }).padding(.horizontal)
                 }
             }
+
             .toolbar {
                 ToolbarItem {
                     Menu {
@@ -70,13 +88,12 @@ struct RadarView: View {
                                     }
                                     
                                 }
-                                .menuActionDismissBehavior(.disabled)
                             }
                             
                         }
                         
                         Button("more") {
-                            
+                            // MARK: TODO
                         }
                         
                         
@@ -94,6 +111,6 @@ struct RadarView: View {
 
 
 #Preview {
-    RadarView(user: User(id: "1", name: "Hannes"))
+    RadarView(user: FireUser(id: "1", name: "Hannes"))
         .environmentObject(UserViewModel())
 }

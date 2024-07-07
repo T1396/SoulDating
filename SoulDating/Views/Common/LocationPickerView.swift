@@ -60,5 +60,5 @@ struct LocationRow: View {
 }
 
 #Preview {
-    LocationPickerView(searchQuery: .constant(""), suggestions: .constant([]),selectedSuggestion: .constant(MKLocalSearchCompletion()) ,onPlaceSelected: { _ in })
+    LocationPickerView(searchQuery: .constant(""), suggestions: .constant([]), selectedSuggestion: .constant(MKLocalSearchCompletion()), onPlaceSelected: { _ in })
 }

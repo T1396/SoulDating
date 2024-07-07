@@ -8,24 +8,23 @@
 import Foundation
 import Firebase
 
-struct User: Codable, Identifiable, Equatable, Hashable {
+struct FireUser: Codable, Identifiable, Equatable, Hashable {
     let id: String
     var name: String?
     var profileImageUrl: String?
     var birthDate: Date?
     var gender: Gender?
     var onboardingCompleted: Bool?
-    var general: UserGeneral = UserGeneral()
-    var location: LocationPreference = LocationPreference()
-    var look: Look = Look()
-    var preferences: Preferences = Preferences()
+    var general = UserGeneral()
+    var location = LocationPreference()
+    var look = Look()
+    var preferences = Preferences()
     var blockedUsers: [String]?
     var registrationDate: Date?
 }
 
 
-
-extension User {
+extension FireUser {
     var age: Int? {
         guard let birthDate else { return nil }
         let calendar = Calendar.current
@@ -33,7 +32,7 @@ extension User {
         let ageComponents = calendar.dateComponents([.year], from: birthDate, to: now)
         return ageComponents.year
     }
-    
+
     var nameAgeString: String {
         if let age, let name {
             return "\(name), \(age)"
@@ -48,7 +47,7 @@ struct UserGeneral: Codable, Equatable, Hashable {
     var smokingStatus: SmokeLevel?
     var sexuality: Sexuality?
     var job: String?
-    var languages: [String]?
+    var languages: [String]? // list of keys in languages.json
     var drinkingBehaviour: DrinkingBehaviour?
     var interests: [Interest]?
     var description: String?
@@ -63,9 +62,8 @@ struct Look: Codable, Equatable, Hashable {
 
 
 struct Preferences: Codable, Equatable, Hashable {
-    var height: Int?
+    var height: Double?
     var wantsChilds: Bool?
-    var distance: Int?
     var smoking: Bool?
     var sports: Bool?
     var drinking: Bool?
@@ -74,7 +72,7 @@ struct Preferences: Codable, Equatable, Hashable {
     var agePreferences: AgePreference?
 }
 
-struct AgePreference: Codable ,Equatable, Hashable {
+struct AgePreference: Codable, Equatable, Hashable {
     var minAge: Double
     var maxAge: Double
 }
@@ -95,7 +93,7 @@ extension AgePreference {
         ]
         return dict
     }
-    
+
     var rangeString: String {
         if let minAgeStr = minAge.formatted(as: .decimal, maxFractionDigits: 0, locale: .autoupdatingCurrent),
            let maxAgeStr = maxAge.formatted(as: .decimal, maxFractionDigits: 0, locale: .autoupdatingCurrent) {
@@ -107,7 +105,7 @@ extension AgePreference {
 
 extension LocationPreference {
     func toDictionary() -> [String: Any] {
-        return [
+        [
             "latitude": latitude,
             "longitude": longitude,
             "name": name as Any,
@@ -115,5 +113,3 @@ extension LocationPreference {
         ]
     }
 }
-
-

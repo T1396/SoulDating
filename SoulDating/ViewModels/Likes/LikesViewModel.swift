@@ -13,10 +13,10 @@ class LikesViewModel: ObservableObject {
     private let firebaseManager = FirebaseManager.shared
     private let rangeManager = RangeManager()
     
-    @Published var usersWhoLikedCurrentUser: [User] = mockUsers
+    @Published var usersWhoLikedCurrentUser: [FireUser] = mockUsers
     @Published var hasNoLikes = false
-    var user: User
-    
+    var user: FireUser
+
     var currentUserId: String? {
         firebaseManager.userId
     }
@@ -25,16 +25,16 @@ class LikesViewModel: ObservableObject {
         rangeManager.distanceString(from: user.location, to: targetLocation)
     }
     
-    init(user: User) {
+    init(user: FireUser) {
         self.user = user
-        //fetchUsersWhoLiked()
+        // fetchUsersWhoLiked()
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdate(_:)), name: .userDocumentUpdated, object: nil)
     }
     
     @objc
     private func didUpdate(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
-              let updatedUser = userInfo["user"] as? User else {
+              let updatedUser = userInfo["user"] as? FireUser else {
             print("Update user with notification failed")
             return
         }
@@ -55,13 +55,13 @@ class LikesViewModel: ObservableObject {
                 
                 self.usersWhoLikedCurrentUser = docSnapshot?.documents.compactMap { doc in
                     do {
-                        return try doc.data(as: User.self)
+                        return try doc.data(as: FireUser.self)
                     } catch {
                         print("\(TAG) Error decoding firestore user data to userDetail struct", error.localizedDescription)
                         return nil
                     }
                 } ?? []
-                self.hasNoLikes = self.usersWhoLikedCurrentUser.count > 0
+                self.hasNoLikes = self.usersWhoLikedCurrentUser.isEmpty
             }
     }
 }

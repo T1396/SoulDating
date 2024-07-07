@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// viewmodel for ProfileView to display another user and his attributes
 class OtherProfileViewModel: ObservableObject {
@@ -13,20 +14,21 @@ class OtherProfileViewModel: ObservableObject {
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
     private let rangeManager = RangeManager()
-    let otherUser: User
-    let currentUser: User
-    
+    private let userService: UserService
+    let otherUser: FireUser
+
     @Published var userImages: [SortedImage] = []
     @Published var userHasMoreImages = true
     
     // MARK: init
-    init(currentUser: User, otherUser: User) {
-        self.currentUser = currentUser
+    init(otherUser: FireUser, userService: UserService = .shared) {
         self.otherUser = otherUser
+        self.userService = userService
         fetchUserImages()
     }
     
     // MARK: computed properties
+    
     var userDescription: String {
         otherUser.general.description ?? "\(otherUser.name ?? "") has no description yet."
     }
@@ -37,7 +39,7 @@ class OtherProfileViewModel: ObservableObject {
     
     var goodToKnowRows: [(text: String, icon: String)] {
         [
-            (rangeManager.distanceString(from: currentUser.location, to: otherUser.location) ?? "No location set", "arcade.stick"),
+            (rangeManager.distanceString(from: userService.user.location, to: otherUser.location) ?? "No location set", "arcade.stick"),
             (otherUser.heightString, "pencil.and.ruler.fill"),
             (otherUser.general.job ?? "Not specified", "suitcase.fill"),
             (otherUser.general.education?.title ?? "Not specified", EducationLevel.associate.generalIcon)
