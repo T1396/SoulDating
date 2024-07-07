@@ -16,7 +16,7 @@ struct PhotosView: View {
     @State private var addPhotoOption: AddPhotoOption = .library
     @State private var showPhotoOptionSheet = false
     @State private var showImagePicker = false
-    @EnvironmentObject var profileViewModel: ProfileViewModel
+    @StateObject private var profileViewModel = ProfileViewModel()
     @Environment(\.editMode) var editMode
     
     private let gridItems = Array(repeating: GridItem(.flexible()), count: 3)
@@ -24,7 +24,7 @@ struct PhotosView: View {
     @State var images = [
         SortedImage(imageUrl: "https://firebasestorage.googleapis.com:443/v0/b/souldating-b6486.appspot.com/o/profileImages%2FFW4oOlh92QUyzxUd8reUoYVSBfn2%2F8E55C58C-C011-4A27-B64F-78FDF5921167.jpg?alt=media&token=ad2b148f-3685-40e3-a28a-fbbe7ad2495e", position: 1),
         SortedImage(imageUrl: "https://firebasestorage.googleapis.com:443/v0/b/souldating-b6486.appspot.com/o/profileImages%2FY2PNqReH9YQsKIMnsxnwDZ23L6m1%2F93E6AAB6-631B-4737-863E-B9228076E66F.jpg?alt=media&token=a62885fc-2f79-4b6c-aef7-601a8c86ba3f", position: 2),
-        SortedImage(imageUrl: "https://firebasestorage.googleapis.com:443/v0/b/souldating-b6486.appspot.com/o/profileImages%2FHQKJq4QlHiRIf1kF4QAv5qad0F73%2FotherImages%2F6C6AE870-FD99-460E-8D36-7E066367CE3B.jpg?alt=media&token=2156c595-6a34-4a5f-8464-065d9bb177a4", position: 3),
+        SortedImage(imageUrl: "https://firebasestorage.googleapis.com:443/v0/b/souldating-b6486.appspot.com/o/profileImages%2FHQKJq4QlHiRIf1kF4QAv5qad0F73%2FotherImages%2F6C6AE870-FD99-460E-8D36-7E066367CE3B.jpg?alt=media&token=2156c595-6a34-4a5f-8464-065d9bb177a4", position: 3)
     ]
     
     
@@ -60,7 +60,7 @@ struct PhotosView: View {
                                 }
                         } moveAction: { from, to in
                             profileViewModel.userImages.move(fromOffsets: from, toOffset: to)
-                            //profileViewModel.updateImageOrderInFirestore()
+                            // profileViewModel.updateImageOrderInFirestore()
                         }
                     }
                     .padding([.horizontal, .top])
@@ -72,7 +72,9 @@ struct PhotosView: View {
     
     /// first element in the grid layout to add a new picture
     private func addPhotoItem(width: CGFloat, height: CGFloat) -> some View {
-        Button(action: { showPhotoOptionSheet = true }) {
+        Button(action: {
+            showPhotoOptionSheet = true
+        }, label: {
             VStack {
                 Image(systemName: "plus")
                     .font(.largeTitle)
@@ -81,7 +83,7 @@ struct PhotosView: View {
             .frame(width: width, height: height)
             .background(.accent.quinary)
             .imageStrokeStyle()
-        }
+        })
     }
     
     var imageSelectionOptions: some View {
@@ -204,5 +206,5 @@ struct DragRelocateDelegate<Item: Equatable>: DropDelegate {
 
 #Preview {
     PhotosView()
-        .environmentObject(ProfileViewModel(user: User(id: "1", name: "Hans")))
+        .environmentObject(ProfileViewModel())
 }

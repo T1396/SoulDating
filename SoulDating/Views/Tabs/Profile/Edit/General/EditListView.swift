@@ -9,26 +9,41 @@ import SwiftUI
 
 /// generic list view that shows a list of items that implement EditableItem Protocol
 struct EditListView<Option: EditableItem>: View {
-    var items: [Option]
-    var initialSelected: [Option]
+    // MARK: properties
+    var items: [Option] // generic type which is commonly an enum
+    @Binding var initialSelected: [Option]?
     let title: String
     let subTitle: String?
     let path: String
     let allowsMultipleSelection: Bool
     
     @State private var selectedItems: [Option]
-    @EnvironmentObject var profileViewModel: ProfileViewModel
-    
-    init(items: [Option], initialSelected: [Option] = [] ,title: String, subTitle: String?, path: String, allowsMultipleSelection: Bool = false) {
+    @EnvironmentObject var editVm: EditUserViewModel
+    @Environment(\.dismiss) var dismiss
+
+    // initializer for multiple options
+    init(items: [Option], initialSelected: Binding<[Option]?>, title: String, subTitle: String?, path: String, allowsMultipleSelection: Bool = false) {
         self.items = items
-        self.initialSelected = initialSelected
-        self._selectedItems = State(initialValue: initialSelected)
+        self._initialSelected = initialSelected
+        self._selectedItems = State(initialValue: initialSelected.wrappedValue ?? [])
         self.title = title
         self.subTitle = subTitle
         self.path = path
         self.allowsMultipleSelection = allowsMultipleSelection
     }
-    
+
+    // initializer for a single option
+       init(items: [Option], initialSelected: Binding<Option?>, title: String, subTitle: String?, path: String, allowsMultipleSelection: Bool = false) {
+           self.items = items
+           let selected = initialSelected.wrappedValue.map { [$0] } ?? []
+           self._initialSelected = Binding(get: { selected }, set: { initialSelected.wrappedValue = $0?.first })
+           self._selectedItems = State(initialValue: selected)
+           self.title = title
+           self.subTitle = subTitle
+           self.path = path
+           self.allowsMultipleSelection = allowsMultipleSelection
+       }
+
     
     var body: some View {
         NavigationStack {
@@ -78,15 +93,18 @@ struct EditListView<Option: EditableItem>: View {
     
     private func save() {
         if allowsMultipleSelection {
-            profileViewModel.updateUserField(path, with: selectedItems.map { $0.rawValue })
+            editVm.updateUserField(path, with: selectedItems.map { $0.rawValue })
+            initialSelected = selectedItems
         } else {
             if let item = selectedItems.first {
-                profileViewModel.updateUserField(path, with: item.rawValue)
+                editVm.updateUserField(path, with: item.rawValue)
+                initialSelected = selectedItems
             }
         }
+        dismiss()
     }
 }
 
 #Preview {
-    EditListView(items: BodyType.allCases, initialSelected: [.slim], title: "Update your body type", subTitle: "dklsakl", path: "dksal", allowsMultipleSelection: true)
+    EditListView(items: BodyType.allCases, initialSelected: .constant([.slim]), title: "Update your body type", subTitle: "dklsakl", path: "dksal", allowsMultipleSelection: true)
 }

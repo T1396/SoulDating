@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct SettingsElement: View {
+struct ProfileItemRow: View {
     @EnvironmentObject var userViewModel: UserViewModel
     @Environment(\.colorScheme) var colorScheme
     
     let title: String
     var value: String?
-    var icon: String?
+    var systemName: String?
     
     var valueText: String {
         if let value, !value.isEmpty {
@@ -25,27 +25,23 @@ struct SettingsElement: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            if let icon {
-                HStack {
-                    Image(systemName: icon)
-                        .font(.title3)
-                        .foregroundStyle(.white)
-                }
-                .frame(width: 30, height: 30)
-                .padding(2)
-                .background(.accent.opacity(0.6), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+            if let systemName {
+                AppIcon(systemName: systemName, size: .small)
             }
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .foregroundStyle(colorScheme == .dark ? .white : .black)
+                    .appFont(size: 12)
                 Text(valueText)
-                    .font(.footnote)
+                    .appFont(size: 10)
                     .foregroundStyle(.gray.opacity(0.9))
-                
+                    .lineLimit(1)
+
             }
             Spacer()
             Image(systemName: "chevron.right")
+                .font(.caption)
                 .padding(.trailing, 6)
             
         }
@@ -53,7 +49,7 @@ struct SettingsElement: View {
 }
 
 #Preview {
-    SettingsElement(title: "Name", value: "Klaus", icon: "trash")
+    ProfileItemRow(title: "Name", value: "Klaus", systemName: "trash")
         .padding()
-    .environmentObject(UserViewModel())
+        .environmentObject(UserViewModel())
 }

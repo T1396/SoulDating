@@ -8,25 +8,35 @@
 import SwiftUI
 
 struct EditTextFieldView: View {
+    // MARK: properties
     let title: String
     let placeholder: String
     let errorMessage: String?
     let supportText: String?
     let path: String
-    
-    @EnvironmentObject var profileViewModel: ProfileViewModel
+    @Binding var initialText: String?
+
+    @EnvironmentObject var editVm: EditUserViewModel
     @Environment(\.dismiss) var dismiss
     @State private var newText: String
     
-    init(title: String, path: String, text: String, placeholder: String, errorMessage: String?, supportText: String?) {
+    // MARK: computed properties
+    var saveDisabled: Bool {
+        initialText == newText || newText.isEmpty || newText.count < 4
+    }
+    
+    // MARK: init
+    init(title: String, path: String, initialText: Binding<String?>, placeholder: String, errorMessage: String?, supportText: String?) {
         self.title = title
-        self._newText = State(initialValue: text)
+        self._initialText = initialText
+        self._newText = State(initialValue: initialText.wrappedValue ?? "")
         self.placeholder = placeholder
         self.errorMessage = errorMessage
         self.supportText = supportText
         self.path = path
     }
     
+    // MARK: body
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
@@ -45,23 +55,23 @@ struct EditTextFieldView: View {
             
             HStack {
                 Button("Cancel", action: { dismiss() })
-                
                 Spacer()
-                
                 Button(action: save) {
                     Text("Update")
                         .appButtonStyle()
                 }
+                .disabled(saveDisabled)
             }
         }
         .padding()
     }
-    
+    // MARK: functions
     private func save() {
-        profileViewModel.updateUserField(path, with: newText)
+        editVm.updateUserField(path, with: newText)
+        initialText = newText
     }
 }
 
 #Preview {
-    EditTextFieldView(title: "Enter your job", path: "d", text: "Spahnmechaniker", placeholder: "Enter your job", errorMessage: "Your job name must be longer than 4 characters", supportText: "Every detail about you gives you better chances")
+    EditTextFieldView(title: "Enter your job", path: "d", initialText: .constant("Spahnmechaniker"), placeholder: "Enter your job", errorMessage: "Your job name must be longer than 4 characters", supportText: "Every detail about you gives you better chances")
 }

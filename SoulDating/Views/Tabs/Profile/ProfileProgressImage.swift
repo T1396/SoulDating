@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct UserProgressImage: View {
+struct ProfileProgressImage: View {
     var imageUrl: String?
     var width: CGFloat = 250
     var height: CGFloat = 250
     var userProgress: CGFloat = 0.9
     
-    var onAppear: ((Image) -> Void)? = nil
+    var onAppear: ((Image) -> Void)?
     @State private var isLoaded = false
 
     
@@ -43,7 +43,7 @@ struct UserProgressImage: View {
                                     onAppear(image)
                                 }
                             }
-                    case .failure(_):
+                    case .failure:
                         PlaceholderImageView(systemName: "wifi.slash", size: CGFloat(34), isLoaded: $isLoaded)
                             .frame(width: CGFloat(width), height: CGFloat(height))
                             .background(.cyan)
@@ -80,16 +80,16 @@ struct UserProgressImage: View {
                 .frame(width: width, height: height)
                 .animation(.bouncy, value: progress)
         }
-        .onChange(of: userProgress) { oldValue, newValue in
+        .onChange(of: userProgress) { _, newValue in
             withAnimation {
-                progress = (userProgress / 100.0)
+                progress = (newValue / 100.0)
             }
         }
     }
 }
 
 #Preview {
-    UserProgressImage(imageUrl: "", width: 100, height: 100, userProgress: 80.0, onAppear: { _ in })
+    ProfileProgressImage(imageUrl: "", width: 100, height: 100, userProgress: 80.0, onAppear: { _ in })
     //    Image("sampleimage")
 //        .circularProgressImageStyle(progress: 0.5, width: 100, height: 100)
 }

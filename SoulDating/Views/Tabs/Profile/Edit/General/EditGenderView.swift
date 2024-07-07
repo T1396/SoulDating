@@ -11,10 +11,10 @@ struct EditGenderView: View {
     // MARK: properties
     let title: String
     let supportText: String?
-    let initialGender: Gender?
+    @Binding var initialGender: Gender?
     let path: String
-    
-    @EnvironmentObject var profileViewModel: ProfileViewModel
+
+    @EnvironmentObject var editVm: EditUserViewModel
     @State private var chosenGender: Gender?
     @Environment(\.dismiss) var dismiss
     
@@ -24,11 +24,11 @@ struct EditGenderView: View {
     }
     
     // MARK: init
-    init(title: String, supportText: String?, initialGender: Gender?, path: String) {
+    init(title: String, supportText: String?, initialGender: Binding<Gender?>, path: String) {
         self.title = title
         self.supportText = supportText
-        self.initialGender = initialGender
-        self._chosenGender = State(wrappedValue: initialGender)
+        self._initialGender = initialGender
+        self._chosenGender = State(wrappedValue: initialGender.wrappedValue)
         self.path = path
     }
     
@@ -66,7 +66,8 @@ struct EditGenderView: View {
     
     // MARK: functions
     private func save() {
-        profileViewModel.updateUserField(path, with: chosenGender)
+        editVm.updateUserField(path, with: chosenGender)
+        initialGender = chosenGender
     }
     
     private func toggleGender(_ gender: Gender) {
@@ -79,5 +80,5 @@ struct EditGenderView: View {
 }
 
 #Preview {
-    EditGenderView(title: "Change gender", supportText: "du sdkasld", initialGender: .male, path: "dlasö")
+    EditGenderView(title: "Change gender", supportText: "du sdkasld", initialGender: .constant(.male), path: "dlasö")
 }

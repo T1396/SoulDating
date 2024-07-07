@@ -10,13 +10,8 @@ import MapKit
 
 struct EditLocationRangeView: View {
     // MARK: properties
-    @StateObject private var locationViewModel: LocationViewModel
+    @StateObject private var locationViewModel = LocationViewModel()
     @Environment(\.dismiss) var dismiss
-    
-    // MARK: init
-    init(location: LocationPreference, user: User) {
-        self._locationViewModel = StateObject(wrappedValue: LocationViewModel(location: location, user: user))
-    }
     
     // MARK: body
     var body: some View {
@@ -68,5 +63,5 @@ struct EditLocationRangeView: View {
 }
 
 #Preview {
-    EditLocationRangeView(location: LocationPreference(latitude: 51.1023, longitude: 10.1238, name: "Haus nebenan", radius: 100), user: User(id: "1", name: "Klaus"))
+    EditLocationRangeView()
 }

@@ -27,18 +27,20 @@ struct EditDescriptionView: View {
     let path: String
     
     let charLimit = 200
-    @EnvironmentObject var profileViewModel: ProfileViewModel
+    @EnvironmentObject var editVm: EditUserViewModel
     @Environment(\.dismiss) var dismiss
+    @Binding var initialDescription: String?
     @State private var newDescription: String
     
     var buttonDisabled: Bool {
-        newDescription.count < 20
+        newDescription.count < 20 || newDescription == initialDescription || newDescription.isEmpty
     }
     
-    init(title: String, initialDescription: String, placeholder: String, path: String) {
+    init(title: String, initialDescription: Binding<String?>, placeholder: String, path: String) {
         self.title = title
         self.placeholder = placeholder
-        self.newDescription = initialDescription
+        self._initialDescription = initialDescription
+        self._newDescription = State(initialValue: initialDescription.wrappedValue ?? "")
         self.path = path
     }
     
@@ -87,10 +89,12 @@ struct EditDescriptionView: View {
     }
 
     private func save() {
-        profileViewModel.updateUserField(path, with: newDescription)
+        editVm.updateUserField(path, with: newDescription)
+        initialDescription = newDescription
+        dismiss()
     }
 }
 
 #Preview {
-    EditDescriptionView(title: "Ändere deine Beschreibung", initialDescription: "Gurke", placeholder: "Gurken", path: "dksal")
+    EditDescriptionView(title: "Ändere deine Beschreibung", initialDescription: .constant("Gurke"), placeholder: "Gurken", path: "dksal")
 }

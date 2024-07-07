@@ -9,16 +9,16 @@ import SwiftUI
 
 struct ProfileView: View {
     // MARK: properties
-    @StateObject private var profileViewModel: ProfileViewModel
+    @StateObject private var editVm = EditUserViewModel()
+    @EnvironmentObject var userVm: UserViewModel
+    @StateObject private var profileViewModel = ProfileViewModel()
     @State private var activeTab: ProfileTab = .aboutyou
     @State private var loadedImage: Image?
     @State private var isImagePresented = false
     
     
     // MARK: init
-    init(user: User) {
-        self._profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: user))
-    }
+
     
     // MARK: body
     var body: some View {
@@ -28,7 +28,7 @@ struct ProfileView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     VStack(alignment: .leading, spacing: 2) {
                         // expands the toolbar
-                        ProfileImageHeaderView(user: profileViewModel.user, loadedImage: $loadedImage, isImagePresented: $isImagePresented)
+                        ProfileImageHeaderView(user: $userVm.user, loadedImage: $loadedImage, isImagePresented: $isImagePresented)
                             .padding(.horizontal, 20)
                         profileTabView
                             .padding(.horizontal)
@@ -40,7 +40,7 @@ struct ProfileView: View {
                     .background(.accent.quinary)
                     
                     activeTab.view()
-                        .environmentObject(profileViewModel)
+                        .environmentObject(editVm)
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -49,29 +49,24 @@ struct ProfileView: View {
                 }
                 
                 NotificationView2(text: $profileViewModel.overlayMessage)
-                
+                    .animation(.easeInOut, value: profileViewModel.showOverlay)
                 
             }
-            .overlay(
-                profileViewModel.showOverlay ? NotificationView(title: "Success", systemName: "xmark", show: $profileViewModel.showOverlay, action: {
-                    profileViewModel.showOverlay = false
-                })
-                .transition(.move(edge: .top))
-                : nil,
-                alignment: .top
-            )
-            .animation(.easeInOut, value: profileViewModel.showOverlay)
-            
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Text(Tab.profile.title)
-                    .appFont(size: 26 ,textWeight: .bold)
+                    .appFont(size: 26, textWeight: .bold)
                     .toolbarColorScheme(.dark, for: .automatic)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Image(systemName: "gear.circle")
+                NavigationLink {
+                    SettingsView()
+                } label: {
+                    Image(systemName: "gear")
+                }
+
             }
         }
         .alert(isPresented: $profileViewModel.showAlert) {
@@ -92,7 +87,7 @@ struct ProfileView: View {
                     .padding(8)
                     .padding(.horizontal, 4)
                     .foregroundStyle(activeTab == tab ? .buttonText : .primary)
-                    .background(activeTab == tab ? .accent : .clear, in:Capsule(style: .continuous))
+                    .background(activeTab == tab ? .accent : .clear, in: Capsule(style: .continuous))
                     .onTapGesture {
                         withAnimation {
                             activeTab = tab
@@ -103,26 +98,7 @@ struct ProfileView: View {
     }
 }
 
-
-extension View {
-    func navigationBarColor(backgroundColor: UIColor, foregroundColor: UIColor) -> some View {
-        self.onAppear {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = backgroundColor
-            appearance.titleTextAttributes = [.foregroundColor: foregroundColor]
-            appearance.largeTitleTextAttributes = [.foregroundColor: foregroundColor]
-            
-            appearance.shadowColor = nil // hide divider/shadow
-            
-            UINavigationBar.appearance().standardAppearance = appearance
-            UINavigationBar.appearance().compactAppearance = appearance
-            UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        }
-    }
-}
-
 #Preview {
-    ProfileView(user: User(id: "das", name: "Hannelore"))
+    ProfileView()
         .environmentObject(UserViewModel())
 }

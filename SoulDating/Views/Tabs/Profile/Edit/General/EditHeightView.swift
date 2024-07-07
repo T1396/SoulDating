@@ -7,31 +7,39 @@
 
 import SwiftUI
 
-struct EditNumberView: View {
+struct EditHeightView: View {
+    // MARK: properties
     let title: String
     let supportText: String?
     let path: String
-    
-    @EnvironmentObject var profileViewModel: ProfileViewModel
+    @Binding var initialValue: Double?
+
+    @EnvironmentObject var editVm: EditUserViewModel
     @Environment(\.dismiss) var dismiss
-    @State private var newText: String
+
+    @State private var number: Double
     
-    @State private var number = 180.0
+    // MARK: computed properties
+    var disabledSaving: Bool {
+        initialValue == number
+    }
     
-    init(title: String, path: String, text: String, supportText: String?) {
+    // MARK: init
+    init(title: String, path: String, initialValue: Binding<Double?>, supportText: String?) {
         self.title = title
-        self._newText = State(initialValue: text)
         self.supportText = supportText
+        self._number = State(initialValue: initialValue.wrappedValue ?? 180)
+        self._initialValue = initialValue
         self.path = path
     }
     
-    
+    // MARK: body
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
                 .appFont(size: 28, textWeight: .bold)
             Spacer()
-                
+            
             Text("\(number, specifier: "%.0f")cm")
                 .appFont(size: 22, textWeight: .semibold)
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -41,15 +49,15 @@ struct EditNumberView: View {
                 in: 120...240,
                 step: 1
             ) {
-                    Text("Speed")
-                } minimumValueLabel: {
-                    Text("120cm")
-                        .appFont()
-                } maximumValueLabel: {
-                    Text("240cm")
-                        .appFont()
-                }
-
+                Text("Speed")
+            } minimumValueLabel: {
+                Text("120cm")
+                    .appFont()
+            } maximumValueLabel: {
+                Text("240cm")
+                    .appFont()
+            }
+            
             Spacer()
             
             HStack {
@@ -61,17 +69,19 @@ struct EditNumberView: View {
                     Text("Save")
                         .appButtonStyle()
                 }
+                .disabled(disabledSaving)
             }
         }
         .padding()
     }
     
     private func save() {
-        profileViewModel.updateUserField(path, with: Int(number))
+        editVm.updateUserField(path, with: number)
+        initialValue = number
         dismiss()
     }
 }
 
 #Preview {
-    EditNumberView(title: "Change your height", path: "1", text: "bla", supportText: nil)
+    EditHeightView(title: "Change your height", path: "1", initialValue: .constant(180), supportText: nil)
 }

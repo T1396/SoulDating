@@ -11,8 +11,8 @@ struct PreferencesView: View {
     // MARK: properties
     @EnvironmentObject var userViewModel: UserViewModel
     @State private var isSheetPresented = false
-    @State private var activeSheetElement: PreferencesItem?
-    
+    @State private var activeSheet: (any AboutYouItemProtocol)?
+
     init() {
         print("View new initialized")
     }
@@ -22,16 +22,13 @@ struct PreferencesView: View {
             ForEach(PreferencesSection.allCases) { section in
                 
                 Section(section.displayName) {
-                    
-                    
-                    ForEach(section.items(user: userViewModel.user)) { item in
-                        
-                        Button {
-                            self.activeSheetElement = item
-                            self.isSheetPresented = true
-                        } label: {
-                            SettingsElement(title: item.title, value: item.valueString, icon: item.icon)
-                        }
+                    ForEach(section.items, id: \.title) { item in
+                        Button(action: {
+                            activeSheet = item
+                            isSheetPresented = true
+                        }, label: {
+                            ProfileItemRow(title: item.title, value: item.value(user: $userViewModel.user), systemName: item.icon)
+                        })
                     }
                 }
             }
@@ -39,8 +36,8 @@ struct PreferencesView: View {
         .sheet(isPresented: Binding(
             get: { isSheetPresented },
             set: { isSheetPresented = $0 }
-        ), onDismiss: { activeSheetElement = nil }, content: {
-            activeSheetElement?.editView(user: userViewModel.user)
+        ), onDismiss: { activeSheet = nil }, content: {
+            activeSheet?.editView(user: $userViewModel.user)
                 .presentationDetents([.medium, .large])
         })
         .listStyle(.insetGrouped)
