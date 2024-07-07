@@ -8,34 +8,68 @@
 import Foundation
 import Firebase
 
-/// implements BaseAlertViewModel for Alert und Result Managing
+/// ViewModel  for a single chat
 class MessagesViewModel: BaseAlertViewModel {
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
+    private let targetUserId: String
+    private var isInitialFetch = true
+    private var messageListener: ListenerRegistration?
 
-    @Published var messages: [Message] = [] {
+    // if not nil, there exists a chat already with the targetUser
+    var chatId: String? {
         didSet {
-            print(messages)
+            if let chatId {
+                listenForNewMessages(chatId: chatId)
+            }
         }
     }
+
+    @Published var messages: [Message] = []
     @Published var messageContent = ""
-    
-    // if not nil, there exists a chat already with the targetUser
-    var chatId: String? = nil
-    private let targetUserId: String
-    private var isInitialized = false
-    
+
     // MARK: init
     init(targetUserId: String, chatId: String?) {
         self.targetUserId = targetUserId
         self.chatId = chatId
         super.init()
-        print("CHATID: \(chatId)")
         if let chatId {
-            listenForNewMessages(chatId: chatId)
+            resetUnreadCount(chatId: chatId)
+        } else {
+            observeChatCreation()
         }
     }
+
+    private func resetUnreadCount(chatId: String) {
+        guard let userId = firebaseManager.userId else { return }
+        firebaseManager.database.collection("chats").document(chatId)
+            .setData(["unreadCount": [userId: 0]], merge: true) { error in
+                if let error {
+                    print("Error updating unread count", error.localizedDescription)
+                    return
+                }
+
+                print("successfully updated unread count")
+            }
+    }
+
+    /// observed for new incoming chats for the case there is no existing chat in the actual MessagesView
+    /// e.g. when another user sends a message to current user while he is in the View to update the chatId
+    private func observeChatCreation() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewChatNotification(_:)), name: .newChatReceived, object: nil)
+    }
     
+    /// sets the chatId if the chat contains the target userId meaning there was a chatdocument created
+    @objc private func handleNewChatNotification(_ notification: Notification) {
+        guard let newChat = notification.userInfo?["chat"] as? Chat else { return }
+        if newChat.participantIds.contains(targetUserId) {
+            chatId = newChat.id
+            if let chatId {
+                listenForNewMessages(chatId: chatId)
+            }
+        }
+    }
+
     // MARK: computed properties
     var sendDisabled: Bool {
         messageContent.isEmpty
@@ -48,8 +82,7 @@ class MessagesViewModel: BaseAlertViewModel {
     
     /// starts a snapshotlistener to get new messages in a specific chat
     private func listenForNewMessages(chatId: String) {
-        print("listen started")
-        firebaseManager.database.collection("allMessages")
+        messageListener = firebaseManager.database.collection("allMessages")
             .document(chatId).collection("messages")
             .order(by: "timestamp", descending: false)
             .addSnapshotListener { querySnapshot, error in
@@ -58,21 +91,48 @@ class MessagesViewModel: BaseAlertViewModel {
                     print("Error fetching messages", error.localizedDescription)
                     return
                 }
-                
-                self.messages = querySnapshot?.documents.compactMap { doc in
-                    do {
-                        return try doc.data(as: Message.self)
-                    } catch {
-                        print("Error decoding message from firestore into struct", error.localizedDescription)
-                        return nil
+                querySnapshot?.documentChanges.forEach { change in
+                    switch change.type {
+                    case .added:
+                        if let newMsg = try? change.document.data(as: Message.self) {
+                            self.messages.append(newMsg)
+                        } else {
+                            print("Error decoding message")
+                        }
+                        if !self.isInitialFetch {
+                            self.resetUnreadCount(chatId: chatId)
+                        }
+                    case .modified:
+                        print("modified")
+                        if let changedMsg = try? change.document.data(as: Message.self) {
+                            if let index = self.messages.firstIndex(where: { $0.id == changedMsg.id }) {
+                                self.messages[index] = changedMsg
+                            }
+                        }
+                    case .removed:
+                            if let removedMsg = try? change.document.data(as: Message.self) {
+                                if let index = self.messages.firstIndex(where: { $0.id == removedMsg.id }) {
+                                    self.messages.remove(at: index)
+                                }
+                            }
                     }
-                } ?? []
-                self.isInitialized = true
-                print("Successfully converted messages")
-                print("Messages: \(self.messages)")
+                }
+                if self.isInitialFetch {
+                    self.isInitialFetch = false
+                }
             }
     }
-    
+
+    func startListeningForMessages() {
+        guard let chatId else { return }
+        listenForNewMessages(chatId: chatId)
+    }
+
+    func stopListeningForMessages() {
+        messageListener?.remove()
+        messageListener = nil
+    }
+
     /// calls super function to create an alert a view can listen to
     private func createMessageErrorAlert() {
         createAlert(title: sendMessageErrorTitle, message: sendMessageErrorMsg)
@@ -110,17 +170,23 @@ class MessagesViewModel: BaseAlertViewModel {
     }
 }
 
-// MARK: CREATE / SEND MESSAGE
+// MARK: CREATE CHAT+MESSAGE / SEND MESSAGE
 extension MessagesViewModel {
     /// calls depending on if there already exists a chat functions to update existing chats or create new chats
+    /// and sends the message
     func sendMessage() {
         guard let userId = firebaseManager.userId else { return }
-        let msg = Message(senderId: userId, receiverId: targetUserId, content: messageContent, timestamp: .now, isRead: false)
-        checkIfChatExists { chatId in
-            if let chatId {
-                self.updateExistingChat(chatId, msg)
-            } else {
-                self.createNewChatAndMessage(userId, msg)
+        let trimmedMessage = messageContent.trimmingCharacters(in: .whitespacesAndNewlines)
+        let msg = Message(senderId: userId, receiverId: targetUserId, content: trimmedMessage, timestamp: .now, isRead: false)
+        if let chatId {
+            self.updateExistingChat(chatId, msg)
+        } else {
+            checkIfChatExists { chatId in
+                if let chatId {
+                    self.updateExistingChat(chatId, msg)
+                } else {
+                    self.createNewChatAndMessage(userId, msg)
+                }
             }
         }
     }
@@ -131,28 +197,29 @@ extension MessagesViewModel {
     ///     - msg - the new message
     fileprivate func createNewChatAndMessage(_ userId: String, _ msg: Message) {
         // no chat existing, create and upload a new one with the actual message
-        let chatRef = firebaseManager.database.collection("chats").document()
-        let messageRef = firebaseManager.database.collection("allMessages").document(chatRef.documentID).collection("messages").document()
-        
+        let db = firebaseManager.database
+        let chatRef = db.collection("chats").document()
+        let messageRef = db.collection("allMessages").document(chatRef.documentID).collection("messages").document()
+
         let unreadCountDict = [targetUserId: 1] // sets count for unread messages to the target user
         let participantKey = getParticipantKey(userId: userId)
-        let chat = Chat(participantKey: participantKey, participantIds: [userId, targetUserId], unreadCount: unreadCountDict, lastMessageContent: msg.content , lastMessageTimestamp: .now, lastMessageSenderId: userId)
+        let chat = Chat(participantKey: participantKey, participantIds: [userId, targetUserId], unreadCount: unreadCountDict, lastMessageContent: msg.content, lastMessageTimestamp: .now, lastMessageSenderId: userId)
        
-        firebaseManager.database.batch()
-        firebaseManager.database.runTransaction({ transaction, error in
-            transaction.setData(chat.toDict(lastSenderId: userId), forDocument: chatRef)
-            transaction.setData(msg.toDict(), forDocument: messageRef)
-            return nil
-        }) { object, error in
+        let batch = db.batch()
+        batch.setData(chat.toDict(lastSenderId: userId), forDocument: chatRef)
+        batch.setData(msg.toDict(), forDocument: messageRef)
+
+        batch.commit { error in
             if let error {
                 print("Send message transaction failed while creating new chat", error.localizedDescription)
                 self.createMessageErrorAlert()
-            } else {
-                print("Successfully created chat with the provided message: \(msg)")
-                self.chatId = chatRef.documentID
-                self.messages.append(msg)
-                self.messageContent = ""
+                return
             }
+
+            print("Successfully created chat with the provided message: \(msg)")
+            self.chatId = chatRef.documentID
+            self.messages.append(msg)
+            self.messageContent = ""
         }
     }
 }
@@ -198,14 +265,13 @@ extension MessagesViewModel {
             }
             return nil // finished
             
-        }, completion: { object, error in
+        }, completion: { _, error in
             if let error {
                 print("Send Message transaction failed", error.localizedDescription)
                 self.createMessageErrorAlert()
             } else {
                 print("Send Message transaction successfully committed")
                 self.messageContent = ""
-                self.messages.append(msg)
             }
         })
     }
