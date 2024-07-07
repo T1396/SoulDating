@@ -9,8 +9,8 @@ import SwiftUI
 
 struct LikesView: View {
     @StateObject private var likesViewModel: LikesViewModel
-    
-    init(user: User) {
+    @EnvironmentObject var chatVm: ChatViewModel
+    init(user: FireUser) {
         self._likesViewModel = StateObject(wrappedValue: LikesViewModel(user: user))
     }
     
@@ -25,7 +25,13 @@ struct LikesView: View {
                         let width = (geometry.size.width - 40 - 40) / 3
                         let height = width * 4 / 3 
 
-                        ImageWithGradientAndName(user: user, distance: likesViewModel.distance(to: user.location), minWidth: width, minHeight: height, textSize: .small)
+                        NavigationLink {
+                            let chatId = chatVm.returnChatIdIfExists(for: user.id)
+                            MessageAndProfileView(contentType: .message, targetUser: user, chatId: chatId, image: .constant(nil))
+                        } label: {
+                            ImageWithGradientAndName(user: user, distance: likesViewModel.distance(to: user.location), minWidth: width, minHeight: height, textSize: .small)
+                        }
+
                     }
                 }
                 .padding(.horizontal, 20)
@@ -38,5 +44,5 @@ struct LikesView: View {
 }
 
 #Preview {
-    LikesView(user: User(id: "1", name: "DASjkdsajdk"))
+    LikesView(user: FireUser(id: "1", name: "DASjkdsajdk"))
 }

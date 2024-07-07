@@ -45,12 +45,12 @@ struct SuggestionListView: View {
                 ScrollView {
                     LazyVStack {
                         ForEach(answers) { answer in
-                            Button(action: { selectPickupLine(answer: answer)}) {
+                            Button(action: { selectPickupLine(answer: answer) }, label: {
                                 Text(answer.message)
                                     .padding()
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .background(.accent.opacity(0.13), in: RoundedRectangle(cornerRadius: 12))
-                            }
+                            })
                             .buttonStyle(PressedButtonStyle())
                         }
                         .padding(.horizontal)
@@ -59,9 +59,11 @@ struct SuggestionListView: View {
             }
             
             HStack {
-                Button(action: { showSuggestions = false }) {
+                Button(action: { 
+                    showSuggestions = false
+                }, label: {
                     Text("Cancel")
-                }
+                })
                 .appButtonStyle()
                 Spacer()
                 Button(action: selectPickupLine) {
