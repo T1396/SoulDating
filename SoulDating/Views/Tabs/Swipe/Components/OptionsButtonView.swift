@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OptionsButtonView: View {
     @Binding var showOptionsSheet: Bool
-    let user: User
+    let user: FireUser
 
     var body: some View {
         Button {
@@ -19,12 +19,9 @@ struct OptionsButtonView: View {
                 .font(.title)
                 .foregroundStyle(.white)
         }
-        .sheet(isPresented: $showOptionsSheet) {
-            //SwipeViewOptionsSheet(reportedUser: user)
-        }
     }
 }
 
 #Preview {
-    OptionsButtonView(showOptionsSheet: .constant(true), user: User(id: "Hello", name: "Hallo", registrationDate: .now))
+    OptionsButtonView(showOptionsSheet: .constant(true), user: FireUser(id: "Hello", name: "Hallo", registrationDate: .now))
 }

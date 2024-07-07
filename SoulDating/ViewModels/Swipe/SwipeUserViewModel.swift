@@ -7,25 +7,30 @@
 
 import Foundation
 import Firebase
+import SwiftUI
 
 protocol SwipeUserDelegate: AnyObject {
-    func userDidSwipe(_ userId: String)
+    func userDidSwipe(_ userId: String, action: SwipeAction)
+    func userDidReport(_ userId: String)
 }
 
-class SwipeUserViewModel: BaseAlertViewModel, Identifiable, RangeCalculating {
-    func distance(to targetLocation: LocationPreference) -> String? {
-        return rangeManager.distanceString(from: currentLocation, to: targetLocation)
-    }
-    
+class SwipeUserViewModel: BaseAlertViewModel, Identifiable {
+    // MARK: properties
     weak var delegate: SwipeUserDelegate?
     
     private let TAG = "(SwipeUserViewModel)"
     private let firebaseManager = FirebaseManager.shared
-    @Published var otherUser: User
-    let currentUserId: String
-    private let currentLocation: LocationPreference
-    internal let rangeManager = RangeManager()
+    private let rangeManager = RangeManager()
+    private let userService: UserService
+    @Published var otherUser: FireUser
+
+    // MARK: init
+    init(otherUser: FireUser, userService: UserService = .shared) {
+        self.otherUser = otherUser
+        self.userService = userService
+    }
     
+    // MARK: computed properties
     var isNewUser: Bool {
         if let date = otherUser.registrationDate, !date.isOlderThan30Days {
             return true
@@ -34,24 +39,28 @@ class SwipeUserViewModel: BaseAlertViewModel, Identifiable, RangeCalculating {
         }
     }
     
-    init(currentUserId: String, otherUser: User, currentLocation: LocationPreference) {
-        self.currentUserId = currentUserId
-        self.otherUser = otherUser
-        self.currentLocation = currentLocation
-    }
     
-    func removeUser() {
+    
+    // MARK: functions
+    private func removeUserAfterSwipe(_ action: SwipeAction) {
         // send notification with delegate to remove swiped user from the list in swipeListViewModel
         DispatchQueue.main.async {
-            print("removed user outer viewmodel")
-            self.delegate?.userDidSwipe(self.otherUser.id)
+            self.delegate?.userDidSwipe(self.otherUser.id, action: action)
         }
     }
+
+    func removeUserAfterBlock() {
+        DispatchQueue.main.async {
+            self.delegate?.userDidReport(self.otherUser.id)
+        }
+    }
+
+    
 }
 
 extension SwipeUserViewModel {
     var distance: String? {
-        return rangeManager.distanceString(from: currentLocation, to: otherUser.location)
+        rangeManager.distanceString(from: userService.user.location, to: otherUser.location)
     }
     
     /// Sets a like dislike  or superlike after a swipe and updates it to firestore,
@@ -61,30 +70,38 @@ extension SwipeUserViewModel {
         guard let userId = firebaseManager.userId else { return }
         
         let db = firebaseManager.database
-        let swipe = Swipe(fromUserId: currentUserId, targetUserId: otherUser.id, action: action, timestamp: .now)
-        let targetUserSwipe = UserSwipe(action: action, fromUserId: currentUserId, timestamp: .now)
-        let userActionRef = db.collection("userActions").document(userId)
-        let targetUserLikesRef = db.collection("userLikes").document(otherUser.id)
-            .collection(action.rawValue).document()
+        let batch = db.batch()
         
-        firebaseManager.database.runTransaction { transaction, errorpointer in
+        // currentUser swipe metadata
+        let swipe = Swipe(fromUserId: userService.user.id, targetUserId: otherUser.id, action: action, timestamp: .now)
+        // the liked/dislikes user swipe metadata
+        let targetUserSwipe = UserSwipe(action: action, fromUserId: userService.user.id, timestamp: .now)
+        
+        let userActionRef = db.collection("userActions").document(userId).collection("actions").document()
+        if action == .like {
+            let targetUserLikesRef = db.collection("userLikes").document(otherUser.id)
+                .collection(action.rawValue).document()
             do {
-                try transaction.setData(from: swipe, forDocument: userActionRef)
-                try transaction.setData(from: targetUserSwipe, forDocument: targetUserLikesRef)
+                try batch.setData(from: targetUserSwipe, forDocument: targetUserLikesRef)
             } catch {
-                print("\(self.TAG) Error encoding swipe/ userSwipe struct", error.localizedDescription)
+                print("error setting targetUserLike", error.localizedDescription)
             }
-            return nil
-            
-        } completion: { object, error in
+        }
+
+        do {
+            try batch.setData(from: swipe, forDocument: userActionRef)
+        } catch {
+            print("\(self.TAG) Error encoding swipe / user swipe struct", error.localizedDescription)
+        }
+        
+        batch.commit { error in
             if let error {
                 print("Error saving user interaction \(action.rawValue)", error.localizedDescription)
+                return
             }
-            
-            // send notification with delegate to remove swiped user from the list in swipeListViewModel
-            DispatchQueue.main.async {
-                self.delegate?.userDidSwipe(self.otherUser.id)
-            }
+            // if successfully committed, remove user with delegate from list of swipeable users
+            print("successfully set \(action.title)")
+            self.removeUserAfterSwipe(action)
         }
     }
 }
@@ -98,4 +115,3 @@ extension SwipeUserViewModel {
         )
     }
 }
-
