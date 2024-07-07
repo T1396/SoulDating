@@ -8,12 +8,11 @@
 import SwiftUI
 
 extension Image {
-    func circularProgressImageStyle(progress: CGFloat, width: Int, height: Int) -> some View {
+    func circularProgressImageStyle(progress: CGFloat, width: CGFloat, height: CGFloat) -> some View {
         self
             .resizable()
             .scaledToFill()
             .clipShape(Circle())
-            .frame(width: CGFloat(width), height: CGFloat(height))
             .padding(3)
             .overlay(
                 Circle()
@@ -24,6 +23,7 @@ extension Image {
                     .animation(.linear(duration: 1), value: progress)
                     .blendMode(.sourceAtop)
             )
+            .frame(width: width, height: height)
     }
     
     func roundedImageStyle(width: CGFloat = 48, height: CGFloat = 48, cornerRadius: CGFloat = 14) -> some View {
@@ -33,12 +33,11 @@ extension Image {
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
     
-    func circularImageStyle(width: Int, height: Int) -> some View {
+    func circularImageStyle(width: CGFloat, height: CGFloat) -> some View {
         self
             .resizable()
             .scaledToFill()
             .clipShape(Circle())
-            .frame(width: CGFloat(width), height: CGFloat(height))
+            .frame(width: width, height: height)
     }
 }
-
