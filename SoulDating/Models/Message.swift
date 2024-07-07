@@ -8,17 +8,13 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct Message: Codable, Identifiable {
+struct Message: Codable, Identifiable, Equatable {
     @DocumentID var id: String?
     let senderId: String
     let receiverId: String
     let content: String
     let timestamp: Date
     var isRead: Bool
-    
-    static func ==(lhs: Message, rhs: Message) -> Bool {
-        return lhs.id == rhs.id
-    }
 }
 
 

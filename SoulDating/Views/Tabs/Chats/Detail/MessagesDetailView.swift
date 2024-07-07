@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct ChatMessagesView: View {
+struct MessagesDetailView: View {
     // MARK: properties
     let userId: String
     let chatId: String
-    
+
     @EnvironmentObject var chatViewModel: ChatViewModel
 
     @State private var isLoadingUser = true
-    @State private var user: User?
-    
+    @State private var user: FireUser?
+
     // MARK: body
     var body: some View {
         VStack {
@@ -25,9 +25,10 @@ struct ChatMessagesView: View {
                     .scaleEffect(1.5)
             } else {
                 if let user {
-                    WriteMessageView(targetUser: user, chatId: chatId)
+                    MessageAndProfileView(contentType: .message, targetUser: user, chatId: chatId, image: .constant(nil))
                 }
             }
+
         }
         .onAppear {
             chatViewModel.fetchAndReturnUser(userId: userId) { user in
@@ -39,5 +40,5 @@ struct ChatMessagesView: View {
 }
 
 #Preview {
-    ChatMessagesView(userId: "kdlsa", chatId: "dskal")
+    MessagesDetailView(userId: "kdlsa", chatId: "dskal")
 }
