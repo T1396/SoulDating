@@ -12,7 +12,7 @@ struct OnboardingIconStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.system(size: 80))
-            .foregroundStyle(.cyan)
+            .foregroundStyle(.secondaryAccent)
             .frame(maxWidth: .infinity, alignment: .center)
     }
 }

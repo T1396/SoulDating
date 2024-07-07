@@ -15,7 +15,7 @@ import SwiftUI
 protocol Reflectable {}
 
 /// let user and substructs we want to calculate implement reflectable protocol to identify substructs in countProperties function
-extension User: Reflectable {}
+extension FireUser: Reflectable {}
 extension UserGeneral: Reflectable {}
 extension Look: Reflectable {}
 extension Preferences: Reflectable {}
@@ -27,7 +27,7 @@ protocol OptionalProtocol {
 
 extension Optional: OptionalProtocol {
     func isNil() -> Bool {
-        return self == nil
+        self == nil
     }
 }
 
@@ -73,7 +73,7 @@ extension Reflectable {
 
 
 
-extension User {
+extension FireUser {
     var totalPercent: Double {
         let excludedFields: Set<String> = ["id", "blockedUsers", "onboardingCompleted", "registrationDate"]
         let counts = self.countProperties(excluding: excludedFields)
@@ -83,5 +83,3 @@ extension User {
         return percentageFilled
     }
 }
-
-

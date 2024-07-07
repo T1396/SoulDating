@@ -27,13 +27,12 @@ enum SwipeAction: String, CaseIterable, Identifiable, Codable {
         let horizontalTreshold: CGFloat = 100
         let verticalTreshold: CGFloat = -300
         
-        print("Width: \(dragAmount.width), Height. \(dragAmount.height)")
         switch (dragAmount.width, dragAmount.height) {
-        case (let x, _) where x > horizontalTreshold:
+        case (let width, _) where width > horizontalTreshold:
             return .like
-        case (let x, _) where x < -horizontalTreshold:
+        case (let width, _) where width < -horizontalTreshold:
             return .dislike
-        case (_, let y) where y < verticalTreshold:
+        case (_, let height) where height < verticalTreshold:
             return .superlike
         default:
             return nil

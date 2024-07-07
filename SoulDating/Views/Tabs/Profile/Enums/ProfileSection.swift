@@ -19,9 +19,9 @@ enum ProfileSection: Identifiable {
     
     var title: String {
         switch self {
-        case .general(_): "General"
-        case .about(_): "More about you"
-        case .preferences(_): "Preferences"
+        case .general: "General"
+        case .about: "More about you"
+        case .preferences: "Preferences"
         }
     }
     
@@ -33,7 +33,7 @@ enum ProfileSection: Identifiable {
     }
     
     static func allSections(profile: User) -> [ProfileSection] {
-            return [
+            [
                 .general([
                     .name(profile.name ?? ""),
                     .birthdate(profile.birthDate ?? .now.subtractYears(18)),
@@ -47,7 +47,7 @@ enum ProfileSection: Identifiable {
                     .job(profile.general?.job),
                     .languages(profile.general?.languages ?? []),
                     .smokingStatus(profile.general?.smokingStatus ?? .none),
-                    .interests(profile.general?.interests ?? []),
+                    .interests(profile.general?.interests ?? [])
                     
                 ]),
                 .preferences([

@@ -15,8 +15,8 @@ extension View {
         verticalTreshold: CGFloat = 300,
         maxRotation: Double = 15,
         overlayRadius: Int = 25,
-        user: User,
-        onSwipe: @escaping (SwipeAction, User) -> Void
+        user: FireUser,
+        onSwipe: @escaping (SwipeAction, FireUser) -> Void
     ) -> some View {
         
         var lastUpdateTime = Date()
@@ -52,8 +52,8 @@ extension View {
                     .onEnded { value in
                         let dynamicTreshold = swipeSpeed > 1000 ? treshold * 0.5 : treshold
                         
-                        if (abs(value.translation.width) > dynamicTreshold
-                            || abs(value.translation.height) > verticalTreshold) {
+                        if abs(value.translation.width) > dynamicTreshold
+                            || abs(value.translation.height) > verticalTreshold {
                             let action = SwipeAction.fromSwipe(dragAmount: value.translation)
                             if let action {
                                 let animation = Animation.easeOut(duration: 0.6)

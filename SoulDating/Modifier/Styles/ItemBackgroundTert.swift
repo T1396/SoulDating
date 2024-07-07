@@ -22,7 +22,7 @@ struct ItemBackgroundTert: ViewModifier {
 }
 
 extension View {
-    func itemBackgroundTertiary(textSize: CGFloat = 10, padding: CGFloat = 6, horizontalExtra: CGFloat = 12,textWeight: AppFont.TextWeight = .semibold) -> some View {
+    func itemBackgroundTertiary(textSize: CGFloat = 10, padding: CGFloat = 6, horizontalExtra: CGFloat = 12, textWeight: AppFont.TextWeight = .semibold) -> some View {
         self.modifier(ItemBackgroundTert(textSize: textSize, textWeight: textWeight, padding: padding, horizontalExtraPadd: horizontalExtra))
     }
 }

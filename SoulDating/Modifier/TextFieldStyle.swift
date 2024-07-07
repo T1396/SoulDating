@@ -22,11 +22,10 @@ struct AppTextFieldStyle: TextFieldStyle {
         configuration
             .padding(.vertical)
             .padding(.horizontal, paddingHorizontal)
-            .appFont(size: 18)
+            .appFont(size: 14)
             .background(
                 RoundedRectangle(cornerRadius: 15)
                     .fill(colorScheme == .light ? .gray.opacity(0.08) : .black.opacity(0.8))
-                    .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 2)
             )
             .overlay(
                 HStack {

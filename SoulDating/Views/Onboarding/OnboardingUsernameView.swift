@@ -9,55 +9,66 @@ import SwiftUI
 
 struct OnboardingUsernameView: View {
     // MARK: properties
-    @StateObject private var onboardingViewModel = OnboardingViewModel()
+    @ObservedObject var viewModel: OnboardingViewModel
     @EnvironmentObject var userViewModel: UserViewModel
-    
-    // MARK: computed properties
-    var buttonBackground: Color {
-        onboardingViewModel.isValidUserName ? .accentColor : .gray.opacity(0.7)
-    }
+    @Binding var progress: Double
+    @Binding var stepIndex: Int
     
     // MARK: body
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 10) {
-                ProgressView(value: 0.2)
-                    .tint(.cyan)
-                Text("Welcome!")
+                Text(Strings.welcome)
                     .appFont(size: 40, textWeight: .bold)
                     .frame(maxWidth: .infinity, alignment: .center)
                 
                 Image(systemName: "hand.raised.app.fill")
                     .onboardingIconStyle()
                 
-                Text("Lets get started")
+                Text(Strings.letsGetStarted)
                     .appFont(size: 30, textWeight: .bold)
                 
-                Text("What is your name?")
+                Text(Strings.whatsName)
                     .appFont(size: 24, textWeight: .medium)
                 
 
                 AppTextField(
-                    "Username",
-                    text: $onboardingViewModel.userDisplayName,
+                    Strings.userName,
+                    text: $viewModel.userDisplayName,
                     error: false,
-                    errorMessage: "Your name must have at least 4 character",
-                    supportText: "This will be your public profile name"
+                    errorMessage: Strings.atleast4Chars,
+                    supportText: Strings.publicName
                 )
                 
                 Spacer()
                 
-                NavigationLink(destination: OnboardingMoreInfoView(viewModel: onboardingViewModel)) {
-                    Text("Continue")
+                Button(action: goToNextPage) {
+                    Text(Strings.continues)
                         .appButtonStyle(fullWidth: true)
                 }
-                .disabled(!onboardingViewModel.isValidUserName)
+                .disabled(!viewModel.isValidUserName)
+
+
             }
             .padding()
+
+            .onAppear {
+                withAnimation {
+                    progress = 0.2
+                }
+            }
+        }
+    }
+    
+    // MARK: functions
+    private func goToNextPage() {
+        withAnimation {
+            stepIndex += 1 // go to next onboarding page
         }
     }
 }
 
 #Preview {
-    OnboardingUsernameView()
+    OnboardingUsernameView(viewModel: OnboardingViewModel(), progress: .constant(0.2), stepIndex: .constant(1))
+        .environmentObject(UserViewModel())
 }

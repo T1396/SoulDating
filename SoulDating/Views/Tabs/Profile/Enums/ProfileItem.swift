@@ -76,7 +76,7 @@ enum ProfileItem: Identifiable, Equatable {
     
     var editText: String {
         switch self {
-        case .name(_): "Update your username"
+        case .name: "Update your username"
         case .birthdate: "Update your birthdate"
         case .location: "Update your location"
         case .job: "Update your actual Job"

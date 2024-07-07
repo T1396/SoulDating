@@ -12,13 +12,17 @@ struct OnboardingLocationView: View {
     // MARK: properties
     @ObservedObject var viewModel: OnboardingViewModel
     @EnvironmentObject var userViewModel: UserViewModel
-    
+    @Binding var progress: Double
+    @Binding var stepIndex: Int
+    @Binding var isOnboardingSuccessfully: Bool
+
     @State private var navigate = false
     
     // MARK: body
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
+                
                 Text("Your location")
                     .appFont(size: 32, textWeight: .bold)
                 
@@ -48,32 +52,41 @@ struct OnboardingLocationView: View {
                     selectedSuggestion: $viewModel.selectedSuggestion,
                     onPlaceSelected: saveLocation
                 )
-            
-                    
-                Button("Finish") {
-                    viewModel.updateUserDocument()
-                    navigate.toggle()
+
+                Button(action: finishOnboarding) {
+                    Text(Strings.finish)
+                        .appButtonStyle(fullWidth: true)
                 }
-                .appButtonStyle(fullWidth: true)
+                .disabled(!viewModel.isValidLocation)
                 .buttonStyle(PressedButtonStyle())
-          
+
             }
-            .navigationDestination(isPresented: $navigate) {
-                NavigationView()
-                    .environmentObject(userViewModel)
+            .onAppear {
+                withAnimation {
+                    progress = 0.2
+                }
             }
-            .navigationBarBackButtonHidden(true)
         }
         .padding(.horizontal)
     }
     
     // MARK: functions
-    func saveLocation(place: MKLocalSearchCompletion) {
+    private func saveLocation(place: MKLocalSearchCompletion) {
         viewModel.togglePlace(completion: place)
+    }
+
+    private func finishOnboarding() {
+        withAnimation {
+            stepIndex += 1
+            viewModel.updateUserDocument {
+                print("updated user document")
+                isOnboardingSuccessfully = true
+            }
+        }
     }
 }
 
 #Preview {
-    OnboardingLocationView(viewModel: OnboardingViewModel())
+    OnboardingLocationView(viewModel: OnboardingViewModel(), progress: .constant(1.0), stepIndex: .constant(5), isOnboardingSuccessfully: .constant(false))
         .environmentObject(UserViewModel())
 }

@@ -44,15 +44,16 @@ struct OverlayImageView: View {
             }
             .zIndex(2)
             
-            Button(action: {}) {
+            Button(action: {
+
+            }, label: {
                 Text("Update picture")
                     .appFont(size: 14, textWeight: .bold)
                     .padding()
                     .frame(width: width)
                     .background(.cyan, in: RoundedRectangle(cornerRadius: 25, style: .continuous))
                     .foregroundStyle(.white)
-            }
-            
+            })
         }
         .ignoresSafeArea(.all)
         .zIndex(3)

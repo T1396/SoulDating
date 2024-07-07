@@ -62,4 +62,3 @@ struct OptionToggleRow: View {
 #Preview {
     OptionToggleRow(systemName: "heart.fill", text: "Like irgendwas", isSelected: true, action: {})
 }
-

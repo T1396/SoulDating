@@ -11,12 +11,13 @@ import SwiftUI
 struct SwipeCardView: View {
     // MARK: properties
     @EnvironmentObject var chatViewModel: ChatViewModel
-    @ObservedObject var viewModel: SwipeUserViewModel
+    @ObservedObject var swipeUserVm: SwipeUserViewModel
     
     @Binding var activeCardID: String?
+    @State private var image: Image?
     @State private var dragAmount: CGSize = .zero // state for the actual position of the card
     @State private var showOptionsSheet = false
-    @State private var isMessageScreenActive = false
+    @State private var navigateToProfileOrMessage = false
     
     // MARK: body
     var body: some View {
@@ -24,56 +25,54 @@ struct SwipeCardView: View {
             let width = geometry.size.width
             let height = geometry.size.height
             ZStack(alignment: .bottom) {
-            
-                UserImage(url: viewModel.otherUser.profileImageUrl, minWidth: width, minHeight: height)
                 
-                LinearGradient(colors: [.clear, .black], startPoint: .center, endPoint: .bottom)
+                UserImage(url: swipeUserVm.otherUser.profileImageUrl, minWidth: width, minHeight: height) { image in
+                    self.image = image
+                }
                 
-                SwipeImageOverlay(
-                    viewModel: viewModel,
-                    showOptionsSheet: $showOptionsSheet,
-                    isMessageScreenActive: $isMessageScreenActive
-                )
+                LinearGradient(colors: [.clear, .black.opacity(0.8)], startPoint: .center, endPoint: .bottom)
+
+                SwipeImageOverlay(viewModel: swipeUserVm, showOptionsSheet: $showOptionsSheet, navigateToProfileOrMessage: $navigateToProfileOrMessage)
                 .padding()
                 
                 .sheet(isPresented: $showOptionsSheet) {
                     ReportSheetView(
                         showSheet: $showOptionsSheet,
-                        userId: viewModel.currentUserId,
-                        reportedUser: viewModel.otherUser,
+                        reportedUser: swipeUserVm.otherUser,
                         onBlocked: removeBlockedUser
                     )
                 }
-                .fullScreenCover(isPresented: $isMessageScreenActive) {
-                    withAnimation {
-                        let chatId = chatViewModel.returnChatIdIfExists(for: viewModel.otherUser.id)
-                        return WriteMessageView(targetUser: viewModel.otherUser, chatId: chatId)
-                    }
-                }
+            }
+            .navigationDestination(isPresented: $navigateToProfileOrMessage) {
+                let chatId = chatViewModel.returnChatIdIfExists(for: swipeUserVm.otherUser.id)
+                MessageAndProfileView(targetUser: swipeUserVm.otherUser, chatId: chatId, image: $image)
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .clipShape(RoundedRectangle(cornerRadius: 25))
             .clipped()
             // modifier to make whole card swipeable
-            .swipeGesture(dragAmount: $dragAmount, user: viewModel.otherUser, onSwipe: onSwipe)
+            .swipeGesture(dragAmount: $dragAmount, user: swipeUserVm.otherUser, onSwipe: onSwipe)
             
         }
         // ensures that the image stays in the foreground when swiping it out
-        .zIndex(viewModel.otherUser.id == activeCardID ? 1 : 0)
+        .zIndex(swipeUserVm.otherUser.id == activeCardID ? 1 : 0)
     }
     
     // MARK: functions
-    private func onSwipe(action: SwipeAction, user: User) {
-        viewModel.setActionAfterSwipe(action)
+    private func onSwipe(action: SwipeAction, user: FireUser) {
+        withAnimation {
+            swipeUserVm.setActionAfterSwipe(action)
+        }
     }
     
     private func removeBlockedUser() {
         withAnimation {
-            viewModel.removeUser()
+            swipeUserVm.removeUserAfterBlock()
         }
     }
 }
 
 #Preview {
-    SwipeCardView(viewModel: SwipeUserViewModel(currentUserId: "123", otherUser: User(id: "2"), currentLocation: LocationPreference(latitude: 52.10, longitude: 9.10, name: "Hallo", radius: 100)), activeCardID: .constant("2"))
+    SwipeCardView(swipeUserVm: SwipeUserViewModel(otherUser: FireUser(id: "2")), activeCardID: .constant("2"))
+        .environmentObject(ChatViewModel())
 }

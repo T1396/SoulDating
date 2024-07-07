@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct ProfileImageHeaderView: View {
-    var user: User
+    @Binding var user: FireUser
     @Binding var loadedImage: Image?
     @Binding var isImagePresented: Bool
     
     var body: some View {
-        print("Percent: \(user.totalPercent)")
-        return HStack {
-            UserProgressImage(imageUrl: user.profileImageUrl, width: 80, height: 80, userProgress: CGFloat(user.totalPercent), onAppear: { image in
+        HStack {
+            ProfileProgressImage(imageUrl: user.profileImageUrl, width: 80, height: 80, userProgress: CGFloat(user.totalPercent), onAppear: { image in
                 loadedImage = image
             })
             .onTapGesture {
@@ -38,7 +37,7 @@ struct ProfileImageHeaderView: View {
 }
 
 #Preview {
-    ProfileImageHeaderView(user: User(
+    ProfileImageHeaderView(user: .constant(FireUser(
         id: "12345",
         name: "Jane Doe",
         profileImageUrl: "https://example.com/image.jpg",
@@ -70,7 +69,6 @@ struct ProfileImageHeaderView: View {
         preferences: Preferences(
             height: 175,
             wantsChilds: false,
-            distance: 100,
             smoking: true,
             sports: false,
             drinking: true,
@@ -80,15 +78,14 @@ struct ProfileImageHeaderView: View {
         ),
         blockedUsers: ["98765"],
         registrationDate: Date()
-    ), loadedImage: .constant(nil), isImagePresented: .constant(true))
+    )), loadedImage: .constant(nil), isImagePresented: .constant(true))
 }
 
 
 #Preview {
-    ProfileImageHeaderView(user: User(
+    ProfileImageHeaderView(user: .constant(FireUser(
         id: "12345",
         name: "kldas",
         profileImageUrl: "https://firebasestorage.googleapis.com:443/v0/b/souldating-b6486.appspot.com/o/profileImages%2F66K5In3reXQc8mMuqdkISd3l4I63%2F64C16806-76D0-407C-96E4-7F6DDE7CF7F8.jpg?alt=media&token=3dab4679-4cc7-471a-9de4-75e29b3395ad"
-    ), loadedImage: .constant(nil), isImagePresented: .constant(true))
+    )), loadedImage: .constant(nil), isImagePresented: .constant(true))
 }
-

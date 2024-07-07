@@ -11,35 +11,32 @@ struct AboutYouView: View {
     // MARK: properties
     @EnvironmentObject var userViewModel: UserViewModel
     @State private var isSheetPresented = false
-    @State private var activeSheetElement: AboutYouItem?
-    
+    @State private var activeSheet: (any AboutYouItemProtocol)?
+
     // MARK: body
     var body: some View {
         Form {
             ForEach(AboutYouSection.allCases) { section in
-                
                 Section(section.displayName) {
-                    ForEach(section.items(user: userViewModel.user)) { item in
+                    ForEach(section.items(), id: \.title) { item in
                         Button(action: {
-                            self.activeSheetElement = item
-                            self.isSheetPresented = true
-                        }) {
-                            SettingsElement(title: item.title, value: item.valueString, icon: item.icon)
-                        }
+                            activeSheet = item
+                            isSheetPresented = true
+                        }, label: {
+                            ProfileItemRow(title: item.title, value: item.value(user: $userViewModel.user) ?? "", systemName: item.icon)
+                        })
                     }
                 }
             }
-            
-            
         }
         .sheet(isPresented: Binding(
             get: { isSheetPresented },
             set: { isSheetPresented = $0 }
-        ), onDismiss: { activeSheetElement = nil }, content: {
-            activeSheetElement?.editView(user: userViewModel.user)
+        ), onDismiss: { activeSheet = nil }, content: {
+            activeSheet?.editView(user: $userViewModel.user)
                 .presentationDetents([.medium, .large])
         })
-        
+
         .listStyle(.insetGrouped)
     }
 }

@@ -10,18 +10,18 @@ import Firebase
 
 struct EditDateView: View {
     let title: String
-    let oldDate: Date
-    
+    @Binding var initialDate: Date?
+
     let path: String
-    @EnvironmentObject var profileViewModel: ProfileViewModel
+    @EnvironmentObject var editVm: EditUserViewModel
     @Environment(\.dismiss) var dismiss
     @State private var newDate: Date
 
     
-    init(title: String, date: Date, path: String) {
+    init(title: String, date: Binding<Date?>, path: String) {
         self.title = title
-        self.oldDate = date
-        self._newDate = State(initialValue: date)
+        self._initialDate = date
+        self._newDate = State(initialValue: date.wrappedValue ?? Date().subtractYears(18))
         self.path = path
     }
     
@@ -44,17 +44,18 @@ struct EditDateView: View {
                     Text("Update")
                         .appButtonStyle()
                 }
-                .disabled(newDate == oldDate)
+                .disabled(newDate == initialDate)
             }
         }
         .padding()
     }
     
     private func save() {
-        profileViewModel.updateUserField(path, with: newDate)
+        editVm.updateUserField(path, with: newDate)
+        initialDate = newDate
     }
 }
 
 #Preview {
-    EditDateView(title: "Change your Birthdate", date: .now, path: "dkoasl")
+    EditDateView(title: "Change your Birthdate", date: .constant(.now), path: "dkoasl")
 }

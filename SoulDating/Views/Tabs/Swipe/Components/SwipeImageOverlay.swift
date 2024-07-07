@@ -8,15 +8,18 @@
 import SwiftUI
 
 struct SwipeImageOverlay: View {
+    // MARK: properties
     @ObservedObject var viewModel: SwipeUserViewModel
     @Binding var showOptionsSheet: Bool
-    @Binding var isMessageScreenActive: Bool
-    
+    @Binding var navigateToProfileOrMessage: Bool
     @State private var isListVisible = false
-    var user: User {
+    
+    // MARK: computed properties
+    var user: FireUser {
         viewModel.otherUser
     }
     
+    // MARK: body
     var body: some View {
         VStack {
             userNameOptionsRow
@@ -50,8 +53,9 @@ struct SwipeImageOverlay: View {
             
             Button {
                 withAnimation {
+                    isListVisible.toggle()
                 }
-                isListVisible.toggle()
+                
 
 
             } label: {
@@ -70,7 +74,7 @@ struct SwipeImageOverlay: View {
 
                     
                     if isListVisible {
-                        VStack() {
+                        VStack {
                             Text("Location: \(user.location.name)")
                                 .appFont(size: 12)
                                 .padding(5)
@@ -106,7 +110,6 @@ struct SwipeImageOverlay: View {
                         }
                         .foregroundStyle(.white)
                         .transition(.opacity.animation(.easeInOut(duration: 0.15)))
-//                        .transition(.asymmetric(insertion: .move(edge: .top).combined(with: .offset(y: -40)), removal: .push(from: .bottom)).combined(with: .offset(y: -0)))
                     }
                 }
                 .frame(maxWidth: isListVisible ? 100 : nil, alignment: .leading)
@@ -114,26 +117,17 @@ struct SwipeImageOverlay: View {
                 .background(isListVisible ? .black.opacity(0.4) : .blue.opacity(0.6), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            
-            
-            
                         
             Spacer()
             
-            HStack(spacing: 30) {
-                controlIcon("xmark.circle.fill", color: .red) {
-                    withAnimation {
-                        viewModel.setActionAfterSwipe(.dislike)
-                    }
-                }
-                controlIcon("message.fill", color: .green) {
-                    isMessageScreenActive.toggle()
-                }
-                controlIcon("heart.fill", color: .red) {
-                    viewModel.setActionAfterSwipe(.like)
-                }
+            OverlayControlIcons {
+                // dislike
+                viewModel.setActionAfterSwipe(.dislike)
+            } onMessage: {
+                navigateToProfileOrMessage.toggle()
+            } onLike: {
+                viewModel.setActionAfterSwipe(.like)
             }
-            .padding(.bottom)
         }
     }
     
@@ -147,47 +141,29 @@ struct SwipeImageOverlay: View {
             
             Spacer()
             
-            Button(action: { showOptionsSheet.toggle() }) {
+            Button(action: {
+                showOptionsSheet.toggle()
+            }, label: {
                 Image(systemName: "ellipsis")
                     .font(.title)
                     .foregroundStyle(.white)
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private func controlIcon(_ systemName: String, color: Color, action: @escaping() -> Void) -> some View {
-        Button {
-            print("clicked control icon")
-            action()
-        } label: {
-            Image(systemName: systemName)
-                .font(.title)
-                .foregroundStyle(color)
-                .padding()
-                .background()
-                .clipShape(Circle())
+            })
         }
     }
 }
 
+
+
 #Preview {
     SwipeImageOverlay(
         viewModel: SwipeUserViewModel(
-            currentUserId: "dlsöa",
-            otherUser: User(
+            otherUser: FireUser(
                 id: "2",
                 general: UserGeneral(job: "Klempner", interests: [.animals, .art, .astrology]),
                 look: Look(height: 180)
-            ),
-            currentLocation: LocationPreference(
-                latitude: 52.102,
-                longitude: 10.9123,
-                name: "Berlin",
-                radius: 100
             )
         ),
         showOptionsSheet: .constant(false),
-        isMessageScreenActive: .constant(false)
+        navigateToProfileOrMessage: .constant(false)
     )
 }

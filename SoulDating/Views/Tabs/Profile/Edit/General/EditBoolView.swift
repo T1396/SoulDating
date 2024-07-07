@@ -7,62 +7,68 @@
 
 import SwiftUI
 
+/// generic view that is used to edit user details where the decision has 2 Options
+/// e.g. if the user dates smoker or drinker
 struct EditBoolView: View {
+    // MARK: properties
+    let fieldName: String
     var title: String
-    var subtitle: String
-    @State private var isEnabled: Bool = false
+    var subtitle: String?
+    @Binding var initialIsEnabled: Bool?
 
+    @EnvironmentObject var editVm: EditUserViewModel
+    @Environment(\.dismiss) var dismiss
+    @State private var isEnabled: Bool
+    
+    // MARK: computed properties
+    var saveDisabled: Bool {
+        initialIsEnabled == isEnabled
+    }
+    
+    // MARK: init
+    init(title: String, subtitle: String?, isEnabled: Binding<Bool?>, fieldName: String) {
+        self.title = title
+        self.subtitle = subtitle
+        self._isEnabled = State(initialValue: isEnabled.wrappedValue ?? false)
+        self._initialIsEnabled = isEnabled
+        self.fieldName = fieldName
+    }
+
+    // MARK: body
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(title)
-                .font(.title)
-            Text(subtitle)
-                .font(.subheadline)
-                .foregroundColor(.gray)
+            Text("Change your preference")
+                .appFont(size: 20, textWeight: .bold)
+            if let subtitle {
+                Text(subtitle)
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
 
-            Toggle(isOn: $isEnabled) {
-                Text("Switch")
             }
-            .toggleStyle(SymbolToggleStyle(systemImage: "checkmark.circle.fill", activeColor: .cyan))
+            Toggle(isOn: $isEnabled) {
+                Text(title)
+                    .appFont(size: 16, textWeight: .semibold)
+            }
+            .toggleStyle(SymbolToggleStyle())
+            
+            
+            Button(action: saveChanges) {
+                Text("Save")
+                    .appButtonStyle(fullWidth: true)
+            }
+            .disabled(saveDisabled)
         }
         .padding()
     }
-}
-
-struct SymbolToggleStyle: ToggleStyle {
-
-    var systemImage: String = "checkmark"
-    var activeColor: Color = .green
-
-    func makeBody(configuration: Configuration) -> some View {
-        HStack {
-            configuration.label
-
-            Spacer()
-
-            RoundedRectangle(cornerRadius: 30)
-                .fill(configuration.isOn ? activeColor : Color(.systemGray5))
-                .overlay {
-                    Circle()
-                        .fill(.white)
-                        .padding(3)
-                        .overlay {
-                            Image(systemName: systemImage)
-                                .foregroundColor(configuration.isOn ? activeColor : Color(.systemGray5))
-                        }
-                        .offset(x: configuration.isOn ? 10 : -10)
-
-                }
-                .frame(width: 50, height: 32)
-                .onTapGesture {
-                    withAnimation(.spring()) {
-                        configuration.isOn.toggle()
-                    }
-                }
-        }
+    
+    // MARK: functions
+    private func saveChanges() {
+        editVm.updateUserField(fieldName, with: isEnabled)
+        initialIsEnabled = isEnabled
+        dismiss()
     }
 }
 
 #Preview {
-    EditBoolView(title: "Do you date smokers?", subtitle: "")
+    EditBoolView(title: "Do you date smoker?", subtitle: nil, isEnabled: .constant(true), fieldName: "dsa")
 }
