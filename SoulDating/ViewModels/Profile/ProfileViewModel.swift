@@ -13,7 +13,7 @@ import Firebase
 class ProfileViewModel: BaseAlertViewModel {
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
-    @Published var user: User
+    private let userService: UserService
     @Published var selectedImage: UIImage? {
         didSet {
             if selectedImage != nil {
@@ -30,25 +30,30 @@ class ProfileViewModel: BaseAlertViewModel {
     @Published var currentlyDraggingImage: SortedImage = .init(imageUrl: "", position: 0)
     
     // MARK: init
-    init(user: User) {
-        self.user = user
+    init(userService: UserService = .shared) {
+        self.userService = userService
         super.init()
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdate(_:)), name: .userDocumentUpdated, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(didUpdate(_:)), name: .userDocumentUpdated, object: nil)
         fetchUserImages()
     }
-    
+
+    // MARK: computed properties
+    var user: FireUser {
+        userService.user
+    }
+
     
     // MARK: functions
-    @objc
-    private func didUpdate(_ notification: Notification) {
-        guard let userInfo = notification.userInfo,
-              let updatedUser = userInfo["user"] as? User else {
-            print("Update user with notification failed")
-            return
-        }
-        print("Updated with user notification successfully")
-        self.user = updatedUser
-    }
+//    @objc
+//    private func didUpdate(_ notification: Notification) {
+//        guard let userInfo = notification.userInfo,
+//              let updatedUser = userInfo["user"] as? User else {
+//            print("Update user with notification failed")
+//            return
+//        }
+//        print("Updated with user notification successfully")
+//        self.user = updatedUser
+//    }
     
     /// updates any user setting in firestore like name, age etc
     /// - Parameters:
@@ -57,7 +62,7 @@ class ProfileViewModel: BaseAlertViewModel {
     /// - value:
     func updateUserField<T: Codable>(_ fieldName: String, with value: T) {
         let db = firebaseManager.database
-        db.collection("users").document(user.id).updateData([fieldName: value]) { error in
+        db.collection("users").document(userService.user.id).updateData([fieldName: value]) { error in
             if let error = error {
                 print("Error updating field \(fieldName): \(error.localizedDescription)")
                 self.createAlert(title: "Update error", message: "We couldn't update your profile setting... Please report this as a bug or try again.")
@@ -148,7 +153,7 @@ extension ProfileViewModel {
         }
         let filename = UUID().uuidString + ".jpg"
         let userRef = firebaseManager.storage.reference().child("profileImages/\(userId)/otherImages/\(filename)")
-        userRef.putData(imageData, metadata: nil) { metadata, error in
+        userRef.putData(imageData, metadata: nil) { _, error in
             if let error {
                 completion(.failure(error))
                 return
@@ -174,7 +179,7 @@ extension ProfileViewModel {
         if let index = newImages.firstIndex(where: { $0.id == removedImageId }) {
             newImages.remove(at: index)
             
-            let imagesData = newImages.map { $0.toDict(pos: $0.position )}
+            let imagesData = newImages.map { $0.toDict(pos: $0.position) }
             docRef.updateData(["images": imagesData]) { error in
                 if let error {
                     print("Failed to update user images document", error.localizedDescription)
@@ -193,7 +198,7 @@ extension ProfileViewModel {
     func updateImageOrderInFirestore() {
         guard let userId = firebaseManager.userId else { return }
         let images = userImages
-        let data = images.enumerated().map { $1.toDict(pos: $0)} // $0 == index, $1 == image
+        let data = images.enumerated().map { $1.toDict(pos: $0) } // $0 == index, $1 == image
         let docRef = firebaseManager.database.collection("userImages").document(userId)
         docRef.updateData(["images": data]) { error in
             if let error {

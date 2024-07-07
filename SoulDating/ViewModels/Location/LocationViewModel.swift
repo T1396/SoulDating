@@ -12,10 +12,9 @@ import Combine
 class LocationViewModel: BaseNSViewModel, MKLocalSearchCompleterDelegate {
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
+    private let userService: UserService
     private var searchCancellable: AnyCancellable?
     private var completer: MKLocalSearchCompleter
-    
-    private var user: User
     private var oldLocation: LocationPreference
     
     @Published var newLocation: LocationPreference?
@@ -42,11 +41,12 @@ class LocationViewModel: BaseNSViewModel, MKLocalSearchCompleterDelegate {
     }
     
     // MARK: init
-    init(location: LocationPreference, user: User) {
+    init(userService: UserService = .shared) {
+        self.userService = userService
+        let location = userService.user.location
         self.oldLocation = location
         // if latitude is lower than -90 its a base value meaning location must be initially set
-        self.newLocation = location.latitude >= -90 ? location : nil
-        self.user = user
+        self.newLocation = location
         self.radius = location.radius
         self.completer = MKLocalSearchCompleter()
         super.init()
@@ -69,9 +69,7 @@ class LocationViewModel: BaseNSViewModel, MKLocalSearchCompleterDelegate {
     
     // MARK: functions
     func updateLocation(completion: @escaping () -> Void) {
-        guard let userId = firebaseManager.userId,
-              let locationData = getLocationDict(),
-              let newLocation else {
+        guard let userId = firebaseManager.userId, let locationData = getLocationDict() else {
             completion()
             return
         }
@@ -84,10 +82,9 @@ class LocationViewModel: BaseNSViewModel, MKLocalSearchCompleterDelegate {
                 } else {
                     print("Location successfully updated")
                     if let newLocation = self.newLocation {
-                        self.user.location = newLocation
-                        NotificationCenter.default.post(name: .userDocumentUpdated, object: nil, userInfo: ["user": self.user])
+                        self.userService.user.location = newLocation
                     } else {
-                        self.createAlert(title: "Error", message: "")
+                        self.createAlert(title: "Error", message: "Something went wrong while updating your location...")
                     }
                 }
                 completion()
@@ -105,7 +102,7 @@ extension LocationViewModel {
         }
         let searchRequest = MKLocalSearch.Request(completion: searchSuggestion)
         let search = MKLocalSearch(request: searchRequest)
-        search.start { (response, error) in
+        search.start { response, error in
             guard let response = response, error == nil else {
                 print("Fehler beim Abrufen der Details: \(error?.localizedDescription ?? "Unbekannter Fehler")")
                 self.createAlert(title: "Error", message: "An error occured while saving your selection")
@@ -152,4 +149,3 @@ extension LocationViewModel {
         return locationData
     }
 }
-

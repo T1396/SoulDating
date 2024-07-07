@@ -22,7 +22,7 @@ struct SignInView: View {
                     .clipShape(Capsule())
             }
             .sheet(isPresented: $showSignInSheet) {
-                SignInSheet()
+                SignInSheet(isPresented: $showSignInSheet)
                     .presentationDetents([.medium, .large])
             }
         }
@@ -33,5 +33,3 @@ struct SignInView: View {
     SignInView()
         .environmentObject(UserViewModel())
 }
-
-

@@ -15,7 +15,8 @@ struct SignInSheet: View {
     @EnvironmentObject var userViewModel: UserViewModel
     @State private var signInState: SignInState = .showSignOptions
     @Environment(\.colorScheme) var colorScheme
-    
+    @Binding var isPresented: Bool
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -101,7 +102,8 @@ struct SignInSheet: View {
                 error: userViewModel.email.count < 6,
                 errorMessage: "This is no valid E-Mail"
             )
-            
+            .padding(.top, 24)
+
             AppTextField(
                 "Passwort",
                 text: $userViewModel.password,
@@ -122,9 +124,7 @@ struct SignInSheet: View {
             
             // Login or Sign in Button
             Button(userViewModel.mode.title, action: userViewModel.signIn)
-                .buttonStyle(.borderedProminent)
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(.white)
+                .appButtonStyle(fullWidth: true)
         }
         .padding(.horizontal, 24)
     }
@@ -134,7 +134,14 @@ struct SignInSheet: View {
             signInState = .showSignOptions
         }
     }
-    
+
+    private func signIn() {
+        withAnimation {
+            userViewModel.signIn()
+            isPresented = false
+        }
+    }
+
     
     private func showEnterSignInDetails() {
         withAnimation {
@@ -144,6 +151,6 @@ struct SignInSheet: View {
 }
 
 #Preview {
-    SignInSheet()
+    SignInSheet(isPresented: .constant(true))
         .environmentObject(UserViewModel())
 }
