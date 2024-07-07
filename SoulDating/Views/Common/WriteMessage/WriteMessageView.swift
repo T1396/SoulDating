@@ -16,9 +16,8 @@ struct WriteMessageView: View {
     
     
     // MARK: init
-    init(targetUser: User, chatId: String?, isPresented: Binding<Bool>) {
+    init(targetUser: User, chatId: String?) {
         self.targetUser = targetUser
-        //self._isPresented = isPresented
         self._msgViewModel = StateObject(wrappedValue: MessagesViewModel(targetUserId: targetUser.id, chatId: chatId))
     }
     

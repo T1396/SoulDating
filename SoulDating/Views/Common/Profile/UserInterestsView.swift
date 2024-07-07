@@ -36,5 +36,5 @@ struct UserInterestsView: View {
 }
 
 #Preview {
-    UserInterestsView(otherVm: OtherProfileViewModel(currentUser: User(id: "1"), otherUser: User(id: "2")))
+    UserInterestsView(otherVm: OtherProfileViewModel(otherUser: FireUser(id: "2")))
 }

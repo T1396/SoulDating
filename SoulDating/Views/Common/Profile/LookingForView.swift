@@ -54,5 +54,5 @@ struct LookingForView: View {
 }
 
 #Preview {
-    LookingForView(otherVm: OtherProfileViewModel(currentUser: User(id: "1"), otherUser: User(id: "2")))
+    LookingForView(otherVm: OtherProfileViewModel(otherUser: FireUser(id: "2")))
 }

@@ -12,18 +12,20 @@ struct OtherUserProfileView: View {
     // MARK: properties
     @EnvironmentObject var userViewModel: UserViewModel
     @StateObject private var otherVm: OtherProfileViewModel
-    @Binding var showProfile: Bool
+    @StateObject private var swipeUserVm: SwipeUserViewModel
+    @Binding var image: Image?
+    @Binding var contentType: MessageAndProfileView.ContentType // to change between messages and profile
     @State private var showImagesView = false
     @State private var showSheet = true
-    @Binding var image: Image?
-    let targetUser: User
-    
+
+    @Environment(\.dismiss) var dismiss
+
     // MARK: init
-    init( showProfile: Binding<Bool>, image: Binding<Image?>, targetUser: User, user: User) {
-        self._otherVm = StateObject(wrappedValue: OtherProfileViewModel(currentUser: user, otherUser: targetUser))
-        self._showProfile = showProfile
+    init(image: Binding<Image?>, targetUser: FireUser, contentType: Binding<MessageAndProfileView.ContentType>) {
+        self._otherVm = StateObject(wrappedValue: OtherProfileViewModel(otherUser: targetUser))
+        self._swipeUserVm = StateObject(wrappedValue: SwipeUserViewModel(otherUser: targetUser))
         self._image = image
-        self.targetUser = targetUser
+        self._contentType = contentType
     }
     
     // MARK: body
@@ -44,19 +46,18 @@ struct OtherUserProfileView: View {
                     }
                     Spacer()
                 }
-                
-                Button {
-                    showProfile.toggle()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .padding(8)
-                        .background(.white.opacity(0.9), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                HStack {
+                    BackArrow {
+                        dismiss()
+                    }
+                    .padding(12)
+                    .background(.white.opacity(0.7), in: RoundedRectangle(cornerRadius: 25, style: .continuous))
+                    .padding(.horizontal)
+
                 }
-                .padding()
-                .padding(.top, 44)
-                .offset(x: -6)
+                .padding(.top, 49)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                
+
                 if showImagesView {
                     
                     VStack {
@@ -66,7 +67,7 @@ struct OtherUserProfileView: View {
                         
                         TabView {
                             ForEach(otherVm.userImages) { image in
-                                RoundedAsyncImage(imageUrl: image.imageUrl, width: width, height: height)
+                                RoundedWebImage(imageUrl: image.imageUrl, width: width, height: height)
                                     .onTapGesture(perform: hideImageOverlay)
                             }
                         }
@@ -77,9 +78,14 @@ struct OtherUserProfileView: View {
                 }
             }
         }
+        .onAppear {
+            showSheet = true
+        }
+        .toolbar(.hidden)
+        .navigationBarBackButtonHidden(false)
         .ignoresSafeArea(edges: .top)
         .sheet(isPresented: $showSheet) {
-            ProfileSheet(otherVm: otherVm)
+            ProfileSheet(otherVm: otherVm, swipeUserVm: swipeUserVm, contentType: $contentType)
                 .transition(.move(edge: .bottom))
                 .interactiveDismissDisabled()
                 .presentationDragIndicator(.visible)
@@ -92,7 +98,7 @@ struct OtherUserProfileView: View {
     // MARK: views
     @ViewBuilder
     private func loadAsynImage() -> some View {
-        if let url = URL(string: targetUser.profileImageUrl ?? "") {
+        if let url = URL(string: otherVm.otherUser.profileImageUrl ?? "") {
             AsyncImage(url: url) { image in
                 image
                     .resizable()
@@ -116,9 +122,11 @@ struct OtherUserProfileView: View {
     
     // MARK: functions
     private func showImageOverlay() {
-        withAnimation {
-            showSheet = false
-            showImagesView = true
+        if !otherVm.userImages.isEmpty {
+            withAnimation {
+                showSheet = false
+                showImagesView = true
+            }
         }
     }
     
@@ -132,8 +140,8 @@ struct OtherUserProfileView: View {
 
 #Preview {
     OtherUserProfileView(
-        showProfile: .constant(true), image: .constant(nil),
-        targetUser: User(
+        image: .constant(nil),
+        targetUser: FireUser(
             id: "1",
             name: "Hannelor",
             profileImageUrl: "https://firebasestorage.googleapis.com:443/v0/b/souldating-b6486.appspot.com/o/profileImages%2FFW4oOlh92QUyzxUd8reUoYVSBfn2%2F8E55C58C-C011-4A27-B64F-78FDF5921167.jpg?alt=media&token=ad2b148f-3685-40e3-a28a-fbbe7ad2495e",
@@ -152,9 +160,10 @@ struct OtherUserProfileView: View {
             ),
             location: LocationPreference(latitude: 51.001, longitude: 9.100, name: "Berlin", radius: 100),
             look: Look(height: 180, bodyType: .athletic, fashionStyle: .business, fitnessLevel: .athlete),
-            preferences: Preferences(height: 180, wantsChilds: true, distance: 100, smoking: false, sports: true, drinking: true, relationshipType: .dating, gender: [.divers, .male, .female], agePreferences: .init(minAge: 25, maxAge: 90)),
+            preferences: Preferences(height: 180, wantsChilds: true, smoking: false, sports: true, drinking: true, relationshipType: .dating, gender: [.divers, .male, .female], agePreferences: .init(minAge: 25, maxAge: 90)),
             blockedUsers: [],
             registrationDate: .now
-        ), user: User(id: "3"))
+        ), contentType: .constant(.profile)
+    )
     .environmentObject(UserViewModel())
 }

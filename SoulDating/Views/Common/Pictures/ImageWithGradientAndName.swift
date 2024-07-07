@@ -12,7 +12,7 @@ struct ImageWithGradientAndName: View {
     
     
     // MARK: properties
-    let user: User
+    let user: FireUser
     let distance: String?
     var minWidth: CGFloat = 100
     var minHeight: CGFloat = 133
@@ -63,5 +63,5 @@ struct ImageWithGradientAndName: View {
 }
 
 #Preview {
-    ImageWithGradientAndName(user: User(id: "1", name: "klasd"), distance: "100")
+    ImageWithGradientAndName(user: FireUser(id: "1", name: "klasd"), distance: "100")
 }

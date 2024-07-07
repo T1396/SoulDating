@@ -1,5 +1,5 @@
 //
-//  SwipeImage.swift
+//  UserImage.swift
 //  SoulDating
 //
 //  Created by Philipp Tiropoulos on 14.06.24.
@@ -14,6 +14,8 @@ struct UserImage: View {
     let url: String?
     let minWidth: CGFloat
     let minHeight: CGFloat
+    
+    var onAppear: ((Image) -> Void)?
     
     // MARK: computed properties
     var safeWidth: CGFloat {
@@ -39,6 +41,9 @@ struct UserImage: View {
                     .resizable()
                     .scaledToFill()
                     .clipped()
+                    .onAppear {
+                        if let onAppear { onAppear(image) }
+                    }
             } placeholder: {
                 placeholderView
             }

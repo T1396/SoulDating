@@ -13,12 +13,11 @@ struct GoodToKnowView: View {
     
     // MARK: body
     var body: some View {
+        Text("Good to know")
+            .appFont(size: 16, textWeight: .semibold)
+            .padding(.horizontal)
+        
         VStack {
-            
-            Text("Good to know")
-                .appFont(size: 16, textWeight: .semibold)
-                .padding(.horizontal)
-            
             ForEach(otherVm.goodToKnowRows.indices, id: \.self) { index in
                 let row = otherVm.goodToKnowRows[index]
                 HStack {
@@ -42,5 +41,5 @@ struct GoodToKnowView: View {
 }
 
 #Preview {
-    GoodToKnowView(otherVm: OtherProfileViewModel(currentUser: User(id: "1"), otherUser: User(id: "2")))
+    GoodToKnowView(otherVm: OtherProfileViewModel(otherUser: FireUser(id: "2")))
 }

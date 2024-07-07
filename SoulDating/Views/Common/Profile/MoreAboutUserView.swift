@@ -40,5 +40,5 @@ struct MoreAboutUserView: View {
 }
 
 #Preview {
-    MoreAboutUserView(otherVm: OtherProfileViewModel(currentUser: User(id: "1"), otherUser: User(id: "2")))
+    MoreAboutUserView(otherVm: OtherProfileViewModel(otherUser: FireUser(id: "2")))
 }

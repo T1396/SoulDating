@@ -8,14 +8,15 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct RoundedAsyncImage: View {
+struct RoundedWebImage: View {
+    // MARK: properties
     var imageUrl: String?
-    var progress: Double = 0
     var width: CGFloat = 250
     var height: CGFloat = 250
     
-    var onAppear: ((Image) -> Void)? = nil
+    var onAppear: ((Image) -> Void)?
     
+    // MARK: body
     var body: some View {
         VStack {
             if let imageUrl {
@@ -40,5 +41,5 @@ struct RoundedAsyncImage: View {
 }
 
 #Preview {
-    RoundedAsyncImage()
+    RoundedWebImage()
 }

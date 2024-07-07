@@ -40,8 +40,7 @@ struct ProfileSheet: View {
             if let description = user.general?.description {
                 Text(description)
             }
-            
-            // MARK: TODO FOTOS
+
             
             Text("More")
                 .appFont(size: 14)

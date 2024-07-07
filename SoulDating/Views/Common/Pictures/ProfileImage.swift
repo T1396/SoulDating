@@ -26,7 +26,7 @@ struct ProfileImage: View {
                         .resizable()
                         .scaledToFill()
                         .frame(width: width, height: height)
-                case .failure(_):
+                case .failure:
                     Image(systemName: "photo.fill")
                         .resizable()
                         .scaledToFit()

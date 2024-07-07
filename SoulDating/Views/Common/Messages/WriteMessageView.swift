@@ -8,16 +8,22 @@
 import SwiftUI
 
 struct WriteMessageView: View {
+    enum Sheets: String, Identifiable {
+        case report, gpt
+        
+        var id: String { rawValue }
+    }
     // MARK: properties
-    let targetUser: User
-    
-    @StateObject private var openAIViewModel = ChatMessageViewModel(idProvider: { UUID().uuidString })
+    let targetUser: FireUser
+
     @StateObject private var gptViewModel = GptViewModel()
     @StateObject private var msgViewModel: MessagesViewModel
-    
     @EnvironmentObject var userViewModel: UserViewModel
-    @Environment(\.presentationMode) var presentationMode
     
+    @Binding var contentType: MessageAndProfileView.ContentType
+    
+    
+    @State private var sheet: Sheets?
     @State private var showUserProfile = false
     @State private var loadedImage: Image?
     @State private var showBotSuggestions = false
@@ -26,157 +32,157 @@ struct WriteMessageView: View {
     @State private var showReportView = false
     
     // MARK: init
-    init(targetUser: User, chatId: String?) {
+    init(targetUser: FireUser, chatId: String?, contentType: Binding<MessageAndProfileView.ContentType>) {
         self.targetUser = targetUser
         self._msgViewModel = StateObject(wrappedValue: MessagesViewModel(targetUserId: targetUser.id, chatId: chatId))
+        self._contentType = contentType
     }
     
     // MARK: body
     var body: some View {
-        ZStack {
-            NavigationStack {
-                
-                if showUserProfile {
-                    OtherUserProfileView(showProfile: $showUserProfile, image: $loadedImage, targetUser: targetUser, user: userViewModel.user)
-                    
-                } else {
-                    
-                    VStack(spacing: 0) {
-                        
-                        ScrollViewReader { scrollViewProxy in
-                            ScrollView {
-                                LazyVStack {
-                                    Spacer()
-                                    ForEach(msgViewModel.messages) { message in
-                                        MessageView(message: message, isCurrentUser: msgViewModel.isFromCurrentUser(message))
-                                            .padding(.horizontal, 6)
-                                    }
-                                    Spacer()
-                                        .id(3)
+        NavigationStack {
+            VStack {
+
+                VStack(spacing: 0) {
+                    ScrollViewReader { scrollViewProxy in
+                        ScrollView {
+                            LazyVStack {
+                                Spacer()
+                                ForEach(msgViewModel.messages) { message in
+                                    MessageView(message: message, isCurrentUser: msgViewModel.isFromCurrentUser(message))
+                                        .padding(.horizontal, 6)
                                 }
+                                Spacer()
+                                    .id(3)
                             }
-                            .scrollIndicators(.never)
-                            .frame(maxHeight: showBotSuggestions ? .zero : .infinity)
-                            .onChange(of: keyboardHeight) { oldValue, newValue in
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                    withAnimation(.spring()) {
-                                        scrollViewProxy.scrollTo(3, anchor: .bottom)
-                                    }
-                                }
-                            }
-                            .onAppear {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        }
+                        .scrollIndicators(.never)
+                        .frame(maxHeight: showBotSuggestions ? .zero : .infinity)
+                        .onChange(of: keyboardHeight) { _, _ in
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                withAnimation(.spring()) {
                                     scrollViewProxy.scrollTo(3, anchor: .bottom)
                                 }
                             }
                         }
-                            
-                        if showBotSuggestions {
-                            VStack(spacing: 8) {
-                                SuggestionListView(
-                                    answers: gptViewModel.lineOptions,
-                                    showSuggestions: $showBotSuggestions,
-                                    isWaitingForAnswers: $gptViewModel.isWaitingForBotAnswer,
-                                    errorMessage: $gptViewModel.errorMessage
-                                ) { chosenLine in
-                                    withAnimation {
-                                        msgViewModel.messageContent = chosenLine
-                                        showBotSuggestions = false
-                                    }
+                        .onChange(of: msgViewModel.messages, { _, _ in
+                            DispatchQueue.main.async {
+                                withAnimation {
+                                    scrollViewProxy.scrollTo(3, anchor: .bottom)
                                 }
+                            }
+                        })
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                scrollViewProxy.scrollTo(3, anchor: .bottom)
                             }
                         }
-                        VStack {
-                            HStack {
-                                Button(action: generatePickupLines) {
-                                    Label("Create Pickup Lines", systemImage: "sparkles.rectangle.stack.fill")
-                                }
-                                .itemBackgroundTertiary()
-
-                                Button(action: openGptPopover) {
-                                    Label(
-                                        title: { Text("Ask ChatGPT") },
-                                        icon: { Image("GPT").resizable().frame(width: 12, height: 12) }
-                                    )
-                                }
-                                .itemBackgroundTertiary()
-                                
-                                Spacer()
-                                
-                                Button(action: { showGPTInfoPopover = true }) {
-                                    Image(systemName: "info.circle.fill")
-                                        .popover(isPresented: $showGPTInfoPopover, attachmentAnchor: .point(.top), arrowEdge: .top) {
-                                            Text("SoulDating lets you interact with OpenAI ChatGPT! You can either let GPT create pickup lines for you or start a conversation to learn more about dating!")
-                                                .appFont(size: 12, textWeight: .semibold)
-                                                .padding()
-                                                .frame(minHeight: 100)
-                                                .presentationCompactAdaptation(.popover)
-                                        }
-                                }
-                                Spacer()
-                            }
-                            
-                            
-                            HStack {
-                                AppTextField("Enter a message", text: $msgViewModel.messageContent)
-                                Spacer()
-                                Button(action: msgViewModel.sendMessage) {
-                                    Text("Send")
-                                        .appButtonStyle()
-                                }
-                            }
-                        }
-                        .padding([.horizontal, .bottom])
-                        .padding(.top, 8)
-                        .background(.thinMaterial)
-
                     }
-                    .toolbar(content: toolbarItems)
-                    .toolbarRole(.navigationStack)
+                    
+                    if showBotSuggestions {
+                        VStack(spacing: 8) {
+                            SuggestionListView(
+                                answers: gptViewModel.lineOptions,
+                                showSuggestions: $showBotSuggestions,
+                                isWaitingForAnswers: $gptViewModel.isWaitingForBotAnswer,
+                                errorMessage: $gptViewModel.errorMessage
+                            ) { chosenLine in
+                                withAnimation {
+                                    msgViewModel.messageContent = chosenLine
+                                    showBotSuggestions = false
+                                }
+                            }
+                        }
+                    }
+                    VStack {
+                        HStack {
+                            InfoPopoverItem(infoText: Strings.gptInfoText, showPopover: $showGPTInfoPopover)
+
+                            Button(action: generatePickupLines) {
+                                Label(Strings.createPickupLines, systemImage: "sparkles.rectangle.stack.fill")
+                            }
+                            .itemBackgroundTertiary()
+                            
+                            Button(action: openGptPopover) {
+                                Label(
+                                    title: { Text(Strings.askGPT) },
+                                    icon: { Image("GPT").resizable().frame(width: 12, height: 12) }
+                                )
+                            }
+                            .itemBackgroundTertiary()
+                            
+                            Spacer()
+
+                            Spacer()
+                        }
+                        
+                        
+                        HStack {
+                            AppTextField(Strings.enterMessage, text: $msgViewModel.messageContent)
+                            Spacer()
+                            Button(action: msgViewModel.sendMessage) {
+                                Image(systemName: "paperplane.fill")
+                            }
+                            .disabled(msgViewModel.sendDisabled)
+                            .appButtonStyle(cornerRadius: 25)
+                        }
+                    }
+                    .padding([.horizontal, .bottom])
+                    .padding(.top, 8)
+                    .background(.thinMaterial)
+                    
                 }
+                .onAppear(perform: addObservers)
+                .onDisappear(perform: removeObservers)
+                .toolbar(content: toolbarItems)
+                .toolbarRole(.navigationStack)
             }
+            
         }
-        .sheet(isPresented: $showReportView) {
-            ReportSheetView(showSheet: $showReportView, userId: userViewModel.user.id, reportedUser: targetUser) {
-                // todo
+        .sheet(item: $sheet, content: { sheet in
+            switch sheet {
+            case .report:
+                ReportSheetView(showSheet: $showReportView, reportedUser: targetUser) {
+                    // todo
+                }
+            case .gpt:
+                GptConversationSheet(gptViewModel: gptViewModel)
             }
-        }
+        })
         .alert(msgViewModel.alertTitle, isPresented: $msgViewModel.showAlert, actions: {
             Button("Cancel", role: .cancel, action: msgViewModel.dismissAlert)
         }, message: {
             Text(msgViewModel.alertMessage)
         })
-        .onAppear(perform: subscribeToKeyboardEvents)
-        .onDisappear(perform: unsubscribeFromKeyboardEvents)
+
     }
     
-
+    
     // MARK: toolbar
     @ToolbarContentBuilder
     private func toolbarItems() -> some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            BackArrow(showLabel: false, action: navigateBack)
-        }
         
-        ToolbarItem(placement: .principal) {
+        ToolbarItem(placement: .topBarLeading) {
             Button(action: openUserProfile) {
                 HStack {
-                    RoundedAsyncImage(imageUrl: targetUser.profileImageUrl, width: 40, height: 40) { image in
+                    RoundedWebImage(imageUrl: targetUser.profileImageUrl, width: 40, height: 40) { image in
                         loadedImage = image
                     }
                     Text(targetUser.name ?? "")
-                    Spacer()
+                    Rectangle().fill(.clear)
                 }
+                .background(.red.opacity(0.00000001))
                 .foregroundStyle(.primary)
-            }                
-            .frame(maxWidth: .infinity, alignment: .leading)
-
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
         
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: { showReportView = true }) {
+            Button(action: {
+                sheet = .report
+            }, label: {
                 Image(systemName: "ellipsis")
-            }
+            })
         }
     }
     
@@ -193,15 +199,25 @@ struct WriteMessageView: View {
             keyboardHeight = 0
         }
     }
-    
+
+    private func addObservers() {
+        subscribeToKeyboardEvents()
+        msgViewModel.startListeningForMessages()
+    }
+
+    private func removeObservers() {
+        msgViewModel.stopListeningForMessages()
+        unsubscribeFromKeyboardEvents()
+    }
+
     private func unsubscribeFromKeyboardEvents() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func openUserProfile() {
-        withAnimation(.spring()) {
-            showUserProfile.toggle()
+        withAnimation {
+            contentType = .profile
         }
     }
     
@@ -218,21 +234,17 @@ struct WriteMessageView: View {
         }
     }
     
-    private func navigateBack() {
-        withAnimation {
-            presentationMode.wrappedValue.dismiss()
-        }
-    }
-    
     private func openGptPopover() {
-        
+        withAnimation {
+            sheet = .gpt
+        }
     }
 }
 
 
 #Preview {
     WriteMessageView(
-        targetUser: User(id: "kldsa", name: "Kasndjn", profileImageUrl: "kdlsakl", birthDate: .now, gender: .male, onboardingCompleted: true, general: UserGeneral(), location: LocationPreference(latitude: 52.20, longitude: 10.01, name: "Hausen", radius: 100), look: Look(), preferences: Preferences(), blockedUsers: [], registrationDate: .now),
-        chatId: nil)
+        targetUser: FireUser(id: "kldsa", name: "Kasndjn", profileImageUrl: "kdlsakl", birthDate: .now, gender: .male, onboardingCompleted: true, general: UserGeneral(), location: LocationPreference(latitude: 52.20, longitude: 10.01, name: "Hausen", radius: 100), look: Look(), preferences: Preferences(), blockedUsers: [], registrationDate: .now),
+        chatId: nil, contentType: .constant(.message))
     .environmentObject(ChatViewModel())
 }
