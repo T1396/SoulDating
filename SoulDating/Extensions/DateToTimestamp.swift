@@ -10,6 +10,6 @@ import Firebase
 
 extension Date {
     func toFirestoreTimestamp() -> Timestamp {
-        return Timestamp(date: self)
+        Timestamp(date: self)
     }
 }

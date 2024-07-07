@@ -26,7 +26,7 @@ extension Date {
     }
     
     func subtractYears(_ years: Int) -> Date {
-        let eighteenYearsAgo = Calendar.current.date(byAdding: .year, value: -18 , to: self)
+        let eighteenYearsAgo = Calendar.current.date(byAdding: .year, value: -18, to: self)
         return eighteenYearsAgo ?? Date()
     }
 }

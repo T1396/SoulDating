@@ -7,9 +7,7 @@
 
 import Foundation
 
-import Foundation
-
-extension User {
+extension FireUser {
     var heightString: String {
         guard let height = self.look.height else {
             return "Not specified"
@@ -39,7 +37,7 @@ extension User {
             return "Not specified"
         }
         
-        let gendersString = genderPref.map { $0.secTitle}.seperated(emptyText: "")
+        let gendersString = genderPref.map { $0.secTitle }.seperated(emptyText: "")
         return "\(gendersString) in age of \(agePref.rangeString)"
     }
     

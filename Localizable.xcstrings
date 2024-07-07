@@ -51,10 +51,16 @@
     "About me" : {
 
     },
-    "Apple" : {
+    "Account" : {
 
     },
-    "Ask ChatGPT" : {
+    "Account Settings" : {
+
+    },
+    "Allow Notification" : {
+
+    },
+    "Apple" : {
 
     },
     "Block" : {
@@ -72,22 +78,19 @@
     "Change your description" : {
 
     },
+    "Change your e-mail address" : {
+
+    },
+    "Change your password" : {
+
+    },
+    "Change your preference" : {
+
+    },
     "Choose an option to upload a photo" : {
 
     },
-    "Choose your gender" : {
-
-    },
     "Choose your preferred age range" : {
-
-    },
-    "Choose your preferred gender(s)" : {
-
-    },
-    "Continue" : {
-
-    },
-    "Create Pickup Lines" : {
 
     },
     "Current: %lld - %lld" : {
@@ -99,6 +102,9 @@
           }
         }
       }
+    },
+    "Datum" : {
+
     },
     "Delete" : {
 
@@ -115,10 +121,10 @@
     "Enter your approximate address" : {
 
     },
-    "Filter by" : {
+    "Fetching new users..." : {
 
     },
-    "Finish" : {
+    "Filter by" : {
 
     },
     "Gender: %@" : {
@@ -154,9 +160,6 @@
     "Job: %@" : {
 
     },
-    "Lets get started" : {
-
-    },
     "Library" : {
 
     },
@@ -174,10 +177,14 @@
     "Location: %@" : {
 
     },
+    "Logout" : {
+
+    },
     "Looks for" : {
 
     },
     "Message...." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -211,7 +218,7 @@
     "New" : {
 
     },
-    "Not now" : {
+    "Notification Settings" : {
 
     },
     "Ok" : {
@@ -220,13 +227,20 @@
     "OK" : {
 
     },
+    "Open %@'s Profile" : {
+
+    },
     "Or change the age span?" : {
 
     },
     "Other photos" : {
 
     },
+    "Personal Details" : {
+
+    },
     "Profilbild" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -265,9 +279,6 @@
         }
       }
     },
-    "Send" : {
-
-    },
     "Send Report" : {
 
     },
@@ -282,6 +293,9 @@
         }
       }
     },
+    "Settings" : {
+
+    },
     "Share" : {
 
     },
@@ -291,16 +305,10 @@
     "Sort by" : {
 
     },
-    "SoulDating lets you interact with OpenAI ChatGPT! You can either let GPT create pickup lines for you or start a conversation to learn more about dating!" : {
-
-    },
     "Speed" : {
 
     },
     "Start" : {
-
-    },
-    "Switch" : {
 
     },
     "Telefon" : {
@@ -313,19 +321,13 @@
         }
       }
     },
-    "Tell us more about you" : {
-
-    },
     "Tell us the reason why you want to report %@" : {
 
     },
-    "Tell us your date of birth" : {
-
-    },
-    "This information is used to suggest users to you and provide better suggestions for other users." : {
-
-    },
     "This will change your user suggestions" : {
+
+    },
+    "Try to fetch users again" : {
 
     },
     "Turn on notifications" : {
@@ -361,16 +363,13 @@
     "We need more information what exactly happened" : {
 
     },
-    "Welcome!" : {
-
-    },
-    "What is your name?" : {
+    "Write a message to %@" : {
 
     },
     "You can turn off the notifications in the settings at each time." : {
 
     },
-    "You must be at least 16 years old..." : {
+    "You have a match with %@" : {
 
     },
     "Your image should nearly fit in this rectangle" : {

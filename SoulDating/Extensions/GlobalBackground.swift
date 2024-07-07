@@ -20,4 +20,3 @@ extension View {
         self.modifier(GlobalBackground())
     }
 }
-

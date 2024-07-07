@@ -19,6 +19,7 @@ struct Chat: Codable, Identifiable, Equatable, Hashable {
     var lastMessageSenderId: String
 }
 
+
 extension Chat {
     /// creates a dictionary to insert into firestore, accepts the lastSenderId for the Chat Metadata
     func toDict(lastSenderId: String) -> [String: Any] {
