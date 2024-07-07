@@ -10,18 +10,19 @@ import SwiftUI
 
 struct OnboardingNotificationView: View {
     @ObservedObject var viewModel: OnboardingViewModel
+    @Binding var progress: Double
+    @Binding var stepIndex: Int
+
     @State private var showingAlert = false
     @State private var navigate = false
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 20) {
-                Image(systemName: "bell.square.fill")
-                    .font(.system(size: 80))
-                    .foregroundStyle(.cyan)
-                    .padding(.top, 24)
-                    .frame(maxWidth: .infinity, alignment: .center)
                 
+                Image(systemName: "bell.square.fill")
+                    .onboardingIconStyle()
+
                 Text("Turn on Notifications?")
                     .appFont(size: 36, textWeight: .extrabold)
                 
@@ -43,29 +44,33 @@ struct OnboardingNotificationView: View {
                         Image(systemName: "bell.fill")
                             .foregroundStyle(.background)
                     }
-                    .frame(maxWidth: .infinity)
-                    .appButtonStyle()
+                    .appButtonStyle(fullWidth: true)
                 }
                 
-                
-                Button {
-                    navigate.toggle()
-                } label: {
-                    Text("Not now")
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .appButtonStyle(type: .secondary)
+                Button(action: goToNextPage) {
+                    Text(Strings.notNow)
+                        .appButtonStyle(type: .secondary, fullWidth: true)
                 }
                 
             }
             .padding(20)
             .padding(.bottom, 16)
-            
-            .navigationDestination(isPresented: $navigate) {
-                OnboardingLocationView(viewModel: viewModel)
+
+            .onAppear {
+                withAnimation {
+                    progress = 0.6
+                }
             }
         }
     }
-    
+    // MARK: functions
+    private func goToNextPage() {
+        withAnimation {
+            stepIndex += 1 // go to next onboarding page
+        }
+    }
+
+
     private func requestNotification() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             if let error = error {
@@ -76,7 +81,8 @@ struct OnboardingNotificationView: View {
             DispatchQueue.main.async {
                 if granted {
                     print("notifications allowed")
-                    navigate.toggle()
+                    // navigate to next onboarding page
+                    goToNextPage()
                 }
             }
         }
@@ -84,5 +90,6 @@ struct OnboardingNotificationView: View {
 }
 
 #Preview {
-    OnboardingNotificationView(viewModel: OnboardingViewModel())
+    OnboardingNotificationView(viewModel: OnboardingViewModel(), progress: .constant(0.8), stepIndex: .constant(2))
+        .environmentObject(UserViewModel())
 }

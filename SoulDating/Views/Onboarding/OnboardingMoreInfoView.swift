@@ -9,11 +9,9 @@ import SwiftUI
 
 struct OnboardingMoreInfoView: View {
     @ObservedObject var viewModel: OnboardingViewModel
-    
-    enum GenderPickerCase {
-        case own, preferred
-    }
-    
+    @Binding var progress: Double
+    @Binding var stepIndex: Int
+
     // MARK: computed properties
     var buttonBackground: Color {
         viewModel.userIsOldEnough ? .accentColor : .gray.opacity(0.7)
@@ -23,15 +21,15 @@ struct OnboardingMoreInfoView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                
-                Text("Tell us more about you")
-                    .appFont(size: 40, textWeight: .bold)
+
+                Text(Strings.moreAboutYouTitle)
+                    .appFont(size: 28, textWeight: .bold)
                     .multilineTextAlignment(.center)
                 Image(systemName: "shareplay")
                     .onboardingIconStyle()
                     .padding(.top, 24)
                 
-                Text("This information is used to suggest users to you and provide better suggestions for other users.")
+                Text(Strings.moreInfoSubTitle)
                     .subTitleStyle()
                 
                 Spacer()
@@ -39,30 +37,39 @@ struct OnboardingMoreInfoView: View {
                 genderPicker()
                 preferredGenderPicker()
                 birthDatePicker()
-                //age range slider
+                // age range slider
                 AgeRangeSliderView(userLowerbound: $viewModel.selectedMinAge, userUpperbound: $viewModel.selectedMaxAge)
                 
                 Spacer()
                 Spacer()
                 
-                NavigationLink(destination: OnboardingPictureView(viewModel: viewModel)) {
-                    Text("Continue")
-                        .appButtonStyle()
-                }
+                Button(action: goToNextPage) {
+                    Text(Strings.continues)
+                        .appButtonStyle(fullWidth: true)
+                }    
                 .disabled(!viewModel.userIsOldEnough)
-                .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .padding()
+
+            .onAppear {
+                withAnimation {
+                    progress = 0.4
+                }
+            }
         }
     }
     
     private func genderPicker() -> some View {
         HStack {
-            Text("Choose your gender")
+            Text(Strings.chooseGender)
+                .lineLimit(1)
+                .appFont(size: 14, textWeight: .semibold)
             Spacer()
             Picker("", selection: $viewModel.gender) {
                 ForEach(Gender.allCases) { gender in
                     Text(gender.title).tag(gender)
+                        .appFont(size: 12, textWeight: .semibold)
+
                 }
             }
         }
@@ -72,11 +79,14 @@ struct OnboardingMoreInfoView: View {
     
     private func preferredGenderPicker() -> some View {
         HStack {
-            Text("Choose your preferred gender(s)")
+            Text(Strings.choosePrefGender)
+                .appFont(size: 14, textWeight: .semibold)
+                .lineLimit(1)
             Spacer()
             Picker("", selection: $viewModel.preferredGender) {
                 ForEach(Gender.allCases) { gender in
                     Text(gender.title).tag(gender)
+                        .appFont(size: 12, textWeight: .semibold)
                 }
             }
         }
@@ -87,15 +97,16 @@ struct OnboardingMoreInfoView: View {
     private func birthDatePicker() -> some View {
         VStack {
             HStack {
-                DatePicker("Tell us your date of birth",
+                DatePicker(Strings.tellBirthDate,
                     selection: $viewModel.birthDate,
                     displayedComponents: .date
                 )
                 .datePickerStyle(.compact)
+                .appFont(size: 14, textWeight: .semibold)
             }
             if !viewModel.userIsOldEnough {
-                Text("You must be at least 16 years old...")
-                    .font(.caption)
+                Text(Strings.min16)
+                    .appFont(size: 12)
                     .foregroundStyle(.red)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -103,8 +114,15 @@ struct OnboardingMoreInfoView: View {
         .itemBackgroundStyle()
     }
     
+    // MARK: functions
+    private func goToNextPage() {
+        withAnimation {
+            stepIndex += 1 // go to next onboarding page
+        }
+    }
+    
 }
 
 #Preview {
-    OnboardingMoreInfoView(viewModel: OnboardingViewModel())
+    OnboardingMoreInfoView(viewModel: OnboardingViewModel(), progress: .constant(0.4), stepIndex: .constant(5))
 }

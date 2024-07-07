@@ -22,8 +22,6 @@ extension UIImage {
 
         self.draw(at: CGPoint.zero)
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
         return newImage
     }
 }
@@ -31,25 +29,34 @@ extension UIImage {
 struct OnboardingPictureView: View {
     // MARK: properties
     @ObservedObject var viewModel: OnboardingViewModel
-    @State private var selectedPhotoItem: PhotosPickerItem?
-    @State private var shouldNavigate = false
-    
+    @Binding var progress: Double
+    @Binding var stepIndex: Int
+
+
+    // drag and magnification states
     @GestureState private var dragState = CGSize.zero
-    @State private var position = CGSize.zero
     @GestureState private var magnification: CGFloat = 1.0
+
+    @State private var selectedPhotoItem: PhotosPickerItem?
+    // states for imagePosition / scale rotation
+    @State private var position = CGSize.zero
     @State private var scale: CGFloat = 1.0
     @State private var rotation: Angle = .zero
-    
+    // holds the sice of the stroke rectangle
     @State private var rectangleWidth: CGFloat = 0
     @State private var rectangleHeight: CGFloat = 0
+
+    @State private var showInfoPopover = false
+
+
     // MARK: computed properties
     var pickerLabelText: String {
         viewModel.imageData == nil ? "Choose picture" : "Update Picture"
     }
-    
+
     var dragGesture: some Gesture {
         DragGesture()
-            .updating($dragState) { drag, state, transaction in
+            .updating($dragState) { drag, state, _ in
                 state = drag.translation
             }
             .onEnded { drag in
@@ -57,7 +64,7 @@ struct OnboardingPictureView: View {
                 self.position.height += drag.translation.height
             }
     }
-    
+
     var magnificationGesture: some Gesture {
         MagnificationGesture()
             .updating($magnification) { value, state, _ in
@@ -67,29 +74,34 @@ struct OnboardingPictureView: View {
                 self.scale = max(1.0, self.scale * value)
             }
     }
-    
+
     var combinesGesture: some Gesture {
         dragGesture.simultaneously(with: magnificationGesture)
     }
-    
+
+    // MARK: body
     var body: some View {
         VStack {
-            VStack {
-                Text("Upload Picture")
-                    .font(.custom("Montserrat-Bold", size: 32))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
+            VStack(spacing: 4) {
+                HStack {
+                    Text("Upload Picture")
+                        .appFont(size: 32, textWeight: .bold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer()
+                    InfoPopoverItem(infoText: Strings.pictureInfoText, showPopover: $showInfoPopover)
+                }
+
                 Text("Your image should nearly fit in this rectangle")
-                    .font(.custom("Montserrat-Light", size: 14))
+                    .appFont(size: 14, textWeight: .light)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 2)
             }
             .padding(.horizontal)
-            
-            
+
+
             GeometryReader { geometry in
                 ZStack(alignment: .bottom) {
-                    
+
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(lineWidth: 2)
                         .foregroundStyle(.blue)
@@ -97,11 +109,11 @@ struct OnboardingPictureView: View {
                             rectangleWidth = geometry.size.width
                             rectangleHeight = geometry.size.height
                         }
-                    
+
                     if let imageData = viewModel.imageData, let uiImage = UIImage(data: imageData) {
                         Image(uiImage: uiImage)
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                             .scaleEffect(magnification * scale)
                             .rotationEffect(rotation)
                             .offset(x: position.width + dragState.width, y: position.height + dragState.height)
@@ -110,8 +122,8 @@ struct OnboardingPictureView: View {
                             .gesture(combinesGesture)
                             .padding(2)
 
-                        //RoundedImageView(uiImage: uiImage, width: 300, height: 300)
-                        
+                        // RoundedImageView(uiImage: uiImage, width: 300, height: 300)
+
                     }
                     Button {
                         withAnimation {
@@ -120,52 +132,52 @@ struct OnboardingPictureView: View {
                     } label: {
                         Image(systemName: "rotate.left.fill")
                             .font(.title)
-                            .padding()
+                            .foregroundStyle(.white)
+                            .shadow(color: .black, radius: 5, x: 0.0, y: 0.0)
                     }
+                    .padding()
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                    
+
                     PhotosPicker(
                         selection: $selectedPhotoItem,
                         matching: .images,
-                        photoLibrary: .shared()) {
-                            Label(pickerLabelText, systemImage: "photo.on.rectangle")
-                                .labelStyle(.titleAndIcon)
-                                .foregroundStyle(.black)
-                                .appButtonStyle()
-                                .tint(.black)
-                        }
-                        .onChange(of: selectedPhotoItem) { oldValue, newValue in
-                            guard let newValue else { return }
-                            Task {
-                                if let data = try? await newValue.loadTransferable(type: Data.self) {
-                                    viewModel.imageData = data
-                                }
+                        photoLibrary: .shared()
+                    ) {
+                        Label(pickerLabelText, systemImage: "photo.on.rectangle")
+                            .labelStyle(.titleAndIcon)
+                            .appButtonStyle()
+                    }
+                    .onChange(of: selectedPhotoItem) { _, newValue in
+                        guard let newValue else { return }
+                        Task {
+                            if let data = try? await newValue.loadTransferable(type: Data.self) {
+                                viewModel.imageData = data
                             }
                         }
-                        .padding(.bottom)
+                    }
+                    .padding(.bottom)
                 }
             }
             .padding(.horizontal)
-            
+
             Spacer()
             
-            Button {
-                saveEditedImage()
-                shouldNavigate = true
-            } label: {
-                Text("Continue")
+            Button(action: goToNextPage) {
+                Text(Strings.continues)
+                    .appButtonStyle(fullWidth: true)
             }
-            .appButtonStyle(fullWidth: true)
             .padding()
             .disabled(viewModel.imageData == nil)
-            
+
         }
-        .navigationDestination(isPresented: $shouldNavigate) {
-            OnboardingNotificationView(viewModel: viewModel)
+        .onAppear {
+            withAnimation {
+                progress = 0.6
+            }
         }
-        .navigationTitle("Profilbild")
     }
-    
+
+    // MARK: functions
     func saveEditedImage() {
         if let imageData = viewModel.imageData, let uiImage = UIImage(data: imageData) {
             let targetSize = CGSize(width: rectangleWidth, height: rectangleHeight - 125)
@@ -177,8 +189,16 @@ struct OnboardingPictureView: View {
         }
     }
 
+    // MARK: functions
+    private func goToNextPage() {
+        saveEditedImage()
+        withAnimation {
+            stepIndex += 1 // go to next onboarding page
+        }
+    }
+
 }
 
 #Preview {
-    OnboardingPictureView(viewModel: OnboardingViewModel())
+    OnboardingPictureView(viewModel: OnboardingViewModel(), progress: .constant(0.6), stepIndex: .constant(5))
 }

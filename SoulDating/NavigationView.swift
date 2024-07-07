@@ -11,8 +11,6 @@ import Firebase
 struct NavigationView: View {
     @EnvironmentObject var userViewModel: UserViewModel
     @StateObject private var chatViewModel = ChatViewModel()
-    
-    @State private var str: String?
 
     var body: some View {
         
@@ -20,23 +18,24 @@ struct NavigationView: View {
             ForEach(Tab.allCases) { tab in
                 NavigationStack {
                     ZStack {
-                        tab.view(user: userViewModel.user)
+                        tab.view(user: UserService.shared.user)
                             .environmentObject(userViewModel)
                             .environmentObject(chatViewModel)
-                            .transition(.slide)
                         
                         NotificationView2(text: $chatViewModel.overlayMessage)
+
+                        ChatNotificationView(chatNotification: $chatViewModel.chatNotification)
                     }
                     .animation(.easeInOut, value: chatViewModel.showOverlay)
                 }
                 .tabItem {
                     Label(tab.title, systemImage: tab.icon)
                 }
+                .badge(tab == .messages ? chatViewModel.unreadMessagesCount : 0)
                 .tag(tab)
             }
         }
     }
-    
 }
 
 #Preview {
