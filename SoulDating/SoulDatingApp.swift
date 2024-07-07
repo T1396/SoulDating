@@ -32,7 +32,7 @@ struct SoulDatingApp: App {
                         NavigationView()
                             .environmentObject(userViewModel)
                     } else {
-                        OnboardingUsernameView()
+                        OnboardingHostView()
                             .environmentObject(userViewModel)
                     }
                 } else {
@@ -42,5 +42,3 @@ struct SoulDatingApp: App {
         }
     }
 }
-
-
