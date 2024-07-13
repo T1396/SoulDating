@@ -9,9 +9,9 @@ Die App ist ideal für Personen, die daran interessiert sind, neue Menschen in d
 
 ## Design
 <p>
-  <img src="./img/screen1.png" width="200">
-  <img src="./img/screen2.png" width="200">
-  <img src="./img/screen3.png" width="200">
+  <img src="./img/screen1" width="200">
+  <img src="./img/screen2" width="200">
+  <img src="./img/screen3" width="200">
 </p>
 
 
