@@ -31,8 +31,8 @@ Hier kommen alle Features rein, welche deine App bietet.
 #### Projektaufbau
 ##### Architektur: MVVM für eine Trennung von Logik und UI
 ##### Ordnerstruktur: 
-- Models: Datenmodelle für FireBase usw.
-- Views: UI-Komponenten
+- Models: Datenmodelle zur Speicherung in Firestore und Nutzung in der App.
+- Views: UI-Komponenten sowie mit UIKomponenten verknüpfte Views
 - ViewModels: Logik und Datenverarbeitung
 - Utilities:: Enthält u.a. Manager für Firebase, RangeChecks, zusätzliche Json Dateien, Enums, Modifier und Extensions
 
@@ -43,5 +43,7 @@ Firestore-Dokumente: Nutzerdaten, Präferenzen und Match/Chat Informationen werd
 OpenAI Api, zur generierung von zufälligen Flirtsprüchen als Assistent. Ggf. ein indididuellen Bot für Dating fragen.
 
 #### 3rd-Party Frameworks
+
 Firebase SDK: Für Benutzerauthentifizierung und Datenbankdienste.
-Swift Open AI https://github.com/SwiftBeta/SwiftOpenAI für Interaktion mit OpenAI Api
+
+Swift Open AI: https://github.com/SwiftBeta/SwiftOpenAI für Interaktion mit OpenAI Api
