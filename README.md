@@ -40,7 +40,7 @@ Hier kommen alle Features rein, welche deine App bietet.
 Firestore-Dokumente: Nutzerdaten, Präferenzen und Match/Chat Informationen werden sicher in Firestore gespeichert. Dies bietet eine leichte skalierbare Lösung für Echtzeit-Daten und Updates für z.bsp. die Chats.
 
 #### API Calls
-OpenAI Api, zur generierung von zufälligen Flirtsprüchen als Assistent. Ggf. ein indididuellen Bot für Dating fragen.
+OpenAI Api zur Generierung von Anmachsprüchen, und als Assistenz um sich Tipps bezüglich z.bsp. Dating zu holen um mehr Erfolg zu haben.
 
 #### 3rd-Party Frameworks
 
