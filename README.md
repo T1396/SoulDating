@@ -17,7 +17,6 @@ Die App ist ideal für Personen, die daran interessiert sind, neue Menschen in d
 
 
 ## Features
-Hier kommen alle Features rein, welche deine App bietet.
 
 - [x] Standortbasierte Nutzer-Vorschläge
 - [x] Swiping - Mechanik: Swipe nach rechts für Like und nach links für Pass
@@ -45,5 +44,4 @@ OpenAI Api zur Generierung von Anmachsprüchen, und als Assistenz um sich Tipps 
 #### 3rd-Party Frameworks
 
 Firebase SDK: Für Benutzerauthentifizierung und Datenbankdienste.
-
 Swift Open AI: https://github.com/SwiftBeta/SwiftOpenAI für Interaktion mit OpenAI Api
