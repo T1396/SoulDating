@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ChatNotificationView: View {
-
+    @EnvironmentObject var chatService: ChatService
     enum AnimationStateType: Double {
         case hide = 0
         case show =  1
     }
-    @Binding var chatNotification: ChatNotification?
+    // @Binding var chatNotification: ChatNotification?
     // 'state' property stores state of view (hidden or not)
     @State private var state: AnimationStateType = .hide
 
@@ -21,14 +21,14 @@ struct ChatNotificationView: View {
         GeometryReader { geo in
             ZStack {
                 HStack {
-                    RoundedWebImage(imageUrl: chatNotification?.senderImageUrl, width: 50, height: 50)
+                    RoundedWebImage(imageUrl: chatService.chatNotification?.senderImageUrl, width: 50, height: 50)
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(chatNotification?.senderName ?? "Anonymous")
+                        Text(chatService.chatNotification?.senderName ?? "Anonymous")
                             .appFont(size: 14, textWeight: .bold)
                             .foregroundStyle(.white)
 
-                        Text(chatNotification?.message ?? "")
+                        Text(chatService.chatNotification?.message ?? "")
                             .foregroundStyle(.white)
                             .appFont(size: 12, textWeight: .semibold)
                             .lineLimit(2)
@@ -42,8 +42,9 @@ struct ChatNotificationView: View {
             .cornerRadius(20)
             .position(getPosition(with: geo))
             .opacity(state.rawValue)
+            .animation(.easeInOut, value: chatService.showOverlay)
         }
-        .onChange(of: chatNotification, { _, newValue in
+        .onChange(of: chatService.chatNotification, { _, newValue in
             if newValue != nil {
                 showNotification()
             }
@@ -67,7 +68,7 @@ struct ChatNotificationView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 withAnimation {
                     self.state = .hide
-                    self.chatNotification = nil
+                    chatService.chatNotification = nil
                 }
             }
         }
@@ -76,5 +77,6 @@ struct ChatNotificationView: View {
 
 
 #Preview {
-    ChatNotificationView(chatNotification: .constant(ChatNotification(message: "dsaklkl", senderName: "Hosua", timestamp: .now, senderImageUrl: "dkslakdla")))
+    ChatNotificationView()
+        .environmentObject(ChatService.shared)
 }

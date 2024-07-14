@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct MessageView: View {
-    let message: Message
+    var text: String
+    var timestamp: Date
     let isCurrentUser: Bool
     
     let gradient = LinearGradient(gradient: Gradient(colors: [Color.cyan.opacity(0.3), Color.blue.opacity(0.4)]), startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -19,9 +20,9 @@ struct MessageView: View {
                 Spacer()
             }
             VStack(alignment: .trailing, spacing: 0) {
-                Text(message.content)
+                Text(text)
                     .appFont(size: 14)
-                Text(message.timestamp.toTimeString())
+                Text(timestamp.toTimeString())
                     .appFont(size: 9)
                     .frame(minWidth: 30, alignment: .trailing)
                     .offset(x: 4)
@@ -41,5 +42,5 @@ struct MessageView: View {
 }
 
 #Preview {
-    MessageView(message: Message(senderId: "1", receiverId: "2", content: "Du kleidsadaslkjöd", timestamp: .now, isRead: true), isCurrentUser: true)
+    MessageView(text: "kdaslkdk", timestamp: .now, isCurrentUser: true)
 }

@@ -14,7 +14,6 @@ struct NotificationView2: View {
         case hide = 0
         case show =  1
     }
-    
     @Binding var text: String?
     // 'state' property stores state of view (hidden or not)
     @State private var state: AnimationStateType = .hide
