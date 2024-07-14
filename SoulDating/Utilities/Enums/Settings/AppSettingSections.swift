@@ -15,14 +15,15 @@ protocol SettingEnumProtocol {
 }
 
 enum AppSettingSections: String, Identifiable, CaseIterable {
-    case appSettings, problems
+    case appSettings, problems, juridical
 
     var id: String { rawValue }
 
     var title: String {
         switch self {
-        case .appSettings: Strings.appSettings
-        case .problems: Strings.problems
+        case .appSettings: "App Settings"
+        case .problems: "Problems or questions?"
+        case .juridical: "Juristics"
         }
     }
 
@@ -32,6 +33,8 @@ enum AppSettingSections: String, Identifiable, CaseIterable {
             AppSetting.allCases.map { $0 as any SettingEnumProtocol }
         case .problems:
             ProblemSetting.allCases.map { $0 as any SettingEnumProtocol }
+        case .juridical:
+            JuridicalSetting.allCases.map { $0 as any SettingEnumProtocol }
         }
     }
 }

@@ -9,28 +9,28 @@ import Foundation
 import SwiftUI
 
 enum ProblemSetting: String, Identifiable, CaseIterable, SettingEnumProtocol {
-    case help, reportBug
+    case help, aboutSoulDating
 
     var id: String { rawValue }
 
     var title: String {
         switch self {
-        case .help: Strings.help
-        case .reportBug: Strings.reportBugTitle
+        case .help: "Help"
+        case .aboutSoulDating: "About Souldating"
         }
     }
 
     var icon: String {
         switch self {
         case .help: "questionmark"
-        case .reportBug: "ant.fill"
+        case .aboutSoulDating: "info"
         }
     }
 
     var settingView: AnyView {
         switch self {
         case .help: AnyView(EmptyView())
-        case .reportBug: AnyView(ReportBugView())
+        case .aboutSoulDating: AnyView(EmptyView())
         }
     }
 }

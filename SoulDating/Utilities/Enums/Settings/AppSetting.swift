@@ -15,9 +15,9 @@ enum AppSetting: String, Identifiable, CaseIterable, SettingEnumProtocol {
 
     var title: String {
         switch self {
-        case .account: Strings.accSectionHeader
-        case .notifications: Strings.notification
-        case .privacy: Strings.privacySecurity
+        case .account: "Account"
+        case .notifications: "Notifications"
+        case .privacy: "Privacy and security"
         }
     }
 
@@ -28,7 +28,7 @@ enum AppSetting: String, Identifiable, CaseIterable, SettingEnumProtocol {
         case .privacy: "key.fill"
         }
     }
-    
+
     var settingView: AnyView {
         switch self {
         case .account: AnyView(AccountSettingsView())

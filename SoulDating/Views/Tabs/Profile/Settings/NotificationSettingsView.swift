@@ -12,8 +12,8 @@ struct NotificationSettingsView: View {
     @State private var notificationsAllowed = true
     var body: some View {
         Form {
-            Section(Strings.notificationSectionHeader) {
-                Toggle(Strings.allowNotifications, isOn: $notificationsAllowed)
+            Section("Notification Settings") {
+                Toggle("Allow Notification", isOn: $notificationsAllowed)
                     .toggleStyle(SymbolToggleStyle())
             }
         }

@@ -11,7 +11,6 @@ import Firebase
 class SettingsViewModel: BaseAlertViewModel {
     // MARK: properties
     enum State { case input, loading, success }
-
     private let firebaseManager = FirebaseManager.shared
     private let userService: UserService
 
@@ -62,7 +61,7 @@ class SettingsViewModel: BaseAlertViewModel {
         firebaseManager.auth.currentUser?.reauthenticate(with: credential) { _, error in
             if let error {
                 print("Failed to re-authentificate", error.localizedDescription)
-                self.createAlert(title: Strings.error, message: Strings.failedAuth)
+                self.createAlert(title: "Error", message: "Failed to authorize. Check your password or email")
                 completion(false)
                 return
             }
@@ -82,13 +81,14 @@ extension SettingsViewModel {
                     .currentUser?.updatePassword(to: self.newPassword, completion: { error in
                         if let error {
                             print("Error while updating password", error.localizedDescription)
-                            self.createAlert(title: Strings.error, message: Strings.updatePwError)
+                            self.createAlert(title: "Error", message: "An error occured while updating your password, try again or report a bug.")
                             return
                         }
                         self.executeDelayed {
                             self.state = .success
                             self.resetPasswords()
                         }
+
                         print("Password successfully updated")
                     })
             } else {
@@ -102,11 +102,9 @@ extension SettingsViewModel {
 // MARK: CHANGE EMAIL
 extension SettingsViewModel {
     func attemptChangeMail() {
-        createAlert(title: Strings.attention, message: Strings.updateEmailInfo, onAccept: changeMail)
+        createAlert(title: "Attention", message: "You will be signed out if you update your e-mail. You will receive an link to update your email address. If you don't want to change the email, just login again.", onAccept: changeMail)
     }
 
-    /// user will be logged out when he accepted to receive an update email link, because seems there is no way to detect if the user clicked the update link and perform code
-    /// without firebase cloud functions
     func changeMail() {
         guard let user = firebaseManager.auth.currentUser else { return }
         state = .loading
@@ -115,7 +113,7 @@ extension SettingsViewModel {
                 user.sendEmailVerification(beforeUpdatingEmail: self.newMail) { error in
                     if let error {
                         print("Error changing email", error.localizedDescription)
-                        self.createAlert(title: Strings.error, message: Strings.updateEmailError)
+                        self.createAlert(title: "Error", message: "The verification mail could not be send. Try again or report this as a bug.")
                         return
                     }
                     self.executeDelayed {
@@ -141,7 +139,7 @@ extension SettingsViewModel {
 extension SettingsViewModel {
     /// creates an alert with a closure to 'deleteAccount' function  that gets called when the allert is accepted
     func attemptDeleteAccount() {
-        createAlert(title: Strings.attention, message: Strings.deleteAccountInfo, onAccept: deleteAccount)
+        createAlert(title: "Attention", message: "Do you really want to delete your account and all stored chats and images you made? This cannot be undone!", onAccept: deleteAccount)
     }
 
     /// deletes the user data from every relevant collection, chats /messages will be untouched
@@ -170,7 +168,7 @@ extension SettingsViewModel {
                 return
             }
             // delete images from storage if all userdata were successfully deleted
-            self?.deleteAllUserImages(userId: userId)
+            self?.deleteImageFromStorage(userId: userId)
 
             self?.firebaseManager.auth.currentUser?.delete(completion: { error in
                 if let error {
@@ -180,13 +178,13 @@ extension SettingsViewModel {
 
                 print("User auth successfully deleted")
                 self?.userService.reset()
-                self?.createAlert(title: Strings.success, message: Strings.accountDeleted)
+                self?.createAlert(title: "Success", message: "Your account has been successfully deleted.")
             })
         }
     }
 
     /// deletes any images a user uploaded to the storage
-    private func deleteAllUserImages(userId: String) {
+    private func deleteImageFromStorage(userId: String) {
         let storageRef = firebaseManager.storage.reference().child("profileImages/\(userId)")
         // get all files in the reference for the user and delete them
         storageRef.listAll { result, error in
