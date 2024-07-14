@@ -15,6 +15,9 @@ struct SoulDatingApp: App {
     init() {
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
+        let currentLanguageCode = Locale.current.language.languageCode?.identifier
+        print("LanguageIdentifier: \(currentLanguageCode)")
+        LanguageRepository.shared.loadLanguageData(for: currentLanguageCode ?? "en")
     }
     
     var body: some Scene {
@@ -31,6 +34,7 @@ struct SoulDatingApp: App {
                     if userViewModel.onboardingCompleted {
                         NavigationView()
                             .environmentObject(userViewModel)
+                            .environmentObject(userViewModel.chatService)
                     } else {
                         OnboardingHostView()
                             .environmentObject(userViewModel)

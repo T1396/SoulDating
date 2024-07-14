@@ -9,15 +9,16 @@ import Foundation
 import MapKit
 import Combine
 
-class LocationViewModel: BaseNSViewModel, MKLocalSearchCompleterDelegate {
+
+class EditLocationViewModel: BaseNSViewModel, MKLocalSearchCompleterDelegate {
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
     private let userService: UserService
     private var searchCancellable: AnyCancellable?
     private var completer: MKLocalSearchCompleter
-    private var oldLocation: LocationPreference
+    private var oldLocation: Location
     
-    @Published var newLocation: LocationPreference?
+    @Published var newLocation: Location?
     @Published var places: [MKMapItem] = []
     @Published var locationQuery = ""
     @Published var suggestions: [MKLocalSearchCompletion] = []
@@ -93,7 +94,7 @@ class LocationViewModel: BaseNSViewModel, MKLocalSearchCompleterDelegate {
 }
 
 // MARK: MapKit functions
-extension LocationViewModel {
+extension EditLocationViewModel {
     func togglePlace(searchSuggestion: MKLocalSearchCompletion) {
         // uncheck selected place
         if selectedSuggestion == searchSuggestion {
@@ -104,15 +105,15 @@ extension LocationViewModel {
         let search = MKLocalSearch(request: searchRequest)
         search.start { response, error in
             guard let response = response, error == nil else {
-                print("Fehler beim Abrufen der Details: \(error?.localizedDescription ?? "Unbekannter Fehler")")
-                self.createAlert(title: "Error", message: "An error occured while saving your selection")
+                print("error executing search request: \(error?.localizedDescription ?? "unknown error")")
+                self.createAlert(title: Strings.error, message: Strings.updateLocationSelection )
                 return
             }
             
             if let item = response.mapItems.first {
                 // save location with coordinates
                 self.selectedSuggestion = searchSuggestion
-                self.newLocation = LocationPreference(
+                self.newLocation = Location(
                     latitude: item.placemark.coordinate.latitude,
                     longitude: item.placemark.coordinate.longitude,
                     name: item.name ?? "Unknown Area",
@@ -137,7 +138,7 @@ extension LocationViewModel {
 }
 
 // MARK: get dictionary to upload to firebase
-extension LocationViewModel {
+extension EditLocationViewModel {
     func getLocationDict() -> [String: Any]? {
         guard let newLocation else { return nil }
         let locationData: [String: Any] = [

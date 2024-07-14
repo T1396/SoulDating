@@ -17,7 +17,7 @@ struct LocationPickerView: View {
     
     var body: some View {
         VStack {
-            TextField("Enter your approximate address", text: $searchQuery)
+            TextField(Strings.enterAddress, text: $searchQuery)
                 .textFieldStyle(AppTextFieldStyle())
                 .textInputAutocapitalization(.never)
             

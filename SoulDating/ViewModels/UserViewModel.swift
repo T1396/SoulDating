@@ -10,20 +10,20 @@ import FirebaseAuth
 import Firebase
 import Combine
 
+/// ViewModel to handle authentification and holds a reference to the chatService to show notifications
 class UserViewModel: BaseAlertViewModel {
     // MARK: properties
+
+    private(set) lazy var chatService: ChatService = {
+        let service = ChatService.shared
+        return service
+    }()
+
     private var cancellables = Set<AnyCancellable>()
     private let firebaseManager = FirebaseManager.shared
     private let userService: UserService
-    private let rangeManager = RangeManager()
+    private let rangeManager = RangeManager.shared
 
-    @Published var user: FireUser {
-        didSet {
-            if !onboardingCompleted {
-                onboardingCompleted = user.onboardingCompleted ?? false
-            }
-        }
-    }
     @Published var mode: AuthentificationMode = .login
     @Published var isAuthentificating = true
     @Published var onboardingCompleted = false
@@ -31,21 +31,20 @@ class UserViewModel: BaseAlertViewModel {
     @Published var password = ""
     @Published var passwordRepeat = ""
 
-
+    @Published private (set) var userIsLoggedIn: Bool = false {
+        didSet {
+            if userIsLoggedIn {
+                // initialized the chatservice once user is logged in
+                _ = chatService
+            }
+        }
+    }
 
 
     // MARK: init
     init(userService: UserService = .shared) {
         self.userService = userService
-        self.user = userService.user
         super.init()
-        userService.$user
-            .compactMap { $0 }
-            .sink { [weak self] user in
-                print("SINKED USER FORM SERVICE")
-                self?.user = user
-            }
-            .store(in: &cancellables)
         checkAuth()
     }
 
@@ -66,10 +65,6 @@ class UserViewModel: BaseAlertViewModel {
         mode == .login ? "Noch kein Konto? Registrieren" : "Bereits registriert? Zum Login"
     }
 
-    var userIsLoggedIn: Bool {
-        firebaseManager.auth.currentUser != nil
-    }
-
     var passwordMatches: Bool {
         !passwordRepeat.isEmpty && passwordRepeat == password
     }
@@ -77,6 +72,10 @@ class UserViewModel: BaseAlertViewModel {
     // MARK: functions
     func switchAuthMode() {
         mode = mode == .login ? .register : .login
+    }
+
+    func updateOnboardingStatus() {
+        onboardingCompleted = true
     }
 }
 
@@ -88,11 +87,11 @@ extension UserViewModel {
             self.isAuthentificating = false
             return
         }
-        
+        self.userIsLoggedIn = true
         fetchUserDoc()
     }
 
-    
+
 
     private func fetchUserDoc() {
         userService.fetchUserDocument {
@@ -103,10 +102,13 @@ extension UserViewModel {
 
     private func login() {
         firebaseManager.auth.signIn(withEmail: email, password: password) { _, error in
+            self.resetTextValues()
             if let error {
                 print("Login failed", error.localizedDescription)
+                self.createAlert(title: "Error", message: "Login failed: \(error.localizedDescription)")
                 return
             }
+            self.userIsLoggedIn = true
             self.fetchUserDoc()
         }
     }
@@ -118,22 +120,26 @@ extension UserViewModel {
     func logout() {
         do {
             try firebaseManager.auth.signOut()
+            firebaseManager.database.clearPersistence()
             isAuthentificating = false
             userService.reset()
+            chatService.reset()
+            self.userIsLoggedIn = false
         } catch {
             print("Error signing out: ", error.localizedDescription)
         }
     }
 
     private func register() {
-        firebaseManager.auth.createUser(withEmail: email, password: password) { authResult, error in
+        firebaseManager.auth.createUser(withEmail: email, password: password) { _, error in
+            self.resetTextValues()
             if let error {
                 print("Register failed", error.localizedDescription)
+                self.createAlert(title: Strings.error, message: String(format: Strings.registrationFailed, error.localizedDescription))
                 return
             }
-
-            guard let authResult, let email = authResult.user.email else { return }
-            print("User (Email: \(email), id: \(authResult.user.uid)) registered himself")
+            
+            self.userIsLoggedIn = true
             self.userService.createUserDocument { _ in
                 self.isAuthentificating = false
                 self.onboardingCompleted = false
@@ -146,5 +152,41 @@ extension UserViewModel {
         case .login: login()
         case .register: register()
         }
+    }
+
+    func resetTextValues() {
+        email = ""
+        password = ""
+        passwordRepeat = ""
+    }
+}
+
+// MARK: delete account when error occured to retry create account
+extension UserViewModel {
+    func deleteDocAndUser() {
+        guard let userId = firebaseManager.userId else { return }
+        firebaseManager.database.collection("users").document(userId)
+            .delete { error in
+                if let error {
+                    self.showDeleteAccError()
+                    print("error deleting user document", error.localizedDescription)
+                    return
+                }
+                
+                self.firebaseManager.auth.currentUser?.delete(completion: { error in
+                    if let error {
+                        print("error deleting user auth", error.localizedDescription)
+                        self.showDeleteAccError()
+                        return
+                    }
+                })
+                self.userIsLoggedIn = false
+                self.isAuthentificating = false
+                print("successfully deleted account")
+            }
+    }
+
+    private func showDeleteAccError() {
+        self.createAlert(title: Strings.error, message: Strings.deleteAccError)
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// singleton user service class to share the user with other ViewModels
 class UserService: ObservableObject {
     static let shared = UserService()
 

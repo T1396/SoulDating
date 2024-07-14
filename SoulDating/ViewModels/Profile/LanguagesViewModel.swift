@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 /// viewmodel to read all available languages a user can speak by a json file cldr-json (github)
-///
-class LanguagesViewModel: ObservableObject {
+class LanguagesViewModel: BaseAlertViewModel {
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
+    private let languageRepository = LanguageRepository.shared
     private let userService: UserService
     private let initialSelectedLanguages: Set<String>
     private var languages: [(code: String, name: String)] = []
@@ -27,6 +27,9 @@ class LanguagesViewModel: ObservableObject {
         let initialSelected = userService.user.general.languages ?? []
         initialSelectedLanguages = Set(initialSelected)
         selectedLanguages = Set(initialSelected)
+        self.languages = languageRepository.getLanguageData()
+        super.init()
+        organizeSections()
     }
     
     // MARK: computed properties
@@ -43,6 +46,7 @@ class LanguagesViewModel: ObservableObject {
             .updateData([fieldName: Array(selectedLanguages)]) { error in
                 if let error {
                     print("Error updating languages", error.localizedDescription)
+                    self.createAlert(title: Strings.error, message: Strings.updateLangError)
                 } else {
                     self.userService.user.general.languages = Array(self.selectedLanguages)
                     print("successfully updated languages")
@@ -51,32 +55,7 @@ class LanguagesViewModel: ObservableObject {
             }
     }
     
-    /// loads all languageNames and codes from the specific json file corresponding to the actual user systemLanguage
-    func loadLanguageData(for languageCode: String) {
-        guard let url = Bundle.main.url(forResource: "languages-\(languageCode)", withExtension: "json") else {
-            print("Language JSON file for \(languageCode) not found, falling back to english")
-            loadLanguageData(for: "en")
-            return
-        }
-        
-        do {
-            let data = try Data(contentsOf: url)
-            let languageData = try JSONDecoder().decode(LanguageData.self, from: data)
-            if let languageInfo = languageData.main[languageCode]?.localeDisplayNames.languages {
-                self.languages = languageInfo.sorted { $0.value.localizedCaseInsensitiveCompare($1.value) == .orderedAscending }
-                    .map { (code: $0.key, name: $0.value) }
-
-                DispatchQueue.main.async {
-                    self.organizeSections()
-                }
-            } else {
-                print("Language code \(languageCode) is not found in the JSON file.")
-            }
-
-        } catch {
-            print("Error decoding language data for \(languageCode)", error.localizedDescription)
-        }
-    }
+   
     
     /// seperates all languages in different sections with their starting letter as key and the languages as value
     private func organizeSections() {

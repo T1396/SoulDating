@@ -14,48 +14,44 @@ class BaseNSViewModel: NSObject, ObservableObject {
     @Published var status: Status = .none
     @Published var resultMessage = ""
     @Published var loadingMessage = ""
-    
+    @Published var onAcceptText: String = ""
+
+    var onAcceptAction: (() -> Void)?
+
     func showLoading(message: String) {
-        DispatchQueue.main.async {
-            self.loadingMessage = message
-            self.status = .loading
-        }
+        self.loadingMessage = message
+        self.status = .loading
     }
-    
+
     func showSuccess(message: String) {
-        DispatchQueue.main.async {
-            self.resultMessage = message
-            self.status = .success
-        }
+        self.resultMessage = message
+        self.status = .success
     }
-    
+
     func showFailure(message: String) {
-        DispatchQueue.main.async {
-            self.resultMessage = message
-            self.status = .failure
-        }
+        self.resultMessage = message
+        self.status = .failure
     }
-    
+
     func reset() {
-        DispatchQueue.main.async {
-            self.status = .none
-            self.showAlert = false
-            self.alertTitle = ""
-            self.alertMessage = ""
-        }
+        self.status = .none
+        self.showAlert = false
+        self.alertTitle = ""
+        self.alertMessage = ""
     }
-    
-    func createAlert(title: String, message: String) {
-        DispatchQueue.main.async {
-            self.alertTitle = title
-            self.alertMessage = message
-            self.showAlert = true
-        }
+
+    func createAlert(title: String, message: String, onAccept: (() -> Void)? = nil, onAcceptText: String = "") {
+        alertTitle = title
+        alertMessage = message
+        onAcceptAction = onAccept
+        showAlert = true
+        self.onAcceptText = onAcceptText
     }
-    
+
     func dismissAlert() {
-        DispatchQueue.main.async {
-            self.showAlert = false
-        }
+        showAlert = false
+        status = .none
+        onAcceptAction = nil
+        onAcceptText = ""
     }
 }

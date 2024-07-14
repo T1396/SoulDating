@@ -11,12 +11,13 @@ import Firebase
 struct FireUser: Codable, Identifiable, Equatable, Hashable {
     let id: String
     var name: String?
+    var isHidden: Bool = false
     var profileImageUrl: String?
     var birthDate: Date?
     var gender: Gender?
     var onboardingCompleted: Bool?
     var general = UserGeneral()
-    var location = LocationPreference()
+    var location = Location()
     var look = Look()
     var preferences = Preferences()
     var blockedUsers: [String]?
@@ -43,8 +44,8 @@ extension FireUser {
 }
 
 struct UserGeneral: Codable, Equatable, Hashable {
-    var education: EducationLevel?
-    var smokingStatus: SmokeLevel?
+    var education: EducationLevel = .none
+    var smokingStatus: SmokeLevel = .nonSmoker
     var sexuality: Sexuality?
     var job: String?
     var languages: [String]? // list of keys in languages.json
@@ -55,8 +56,8 @@ struct UserGeneral: Codable, Equatable, Hashable {
 
 struct Look: Codable, Equatable, Hashable {
     var height: Double?
-    var bodyType: BodyType?
-    var fashionStyle: FashionStyle?
+    var bodyType: BodyType = .average
+    var fashionStyle: FashionStyle = .casual
     var fitnessLevel: FitnessLevel?
 }
 
@@ -70,20 +71,29 @@ struct Preferences: Codable, Equatable, Hashable {
     var relationshipType: RelationshipType?
     var gender: [Gender]?
     var agePreferences: AgePreference?
-}
+} 
 
 struct AgePreference: Codable, Equatable, Hashable {
     var minAge: Double
     var maxAge: Double
 }
 
-struct LocationPreference: Codable, Equatable, Hashable {
+struct Location: Codable, Equatable, Hashable {
     var latitude: Double = -100
     var longitude: Double = 133.0
     var name: String = "No location set."
     var radius: Double = 100 // in km
 }
 
+extension FireUser {
+    // helps to refetch users when something important like preferred genders changed
+    func hasRelevantDataChangesToRefetch(from oldUser: FireUser) -> Bool {
+        self.preferences.gender != oldUser.preferences.gender ||
+        self.preferences.agePreferences != oldUser.preferences.agePreferences ||
+        self.location != oldUser.location ||
+        self.blockedUsers != oldUser.blockedUsers
+    }
+}
 
 extension AgePreference {
     func toDictionary() -> [String: Any] {
@@ -103,7 +113,7 @@ extension AgePreference {
     }
 }
 
-extension LocationPreference {
+extension Location {
     func toDictionary() -> [String: Any] {
         [
             "latitude": latitude,

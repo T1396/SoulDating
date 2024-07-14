@@ -33,7 +33,7 @@ protocol AlertableViewModel: ObservableObject {
 /// super class for all viewmodels used in this project, offers properties
 /// and functions to show result or loading messages when user made an action
 /// that can possibly fail.
-/// Also offers properties for alerts with a title and message depending to the error
+/// Also offers properties for alerts with a title and message depending to the error and retry actions
 class BaseAlertViewModel: AlertableViewModel {
   
     @Published var showAlert = false

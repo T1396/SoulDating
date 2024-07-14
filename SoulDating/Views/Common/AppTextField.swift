@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct AppTextField: View {
-    enum TextFieldType { case normal, email, password }
+    enum TextFieldType { case normal, password }
     // MARK: properties
     var placeholder: String
     @Binding var text: String
     var error: Bool
-    var errorMessage: String?
+    var errorMessage = ""
     var supportText: String
     var type: TextFieldType = .normal
-    
+    var keyboardType: UIKeyboardType = .default
+
     // MARK: computed properties
     var textToShow: String? {
         error ? errorMessage : supportText
@@ -26,13 +27,13 @@ struct AppTextField: View {
     var body: some View {
         VStack(alignment: .leading) {
             textField()
-                .textFieldStyle(AppTextFieldStyle(error: error))
-                .keyboardType(.emailAddress)
-                .autocapitalization(.none)
-                .disableAutocorrection(true)
+                .textFieldStyle(AppTextFieldStyle(error: error, errorText: errorMessage))
+                .keyboardType(keyboardType)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
                 .appFont(textWeight: .medium)
                 .animation(.default, value: error)
-            if let errorMessage, !supportText.isEmpty {
+            if !errorMessage.isEmpty, !supportText.isEmpty {
                 Text(error == true ? errorMessage : supportText)
                     .appFont(size: 12)
                     .foregroundStyle(error ? .red : .primary)
@@ -47,25 +48,20 @@ struct AppTextField: View {
         switch type {
         case .normal:
             TextField(placeholder, text: $text)
-        case .email:
-            TextField(placeholder, text: $text)
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
         case .password:
             SecureField(placeholder, text: $text)
         }
-        
     }
     
     // MARK: init
-    init(_ placeholder: String, text: Binding<String>, error: Bool = false, errorMessage: String? = nil, supportText: String = "", type: TextFieldType = .normal) {
+    init(_ placeholder: String, text: Binding<String>, error: Bool = false, errorMessage: String = "", supportText: String = "", type: TextFieldType = .normal, keyboardType: UIKeyboardType = .default) {
         self.placeholder = placeholder
         self._text = text
         self.error = error
         self.errorMessage = errorMessage
         self.supportText = supportText
         self.type = type
+        self.keyboardType = keyboardType
     }
 }
 

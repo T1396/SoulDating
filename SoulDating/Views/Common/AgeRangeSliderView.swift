@@ -52,11 +52,11 @@ struct AgeRangeSliderView: View {
         GeometryReader { geometry in
             
             VStack {
-                Text("Choose your preferred age range")
+                Text(Strings.chooseAgeRange)
                     .appFont(size: 16, textWeight: .medium)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundStyle(.primary)
-                Text("Current: \(Int(lowerValue)) - \(Int(upperValue))")
+                Text(String(format: Strings.currentAges, "\(lowerValue)", "\(upperValue)"))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .appFont(size: 14)
                     .padding(.top, 4)
@@ -77,13 +77,8 @@ struct AgeRangeSliderView: View {
             .onAppear {
                 DispatchQueue.main.async {
                     totalScreen = max((geometry.size.width - offsetValue), 0)
-                    print(totalScreen)
-                    print(userLowerbound)
-                    print(userUpperbound)
                     firstSliderPos = valueToPosition(value: userLowerbound, minValue: minValue, maxValue: maxValue, totalScreen: totalScreen)
                     secondSliderPos = valueToPosition(value: userUpperbound, minValue: minValue, maxValue: maxValue, totalScreen: totalScreen)
-                    print(firstSliderPos)
-                    print(secondSliderPos)
                 }
             }
             
@@ -163,7 +158,7 @@ struct DraggableCircle: View {
                 .frame(width: innerSize.width, height: innerSize.height)
                 .foregroundStyle(.white)
         }
-        .offset(x: position + (circlePosition == .left ? 0 : -5))
+        .offset(x: position + (circlePosition == .left ? 0 : -10))
         .gesture(
             DragGesture()
                 .onChanged { value in
@@ -171,9 +166,9 @@ struct DraggableCircle: View {
                         isDragging = true
                     }
                     if circlePosition == .left {
-                        position = min(max(value.location.x, 0), otherPosition)
+                        position = min(max(value.location.x, 0), otherPosition - 25)
                     } else {
-                        position = min(max(value.location.x, otherPosition), limit)
+                        position = min(max(value.location.x, otherPosition + 25), limit)
                     }
                 }
                 .onEnded { _ in
@@ -184,8 +179,6 @@ struct DraggableCircle: View {
                 }
         )
     }
-    
-    
 }
 
 /// convert position to values and values to sliderposition coordinates
