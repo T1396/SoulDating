@@ -21,11 +21,8 @@ struct SignInSheet: View {
         NavigationStack {
             VStack {
                 Spacer()
-                if signInState == .showSignOptions {
-                    authOptionsView
-                } else {
-                    emailSignInView
-                }
+                emailSignInView
+
                 Spacer()
                 
                 Button(action: switchAuthentificationMode) {
@@ -35,6 +32,13 @@ struct SignInSheet: View {
                 .navigationTitle(userViewModel.mode.title)
                 .navigationBarTitleDisplayMode(.inline)
             }
+
+            .alert(userViewModel.alertTitle, isPresented: $userViewModel.showAlert) {
+                Button("OK", action: userViewModel.dismissAlert)
+            } message: {
+                Text(userViewModel.alertMessage)
+            }
+
         }
     }
     
@@ -44,68 +48,38 @@ struct SignInSheet: View {
         }
     }
     
-    var authOptionsView: some View {
-        VStack {
-            HStack(spacing: 30) {
-                VStack {
-                    Image(systemName: "phone.fill")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .padding()
-                        .background(.gray.opacity(0.2))
-                        .clipShape(Circle())
-                    Text("Telefon")
-                }
-                
-                VStack {
-                    Image("google")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .padding()
-                        .background(.gray.opacity(0.2))
-                        .clipShape(Circle())
-                    Text("Google")
-                }
-                
-                VStack {
-                    Image(systemName: "apple.logo")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .padding()
-                        .background(.gray.opacity(0.2))
-                        .clipShape(Circle())
-                    Text("Apple")
-                }
-            }
-            Divider().padding(.top, 12)
-            Button(action: showEnterSignInDetails) {
-                Text(userViewModel.emailModeText)
-                    .foregroundStyle(.blue.opacity(0.7))
-                    .padding()
-            }
-            Divider()
-        }
-    }
+//    var authOptionsView: some View {
+//        VStack {
+//            Divider().padding(.top, 12)
+//            Button(action: showEnterSignInDetails) {
+//                Text(userViewModel.emailModeText)
+//                    .foregroundStyle(.blue.opacity(0.7))
+//                    .padding()
+//            }
+//            Divider()
+//        }
+//    }
     
     
     var emailSignInView: some View {
         VStack(spacing: 12) {
             Button(action: showSignInOptions) {
                 Image(systemName: "chevron.backward")
-                Text("Sign in options")
+                Text(Strings.signInOptions)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            
+
             AppTextField(
-                "E-Mail",
+                Strings.email,
                 text: $userViewModel.email,
                 error: userViewModel.email.count < 6,
-                errorMessage: "This is no valid E-Mail"
+                errorMessage: "This is no valid E-Mail",
+                keyboardType: .emailAddress
             )
             .padding(.top, 24)
 
             AppTextField(
-                "Passwort",
+                Strings.password,
                 text: $userViewModel.password,
                 error: userViewModel.password.count < 5,
                 errorMessage: "The password must contain at least 6 chraracters",
@@ -114,7 +88,7 @@ struct SignInSheet: View {
             
             if userViewModel.mode == .register {
                 AppTextField(
-                    "Passwort wiederholen",
+                    Strings.repeatPassword,
                     text: $userViewModel.passwordRepeat,
                     error: !userViewModel.passwordMatches,
                     errorMessage: "The passwords are not equal",
@@ -123,8 +97,10 @@ struct SignInSheet: View {
             }
             
             // Login or Sign in Button
-            Button(userViewModel.mode.title, action: userViewModel.signIn)
-                .appButtonStyle(fullWidth: true)
+            Button(action: signIn) {
+                Text(userViewModel.mode.title)
+                    .appButtonStyle(fullWidth: true)
+            }
         }
         .padding(.horizontal, 24)
     }

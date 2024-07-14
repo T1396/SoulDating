@@ -15,88 +15,78 @@ import SwiftUI
 struct RadarView: View {
     // MARK: properties
     @EnvironmentObject var userViewModel: UserViewModel
-    @EnvironmentObject var chatVm: ChatViewModel
     // @StateObject private var radarViewModel: RadarViewModel
-    @StateObject private var mockVm: MockRadarViewModel
-    @State private var navigateToUserProfile = false
-    
+    @StateObject private var radarVm = RadarViewModel()
+
+    @Binding var activeTabViewTab: Tab
+
+
     private let gridItems = [ GridItem(.flexible()), GridItem(.flexible()) ]
     
     // MARK: init
-    init(user: FireUser) {
-        // self._radarViewModel = StateObject(wrappedValue: RadarViewModel(user: user))
-        self._mockVm = StateObject(wrappedValue: MockRadarViewModel(user: user))
+
+
+    init(activeTabViewTab: Binding<Tab>) {
+        print("RadarView initialized")
+        self._activeTabViewTab = activeTabViewTab
     }
 
     // MARK: body
     var body: some View {
         NavigationStack {
-            GeometryReader { geometry in
-                
-                let width = (geometry.size.width - 40) / 2
-                let height = width * 4 / 3
-                ScrollView {
-                    LazyVGrid(columns: gridItems, content: {
-                        ForEach(mockVm.filteredUsers) { user in
-                            
-                            
-                            NavigationLink {
-                                let chatId = chatVm.returnChatIdIfExists(for: user.id)
-                                MessageAndProfileView(contentType: .profile, targetUser: user, chatId: chatId, image: .constant(nil))
-                            } label: {
-                                ImageWithGradientAndName(user: user, distance: mockVm.distance(to: user.location), minWidth: width, minHeight: height)
-                            }
-//
-//                            ImageWithGradientAndName(user: user, distance: mockVm.distance(to: user.location), minWidth: width, minHeight: height)
-//                                .onTapGesture {
-//                                    navigateToUserProfile = true
-//                                }
-//                                .navigationDestination(isPresented: $navigateToUserProfile, destination: {
-//                                    OtherUserProfileView(showProfile: $navigateToUserProfile, image: .constant(nil), targetUser: user, user: userViewModel.user)
-//                                        .navigationBarBackButtonHidden()
-//                                })
+            Group {
+                if !radarVm.filteredSortedUsers.isEmpty {
+                    GeometryReader { geometry in
+                        let width = (geometry.size.width - 40) / 2
+                        let height = width * 4 / 3
+
+                        ScrollView {
+                            LazyVGrid(columns: gridItems, content: {
+                                ForEach(radarVm.filteredSortedUsers) { user in
+                                    ImageWithGradientAndName(user: user, distance: radarVm.distance(to: user.location), minWidth: width, minHeight: height)
+                                }
+                            }).padding(.horizontal)
                         }
-                    }).padding(.horizontal)
+                    }
+
+                } else {
+                    Text(Strings.radarNoUsers)
+                        .appFont(size: 22, textWeight: .bold)
+                        .padding(.horizontal, 40)
+
+                    Button {
+                        withAnimation {
+                            activeTabViewTab = .profile
+                        }
+                    } label: {
+                        Text(Strings.goToProfileTab)
+                            .appButtonStyle()
+                    }
                 }
             }
-
+            .onAppear(perform: radarVm.updateUserAndRefetchIfNeeded)
             .toolbar {
                 ToolbarItem {
+
                     Menu {
-                        
-                        Section("Sort by") {
-                            ForEach(RadarSortOption.allCases) { sortOption in
-                                Button {
-                                    mockVm.setSortOption(sortOption)
-                                } label: {
-                                    Label(sortOption.title, systemImage: mockVm.isSortSelected(sortOption) ? "checkmark.circle.fill" : "circle")
-                                }
-                            }
-                        }
-                        
-                        Section("Filter by") {
+                        SortMenuSections(activeSort: $radarVm.activeSort, sortOrder: $radarVm.sortOrder)
+                        Section(Strings.filterBy) {
                             
                             ForEach(RadarFilter.allCases) { filter in
                                 Menu(filter.title) {
                                     ForEach(filter.allOptions, id: \.self) { option in
                                         Button {
-                                            mockVm.toggleFilterOption(filter, option: option.rawValue)
-                                            print("daskldkal")
+                                            withAnimation {
+                                                radarVm.toggleFilterOption(filter, optionRawValue: option.rawValue)
+                                            }
                                         } label: {
-                                            Label(option.title, systemImage: mockVm.isOptionSelected(filter, option: option.rawValue) ? "checkmark.circle.fill" : "circle")
+                                            Label(option.title, systemImage: radarVm.isOptionSelected(filter, option: option.rawValue) ? "checkmark.circle.fill" : "circle")
                                         }
                                     }
                                     
                                 }
                             }
-                            
                         }
-                        
-                        Button("more") {
-                            // MARK: TODO
-                        }
-                        
-                        
                     } label: {
                         Image(systemName: "slider.horizontal.3")
                     }
@@ -104,13 +94,12 @@ struct RadarView: View {
                 }
             }
             .navigationTitle(Tab.radar.title)
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
 
 
 #Preview {
-    RadarView(user: FireUser(id: "1", name: "Hannes"))
+    RadarView(activeTabViewTab: .constant(.radar))
         .environmentObject(UserViewModel())
 }
