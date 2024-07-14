@@ -24,10 +24,10 @@ enum RadarFilter: Identifiable, CaseIterable {
     
     var title: String {
         switch self {
-        case .education: "Education"
-        case .interests: "Interests"
-        case .smoker: "Smoker"
-        case .bodyType: "Body Type"
+        case .education: Strings.education
+        case .interests: Strings.interests
+        case .smoker: Strings.smoker
+        case .bodyType: Strings.bodyType
         }
     }
     
@@ -43,27 +43,4 @@ enum RadarFilter: Identifiable, CaseIterable {
             return BodyType.allCases.map { FilterOption(title: $0.title, rawValue: $0.rawValue) }
         }
     }
-    
-    
-//    static let lessCases: [RadarFilter] = [
-//        .education(EducationLevel.self),
-//        .smoker(SmokeLevel.self),
-//        .bodyType(BodyType.self)
-//    ]
-//    
-//    static let allCases: [RadarFilter] = [
-//        .education(EducationLevel.self),
-//        .interests(Interest.self),
-//        .smoker(SmokeLevel.self),
-//        .bodyType(BodyType.self)
-//    ]
-//    
-//    
-//    static func == (lhs: RadarFilter, rhs: RadarFilter) -> Bool {
-//        lhs.id == rhs.id
-//    }
-//    
-//    func hash(into hasher: inout Hasher) {
-//        hasher.combine(id)
-//    }
 }
