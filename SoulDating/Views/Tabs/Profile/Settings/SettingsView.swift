@@ -29,20 +29,21 @@ struct SettingsView: View {
 
                 Section("Logout") {
                     Button(action: logout) {
-                        CustomLabel(text: "Logout", systemName: "rectangle.portrait.and.arrow.right.fill", labelRole: .delete)
+                        CustomLabel(text: Strings.logout, systemName: "rectangle.portrait.and.arrow.right.fill", labelRole: .delete)
                     }
                 }
             }
             .alert(userVm.alertTitle, isPresented: $userVm.showAlert, actions: {
                 if let action = userVm.onAcceptAction {
-                    Button("Cancel", role: .cancel, action: userVm.dismissAlert)
+                    Button(Strings.cancel, role: .cancel, action: userVm.dismissAlert)
                     Button("OK", role: .destructive, action: action)
                 } else {
-                    Button("Cancel", role: .cancel, action: userVm.dismissAlert)
+                    Button(Strings.cancel, role: .cancel, action: userVm.dismissAlert)
                 }
             }, message: {
                 Text(userVm.alertMessage)
             })
+            .toolbar(.hidden, for: .tabBar)
 
             .sheet(isPresented: Binding(
                 get: { showSheet },
@@ -51,7 +52,7 @@ struct SettingsView: View {
                 sheetItem?.settingView // show related settingView from the enum
                     .presentationDetents([.medium, .large])
             })
-            .navigationTitle("Settings")
+            .navigationTitle(Strings.settingsTitle)
         }
     }
 
