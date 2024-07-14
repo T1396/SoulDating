@@ -9,15 +9,17 @@ import SwiftUI
 import Firebase
 
 struct EditDateView: View {
-    let title: String
-    @Binding var initialDate: Date?
-
-    let path: String
+    // MARK: init
     @EnvironmentObject var editVm: EditUserViewModel
     @Environment(\.dismiss) var dismiss
+
+    let title: String
+    @Binding var initialDate: Date?
+    let path: String
+
     @State private var newDate: Date
 
-    
+    // MARK: init
     init(title: String, date: Binding<Date?>, path: String) {
         self.title = title
         self._initialDate = date
@@ -28,7 +30,7 @@ struct EditDateView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
-                .appFont(size: 28, textWeight: .bold)
+                .appFont(size: 32, textWeight: .bold)
 
             DatePicker(selection: $newDate, displayedComponents: .date) {
                 
@@ -38,10 +40,10 @@ struct EditDateView: View {
             .datePickerStyle(.wheel)
             
             HStack {
-                Button("Cancel") { dismiss() }
+                Button(Strings.cancel) { dismiss() }
                 Spacer()
                 Button(action: save) {
-                    Text("Update")
+                    Text(Strings.update)
                         .appButtonStyle()
                 }
                 .disabled(newDate == initialDate)
@@ -58,4 +60,5 @@ struct EditDateView: View {
 
 #Preview {
     EditDateView(title: "Change your Birthdate", date: .constant(.now), path: "dkoasl")
+        .environment(\.locale, Locale(identifier: "ja-JP"))
 }

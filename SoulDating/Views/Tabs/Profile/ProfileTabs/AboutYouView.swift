@@ -1,5 +1,5 @@
 //
-//  PreferencesView.swift
+//  AboutYouView.swift
 //  SoulDating
 //
 //  Created by Philipp Tiropoulos on 20.06.24.
@@ -7,27 +7,30 @@
 
 import SwiftUI
 
-struct PreferencesView: View {
+struct AboutYouView: View {
     // MARK: properties
     @EnvironmentObject var userViewModel: UserViewModel
+    @Binding var user: FireUser
+
     @State private var isSheetPresented = false
     @State private var activeSheet: (any AboutYouItemProtocol)?
-
-    init() {
-        print("View new initialized")
-    }
     
+    // MARK: init
+    init() {
+        _user = Binding(get: { UserService.shared.user }, set: { UserService.shared.user = $0 })
+    }
+
+    // MARK: body
     var body: some View {
         Form {
-            ForEach(PreferencesSection.allCases) { section in
-                
+            ForEach(AboutYouSection.allCases) { section in
                 Section(section.displayName) {
-                    ForEach(section.items, id: \.title) { item in
+                    ForEach(section.items(), id: \.title) { item in
                         Button(action: {
                             activeSheet = item
                             isSheetPresented = true
                         }, label: {
-                            ProfileItemRow(title: item.title, value: item.value(user: $userViewModel.user), systemName: item.icon)
+                            ProfileItemRow(title: item.title, value: item.value(user: $user) ?? "", systemName: item.icon)
                         })
                     }
                 }
@@ -37,14 +40,16 @@ struct PreferencesView: View {
             get: { isSheetPresented },
             set: { isSheetPresented = $0 }
         ), onDismiss: { activeSheet = nil }, content: {
-            activeSheet?.editView(user: $userViewModel.user)
+            activeSheet?.editView(user: $user)
                 .presentationDetents([.medium, .large])
         })
+
         .listStyle(.insetGrouped)
     }
 }
 
 
 #Preview {
-    PreferencesView()
+    AboutYouView()
+        .environmentObject(UserViewModel())
 }

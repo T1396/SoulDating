@@ -9,17 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-/// Limits a string binding to an inserted char limit and deletes updates over the limit
-extension Binding where Value == String {
-    func max(_ limit: Int) -> Self {
-        if self.wrappedValue.count > limit {
-            DispatchQueue.main.async {
-                self.wrappedValue = String(self.wrappedValue.prefix(limit))
-            }
-        }
-        return self
-    }
-}
+
 
 struct EditDescriptionView: View {
     let title: String
@@ -50,17 +40,17 @@ struct EditDescriptionView: View {
                 .appFont(size: 32, textWeight: .bold)
             Spacer()
             
-            Text("Enter a short description about yourself for other users")
+            Text(Strings.enterDescText)
                 .padding(.horizontal)
                 .appFont(size: 11, textWeight: .bold)
                 .foregroundStyle(.gray.opacity(0.8))
             
-            TextField("Change your description", text: $newDescription.max(charLimit), axis: .vertical)
+            TextField(Strings.changeDescription, text: $newDescription.max(charLimit), axis: .vertical)
                 .padding()
                 .background(.gray.opacity(0.3), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .lineLimit(5, reservesSpace: true)
             HStack {
-                Text("Enter a more detailed description")
+                Text(Strings.enterMoreDesc)
                     .foregroundStyle(.red.opacity(0.7))
                     .appFont(size: 14, textWeight: .bold)
                 Spacer()
@@ -76,10 +66,10 @@ struct EditDescriptionView: View {
             Spacer()
             
             HStack {
-                Button("Cancel", action: { dismiss() })
+                Button(Strings.cancel, action: { dismiss() })
                 Spacer()
                 Button(action: save) {
-                    Text("Update")
+                    Text(Strings.update)
                         .appButtonStyle()
                 }
                 .disabled(buttonDisabled)

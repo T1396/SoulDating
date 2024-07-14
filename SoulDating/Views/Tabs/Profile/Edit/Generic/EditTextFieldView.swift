@@ -47,17 +47,17 @@ struct EditTextFieldView: View {
                 placeholder,
                 text: $newText,
                 error: newText.count < 4,
-                errorMessage: errorMessage,
+                errorMessage: errorMessage ?? "",
                 supportText: supportText ?? ""
             )
             
             Spacer()
             
             HStack {
-                Button("Cancel", action: { dismiss() })
+                Button(Strings.cancel, action: { dismiss() })
                 Spacer()
                 Button(action: save) {
-                    Text("Update")
+                    Text(Strings.update)
                         .appButtonStyle()
                 }
                 .disabled(saveDisabled)

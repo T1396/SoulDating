@@ -18,18 +18,17 @@ struct EditLanguagesView: View {
     var body: some View {
         VStack(spacing: 0) {
             LanguagesTableView(langVm: langVm)
-            Button(action: saveLanguages) {
-                Text("Save")
-                    .appButtonStyle(fullWidth: true)
+            
+            HStack {
+                Button(Strings.cancel, action: { dismiss() })
+                Spacer()
+                Button(action: saveLanguages) {
+                    Text(Strings.update)
+                        .appButtonStyle()
+                }
+                .disabled(langVm.saveDisabled)
             }
-            .disabled(langVm.saveDisabled)
-            .padding(.horizontal)
-        }
-        .onAppear {
-            let systemLanguageCode = Locale.current.language.languageCode
-            if let systemLanguageCode, let isoCode = systemLanguageCode.identifier(.alpha2) {
-                langVm.loadLanguageData(for: isoCode)
-            }
+            .padding()
         }
     }
     
@@ -42,9 +41,11 @@ struct EditLanguagesView: View {
     }
 }
 
+
 struct LanguagesTableView: UIViewControllerRepresentable {
     @ObservedObject var langVm: LanguagesViewModel
 
+    // connection from tableViewController to SwiftUiView
     func makeUIViewController(context: Context) -> UITableViewController {
         let viewController = UITableViewController(style: .plain)
         viewController.tableView.delegate = context.coordinator
@@ -72,11 +73,13 @@ struct LanguagesTableView: UIViewControllerRepresentable {
             langVm.sectionTitles.count
         }
 
+        // returns the number of rows in a given section of the table view
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             let key = langVm.sectionTitles.sorted()[section]
             return langVm.sections[key]?.count ?? 0
         }
 
+        // configures and returns a cell for a given language row in the table view
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let key = langVm.sectionTitles.sorted()[indexPath.section]
             let language = langVm.sections[key]?[indexPath.row]
@@ -90,14 +93,17 @@ struct LanguagesTableView: UIViewControllerRepresentable {
             return cell
         }
 
+        // returns index titles for the sections
         func sectionIndexTitles(for tableView: UITableView) -> [String]? {
             langVm.sectionTitles.sorted()
         }
 
+        // returns the header title of a given section
         func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             langVm.sectionTitles.sorted()[section]
         }
 
+        // handles row selection with the right index menu
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             let key = langVm.sectionTitles.sorted()[indexPath.section]
             if let language = langVm.sections[key]?[indexPath.row] {
@@ -105,17 +111,6 @@ struct LanguagesTableView: UIViewControllerRepresentable {
                 tableView.reloadRows(at: [indexPath], with: .automatic)
             }
         }
-    }
-}
-
-struct HeaderView: View {
-    let title: String
-    
-    var body: some View {
-        Text(title)
-            .appFont(size: 18, textWeight: .semibold)
-            .padding(.horizontal)
-            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

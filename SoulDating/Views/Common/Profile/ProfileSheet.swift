@@ -23,7 +23,7 @@ struct ProfileSheet: View {
                     nameGenderRow
                     locationItem
                     
-                    Text("About me")
+                    Text(Strings.aboutMe)
                         .appFont(size: 16, textWeight: .semibold)
                         .padding(.horizontal)
                     Text(otherVm.userDescription)
@@ -115,7 +115,7 @@ struct ProfileSheet: View {
                     interests: [.animals, .birdwatching, .gardening, .fashion, .fitness],
                     description: "Hi! Ich bin Max, 29, aus Berlin. Leidenschaftlicher Fotograf, Hobbykoch und Abenteurer. Suche jemanden zum Lachen und Leben entdecken. Lust auf ein Treffen?"
                 ),
-                location: LocationPreference(latitude: 51.001, longitude: 9.100, name: "Berlin", radius: 100),
+                location: Location(latitude: 51.001, longitude: 9.100, name: "Berlin", radius: 100),
                 look: Look(height: 180, bodyType: .athletic, fashionStyle: .business, fitnessLevel: .athlete),
                 preferences: Preferences(height: 180, wantsChilds: true, smoking: false, sports: true, drinking: true, relationshipType: .dating, gender: [.divers, .male, .female], agePreferences: .init(minAge: 25, maxAge: 90)),
                 blockedUsers: [],
@@ -138,7 +138,7 @@ struct ProfileSheet: View {
                 interests: [.animals, .birdwatching, .gardening, .fashion, .fitness],
                 description: "Hi! Ich bin Max, 29, aus Berlin. Leidenschaftlicher Fotograf, Hobbykoch und Abenteurer. Suche jemanden zum Lachen und Leben entdecken. Lust auf ein Treffen?"
             ),
-            location: LocationPreference(latitude: 51.001, longitude: 9.100, name: "Berlin", radius: 100),
+            location: Location(latitude: 51.001, longitude: 9.100, name: "Berlin", radius: 100),
             look: Look(height: 180, bodyType: .athletic, fashionStyle: .business, fitnessLevel: .athlete),
             preferences: Preferences(height: 180, wantsChilds: true, smoking: false, sports: true, drinking: true, relationshipType: .dating, gender: [.divers, .male, .female], agePreferences: .init(minAge: 25, maxAge: 90)),
             blockedUsers: [],

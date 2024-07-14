@@ -11,7 +11,9 @@ struct ProfileImageHeaderView: View {
     @Binding var user: FireUser
     @Binding var loadedImage: Image?
     @Binding var isImagePresented: Bool
-    
+
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         HStack {
             ProfileProgressImage(imageUrl: user.profileImageUrl, width: 80, height: 80, userProgress: CGFloat(user.totalPercent), onAppear: { image in
@@ -22,16 +24,15 @@ struct ProfileImageHeaderView: View {
                     isImagePresented = true
                 }
             }
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(user.nameAgeString)
-                    .appFont(size: 22, textWeight: .bold)
-                    .padding(.leading, 6)
-                Text("\(user.totalPercent, specifier: "%.0f")% completed")
-                    .appFont(size: 16, textWeight: .semibold)
-                    .itemBackgroundStyleAlt(.accent, padding: 6, cornerRadius: 30)
-                    .foregroundStyle(.buttonText)
-            }
+
+            Text(user.nameAgeString)
+                .appFont(size: 18, textWeight: .bold)
+                .lineLimit(1)
+                .padding(.leading, 6)
+            Text("\(user.totalPercent, specifier: "%.0f")% completed")
+                .appFont(size: 16, textWeight: .semibold)
+                .itemBackgroundStyleAlt(colorScheme == .light ? .white.opacity(0.9) : .gray.opacity(0.6), padding: 6, cornerRadius: 12)
+                .foregroundStyle(.secondary)
         }
     }
 }
@@ -54,7 +55,7 @@ struct ProfileImageHeaderView: View {
             interests: [.animals, .art],
             description: "Enthusiastic outdoors lover and bookworm."
         ),
-        location: LocationPreference(
+        location: Location(
             latitude: 34.0522,
             longitude: -118.2437,
             name: "Los Angeles",

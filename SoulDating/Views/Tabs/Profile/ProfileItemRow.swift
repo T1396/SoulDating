@@ -8,25 +8,27 @@
 import SwiftUI
 
 struct ProfileItemRow: View {
-    @EnvironmentObject var userViewModel: UserViewModel
-    @Environment(\.colorScheme) var colorScheme
-    
+    // MARK: properties
     let title: String
     var value: String?
     var systemName: String?
-    
+
+    @Environment(\.colorScheme) var colorScheme
+
+    // MARK: computed properties
     var valueText: String {
         if let value, !value.isEmpty {
             value
         } else {
-            "Not specified"
+            Strings.notSpecified
         }
     }
     
+    // MARK: body
     var body: some View {
         HStack(spacing: 16) {
             if let systemName {
-                AppIcon(systemName: systemName, size: .small)
+                AppIcon(systemName: systemName, size: .medium)
             }
             
             VStack(alignment: .leading, spacing: 2) {

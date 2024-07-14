@@ -15,7 +15,7 @@ struct EditAgeRangeView: View {
     @EnvironmentObject var editVm: EditUserViewModel
     @State private var agePreferences: AgePreference
     @Environment(\.dismiss) var dismiss
-    
+
     init(title: String, agePreference: Binding<AgePreference?>, path: String) {
         self.title = title
         self._initialPreference = agePreference
@@ -28,21 +28,26 @@ struct EditAgeRangeView: View {
             Text(title)
                 .appFont(size: 32, textWeight: .bold)
             
+            Spacer()
             AgeRangeSliderView(userLowerbound: $agePreferences.minAge, userUpperbound: $agePreferences.maxAge)
-            
-            
-            Button(action: save) {
-                Text("Save")
-                    .appButtonStyle(fullWidth: true)
+            Spacer()
+
+            HStack {
+                Button(Strings.cancel, action: { dismiss() })
+                Spacer()
+                Button(action: save) {
+                    Text(Strings.update)
+                        .appButtonStyle()
+                }
+                .disabled(initialPreference == agePreferences)
             }
-            .disabled(initialPreference == agePreferences)
         }
         .padding()
     }
     
     private func save() {
         editVm.updateUserField(path, with: agePreferences.toDictionary())
-        initialPreference = agePreferences
+        initialPreference = agePreferences // updates the user age pref binding
         dismiss()
     }
 }

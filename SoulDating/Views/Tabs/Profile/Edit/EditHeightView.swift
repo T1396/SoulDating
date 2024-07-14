@@ -17,18 +17,29 @@ struct EditHeightView: View {
     @EnvironmentObject var editVm: EditUserViewModel
     @Environment(\.dismiss) var dismiss
 
-    @State private var number: Double
-    
+    @State private var height: Double
+
     // MARK: computed properties
     var disabledSaving: Bool {
-        initialValue == number
+        initialValue == height
     }
-    
+
+    var heightLocale: Measurement<UnitLength> {
+        Measurement(value: height, unit: UnitLength.centimeters)
+    }
+
+    private let formatStyle = Measurement<UnitLength>.FormatStyle(
+        width: .narrow,
+        locale: .autoupdatingCurrent,
+        usage: .personHeight,
+        numberFormatStyle: .number
+    )
+
     // MARK: init
     init(title: String, path: String, initialValue: Binding<Double?>, supportText: String?) {
         self.title = title
         self.supportText = supportText
-        self._number = State(initialValue: initialValue.wrappedValue ?? 180)
+        self._height = State(initialValue: initialValue.wrappedValue ?? 180)
         self._initialValue = initialValue
         self.path = path
     }
@@ -37,36 +48,34 @@ struct EditHeightView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
-                .appFont(size: 28, textWeight: .bold)
+                .appFont(size: 32, textWeight: .bold)
             Spacer()
             
-            Text("\(number, specifier: "%.0f")cm")
+            // formatted height
+            Text(heightLocale, format: formatStyle)
                 .appFont(size: 22, textWeight: .semibold)
                 .frame(maxWidth: .infinity, alignment: .center)
             
             Slider(
-                value: $number,
+                value: $height,
                 in: 120...240,
                 step: 1
             ) {
-                Text("Speed")
             } minimumValueLabel: {
-                Text("120cm")
+                Text(measurement(120), format: formatStyle)
                     .appFont()
             } maximumValueLabel: {
-                Text("240cm")
+                Text(measurement(240), format: formatStyle)
                     .appFont()
             }
             
             Spacer()
             
             HStack {
-                Button("Cancel") { dismiss() }
-                
+                Button(Strings.cancel) { dismiss() }
                 Spacer()
-                
                 Button(action: save) {
-                    Text("Save")
+                    Text(Strings.update)
                         .appButtonStyle()
                 }
                 .disabled(disabledSaving)
@@ -75,13 +84,19 @@ struct EditHeightView: View {
         .padding()
     }
     
+    // MARK: functions
     private func save() {
-        editVm.updateUserField(path, with: number)
-        initialValue = number
+        editVm.updateUserField(path, with: height)
+        initialValue = height
         dismiss()
+    }
+
+    private func measurement(_ value: Double) -> Measurement<UnitLength> {
+        Measurement(value: value, unit: UnitLength.centimeters)
     }
 }
 
 #Preview {
     EditHeightView(title: "Change your height", path: "1", initialValue: .constant(180), supportText: nil)
+        .environment(\.locale, Locale(identifier: "ja-JP"))
 }

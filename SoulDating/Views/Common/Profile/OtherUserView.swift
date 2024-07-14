@@ -6,15 +6,19 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 
 struct OtherUserProfileView: View {
     // MARK: properties
     @EnvironmentObject var userViewModel: UserViewModel
+
     @StateObject private var otherVm: OtherProfileViewModel
     @StateObject private var swipeUserVm: SwipeUserViewModel
+
     @Binding var image: Image?
     @Binding var contentType: MessageAndProfileView.ContentType // to change between messages and profile
+
     @State private var showImagesView = false
     @State private var showSheet = true
 
@@ -34,6 +38,7 @@ struct OtherUserProfileView: View {
             let width = geometry.size.width - 32
             let height = width / 3 * 4.6
             ZStack {
+                
                 VStack {
                     if let image {
                         image
@@ -46,22 +51,18 @@ struct OtherUserProfileView: View {
                     }
                     Spacer()
                 }
-                HStack {
-                    BackArrow {
+                BackArrow {
+                    withAnimation {
                         dismiss()
                     }
-                    .padding(12)
-                    .background(.white.opacity(0.7), in: RoundedRectangle(cornerRadius: 25, style: .continuous))
-                    .padding(.horizontal)
-
                 }
+                .shadow(color: .black.opacity(0.7), radius: 3, x: 0, y: 0)
                 .padding(.top, 49)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 
                 if showImagesView {
-                    
                     VStack {
-                        Text("Other photos")
+                        Text(Strings.otherPhotos)
                             .appFont(size: 16, textWeight: .semibold)
                             .padding(.horizontal)
                         
@@ -78,12 +79,6 @@ struct OtherUserProfileView: View {
                 }
             }
         }
-        .onAppear {
-            showSheet = true
-        }
-        .toolbar(.hidden)
-        .navigationBarBackButtonHidden(false)
-        .ignoresSafeArea(edges: .top)
         .sheet(isPresented: $showSheet) {
             ProfileSheet(otherVm: otherVm, swipeUserVm: swipeUserVm, contentType: $contentType)
                 .transition(.move(edge: .bottom))
@@ -92,14 +87,21 @@ struct OtherUserProfileView: View {
                 .presentationBackgroundInteraction(.enabled)
                 .presentationDetents([.fraction(0.4), .fraction(0.8)])
         }
-        
+        .alert(otherVm.alertTitle, isPresented: $otherVm.showAlert, actions: {
+            Button("OK", action: otherVm.dismissAlert)
+        }, message: {
+            Text(otherVm.alertMessage)
+        })
+        .toolbar(.hidden)
+        .navigationBarBackButtonHidden(false)
+        .ignoresSafeArea(edges: .top)
     }
     
     // MARK: views
     @ViewBuilder
     private func loadAsynImage() -> some View {
         if let url = URL(string: otherVm.otherUser.profileImageUrl ?? "") {
-            AsyncImage(url: url) { image in
+            WebImage(url: url) { image in
                 image
                     .resizable()
                     .scaledToFit()
@@ -158,7 +160,7 @@ struct OtherUserProfileView: View {
                 interests: [.animals, .birdwatching, .gardening, .fashion, .fitness],
                 description: "Hi! Ich bin Max, 29, aus Berlin. Leidenschaftlicher Fotograf, Hobbykoch und Abenteurer. Suche jemanden zum Lachen und Leben entdecken. Lust auf ein Treffen?"
             ),
-            location: LocationPreference(latitude: 51.001, longitude: 9.100, name: "Berlin", radius: 100),
+            location: Location(latitude: 51.001, longitude: 9.100, name: "Berlin", radius: 100),
             look: Look(height: 180, bodyType: .athletic, fashionStyle: .business, fitnessLevel: .athlete),
             preferences: Preferences(height: 180, wantsChilds: true, smoking: false, sports: true, drinking: true, relationshipType: .dating, gender: [.divers, .male, .female], agePreferences: .init(minAge: 25, maxAge: 90)),
             blockedUsers: [],

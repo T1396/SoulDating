@@ -18,19 +18,21 @@ struct MoreAboutUserView: View {
             .appFont(size: 16, textWeight: .semibold)
             .padding(.horizontal)
         VStack {
-            ForEach(otherVm.moreAboutUser, id: \.title) { info in
+            ForEach(otherVm.moreAboutUser.indices, id: \.self) { index in
+                let row = otherVm.moreAboutUser[index]
                 HStack {
-                    Image(systemName: info.icon)
+                    Image(systemName: row.icon)
                         .font(.caption)
                         .frame(width: 30)
-                    Text("\(info.title): ")
+                    Text("\(row.title): ")
                     Spacer()
-                    Text(info.value)
+                    Text(row.value)
                         .appFont(size: 12, textWeight: .semibold)
                 }
                 .appFont(size: 12, textWeight: .regular)
-                if info.title != "Smoking Status" {
+                if index != otherVm.moreAboutUser.count - 1 {
                     Divider()
+                        .padding(.horizontal, 4)
                 }
             }
         }

@@ -8,30 +8,32 @@
 import SwiftUI
 
 struct PhotosContextOptions: View {
-    @EnvironmentObject var profileViewModel: ProfileViewModel
+    // MARK: properties
+    @EnvironmentObject var imagesVm: ImagesViewModel
     let image: SortedImage
+
     var body: some View {
         ControlGroup {
             Button(action: shareImage) {
-                Label("Share", systemImage: "square.and.arrow.up")
+                Label(Strings.share, systemImage: "square.and.arrow.up")
             }
             
             Button(action: downloadImage) {
-                Label("Download", systemImage: "arrow.down.doc")
+                Label(Strings.download, systemImage: "arrow.down.doc")
             }
             
             Button(role: .destructive, action: deleteImage) {
-                Label("Delete", systemImage: "trash.fill")
+                Label(Strings.delete, systemImage: "trash.fill")
             }
         }
-        Button("Move to first position") {
-            
+        Button(Strings.moveFirst) {
+
         }
-        Button("Move to last position") {
-            
+        Button(Strings.moveLast) {
+
         }
-        Button("Select as display picture") {
-            
+        Button(Strings.selectAsPicture) {
+            imagesVm.updateMainPicture(newPicture: image.imageUrl)
         }
 
     }
@@ -42,13 +44,13 @@ struct PhotosContextOptions: View {
     
     private func downloadImage() {
         Task {
-            await profileViewModel.downloadAndSaveImage(from: image.imageUrl)
+            await imagesVm.downloadAndSaveImage(from: image.imageUrl)
         }
     }
     
     private func deleteImage() {
         withAnimation {
-            profileViewModel.deleteImage(imageId: image.id)
+            imagesVm.deleteImage(imageId: image.id)
         }
     }
 }

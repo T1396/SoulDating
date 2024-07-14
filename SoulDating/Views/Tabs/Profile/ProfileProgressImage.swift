@@ -6,51 +6,54 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct ProfileProgressImage: View {
+    // MARK: properties
     var imageUrl: String?
     var width: CGFloat = 250
     var height: CGFloat = 250
     var userProgress: CGFloat = 0.9
-    
-    var onAppear: ((Image) -> Void)?
-    @State private var isLoaded = false
 
-    
-    @State var progress: CGFloat = 0.0
-    
+    var onAppear: ((Image) -> Void)?
+
+    @State private var isLoaded = false
+    @State private var progress: CGFloat = 0.0
+    @State private var imageLoadFailed = false
+
     var body: some View {
         ZStack {
-            if let imageUrl, let url = URL(string: imageUrl) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView()
-                            .scaleEffect(1.5)
-                            .frame(width: CGFloat(width), height: CGFloat(height))
-                            .background(.cyan)
-                            .clipShape(Circle())
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .clipShape(Circle())
-                            .padding(4)
-                            .frame(width: width, height: height)
-                            .onAppear {
-                                isLoaded = true
-                                if let onAppear {
-                                    onAppear(image)
-                                }
+            if imageLoadFailed {
+                Image(systemName: "exclamationmark.triangle")
+                    .resizable()
+                    .scaledToFit()
+                    .padding(2)
+                    .frame(width: width, height: height)
+                    .clipShape(Circle())
+                    .background(Color.gray.opacity(0.5))
+            } else if let imageUrl, let url = URL(string: imageUrl) {
+                WebImage(url: url, options: [.progressiveLoad, .retryFailed]) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .clipShape(Circle())
+                        .padding(2)
+                        .frame(width: width, height: height)
+                        .onAppear {
+                            isLoaded = true
+                            if let onAppear {
+                                onAppear(image)
                             }
-                    case .failure:
-                        PlaceholderImageView(systemName: "wifi.slash", size: CGFloat(34), isLoaded: $isLoaded)
-                            .frame(width: CGFloat(width), height: CGFloat(height))
-                            .background(.cyan)
-                            .clipShape(Circle())
-                    @unknown default:
-                        EmptyView()
-                    }
+                        }
+                } placeholder: {
+                    ProgressView()
+                        .scaleEffect(1.5)
+                        .frame(width: width, height: height)
+                        .background(.secondaryAccent)
+                        .clipShape(Circle())
+                }
+                .onFailure { _ in
+                    imageLoadFailed = true
                 }
                 .onAppear {
                     withAnimation {
@@ -58,11 +61,11 @@ struct ProfileProgressImage: View {
                     }
                 }
             } else {
-                Image("profileimage")
+                Image("placeholder")
                     .resizable()
                     .scaledToFill()
                     .clipShape(Circle())
-                    .padding(4)
+                    .padding(2)
                     .frame(width: width, height: height)
                     .onAppear {
                         withAnimation {
@@ -70,8 +73,8 @@ struct ProfileProgressImage: View {
                         }
                     }
             }
-               
 
+            // progress circle
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
@@ -90,6 +93,4 @@ struct ProfileProgressImage: View {
 
 #Preview {
     ProfileProgressImage(imageUrl: "", width: 100, height: 100, userProgress: 80.0, onAppear: { _ in })
-    //    Image("sampleimage")
-//        .circularProgressImageStyle(progress: 0.5, width: 100, height: 100)
 }

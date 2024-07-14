@@ -52,7 +52,7 @@ struct ReportSheetView: View {
             case .failure:
                 FailureView(message: reportViewModel.resultMessage)
                 Button(action: resetToInitial) {
-                    Text("Ok")
+                    Text("OK")
                         .appButtonStyle(fullWidth: true)
                 }
             }
@@ -61,8 +61,8 @@ struct ReportSheetView: View {
 
         
         .alert(reportViewModel.alertTitle, isPresented: $reportViewModel.showAlert, actions: {
-            Button("Cancel", role: .cancel, action: reportViewModel.dismissAlert)
-            Button("Block", role: .destructive, action: reportViewModel.blockUser)
+            Button(Strings.cancel, role: .cancel, action: reportViewModel.dismissAlert)
+            Button(Strings.block, role: .destructive, action: reportViewModel.blockUser)
         }, message: {
             Text(reportViewModel.alertMessage)
         })
@@ -86,8 +86,7 @@ struct ReportSheetView: View {
     var reportView: some View {
         VStack(alignment: .leading) {
             BackArrow(action: resetToInitial)
-
-            Text("Tell us the reason why you want to report \(reportViewModel.reportedUser.name ?? "")")
+            Text(String(format: Strings.reasonForReport, reportViewModel.reportedUser.name ?? ""))
                 .appFont(size: 24, textWeight: .bold)
                 .padding(.top, 8)
                 
@@ -99,12 +98,12 @@ struct ReportSheetView: View {
                 }
             }
             .scrollIndicators(.never)
-            Text("We need more information what exactly happened")
+            Text(Strings.needMoreInfo)
                 .appFont(size: 14, textWeight: .extralight)
-            AppTextField("Enter more detailed information", text: $reportViewModel.reportMessage)
-            
+            AppTextField(Strings.enterMoreInfo, text: $reportViewModel.reportMessage)
+
             Button(action: reportUser) {
-                Text("Send Report")
+                Text(Strings.sendReport)
                     .appButtonStyle(color: .red, fullWidth: true)
             }
             .buttonStyle(PressedButtonStyle())

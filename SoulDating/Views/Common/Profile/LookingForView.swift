@@ -27,22 +27,24 @@ struct LookingForView: View {
             .appFont(size: 12, textWeight: .regular)
             Divider()
                 .padding(.horizontal, 4)
-            ForEach(otherVm.preferenceDetails, id: \.title) { detail in
+            ForEach(otherVm.preferenceDetails.indices, id: \.self) { index in
+                let row = otherVm.preferenceDetails[index]
                 HStack {
-                    Image(systemName: detail.icon)
+                    Image(systemName: row.icon)
                         .font(.caption)
                         .frame(width: 30)
-                    Text(detail.title)
+                    Text(row.title)
                         .appFont(size: 12, textWeight: .regular)
                     Spacer()
-                    if let isAccepted = detail.pref {
+                    if let isAccepted = row.pref {
                         Image(systemName: isAccepted ? "checkmark.square.fill" : "xmark.app.fill")
                             .foregroundStyle(isAccepted ? .green : .red)
                     } else {
                         Image(systemName: "questionmark.app.fill")
                     }
                 }
-                if detail.title != "Childs" {
+                // show dividers if its not the last element
+                if index != otherVm.preferenceDetails.count - 1 {
                     Divider()
                         .padding(.horizontal, 4)
                 }

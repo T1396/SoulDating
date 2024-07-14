@@ -38,7 +38,9 @@ struct EditBoolView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Change your preference")
-                .appFont(size: 20, textWeight: .bold)
+                .appFont(size: 32, textWeight: .bold)
+
+            Spacer()
             if let subtitle {
                 Text(subtitle)
                     .font(.subheadline)
@@ -50,13 +52,18 @@ struct EditBoolView: View {
                     .appFont(size: 16, textWeight: .semibold)
             }
             .toggleStyle(SymbolToggleStyle())
-            
-            
-            Button(action: saveChanges) {
-                Text("Save")
-                    .appButtonStyle(fullWidth: true)
+
+            Spacer()
+
+            HStack {
+                Button("Cancel", action: { dismiss() })
+                Spacer()
+                Button(action: saveChanges) {
+                    Text("Update")
+                        .appButtonStyle()
+                }
+                .disabled(saveDisabled)
             }
-            .disabled(saveDisabled)
         }
         .padding()
     }

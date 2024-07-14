@@ -19,7 +19,7 @@ struct EditGenderView: View {
     @Environment(\.dismiss) var dismiss
     
     // MARK: computed properties
-    var updateDisabled: Bool {
+    var saveDisabled: Bool {
         chosenGender == nil || chosenGender == initialGender
     }
     
@@ -53,12 +53,15 @@ struct EditGenderView: View {
             
             Spacer()
             
-            Button(action: save) {
-                Text("Update")
-                    .appFont(textWeight: .bold)
+            HStack {
+                Button(Strings.cancel, action: { dismiss() })
+                Spacer()
+                Button(action: save) {
+                    Text(Strings.update)
+                        .appButtonStyle()
+                }
+                .disabled(saveDisabled)
             }
-            .appButtonStyle(fullWidth: true)
-            .disabled(updateDisabled)
         
         }
         .padding()
