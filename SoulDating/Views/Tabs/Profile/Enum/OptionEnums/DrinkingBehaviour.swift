@@ -14,9 +14,9 @@ enum DrinkingBehaviour: String, EditableItem, CaseIterable, Codable {
     
     var title: String {
         switch self {
-        case .nonDrinker: "Non-Drinker"
-        case .socialDrinker: "Social Drinker"
-        case .regularDrinker: "Regular Drinker"
+        case .nonDrinker: Strings.nonDrinker
+        case .socialDrinker: Strings.socialDrinker
+        case .regularDrinker: Strings.regularDrinker
         }
     }
     

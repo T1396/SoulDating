@@ -13,8 +13,6 @@ struct MatchCardView: View {
     var currentUser: FireUser
     var otherUser: FireUser
 
-    @EnvironmentObject var chatVm: ChatViewModel
-
     // states to detect where to navigate to (message or profile)
     @State private var navigateToUser = false
     @State private var navigateTo: MessageAndProfileView.ContentType = .message
@@ -25,14 +23,14 @@ struct MatchCardView: View {
     }
 
     var body: some View {
-        VStack(spacing: 16) {
+        VStack {
             Image(systemName: "heart.fill")
-                .font(.system(size: 100))
+                .font(.system(size: 80))
                 .foregroundStyle(.red.opacity(0.8))
-                .padding(.top, 30)
+                .padding(.top)
 
-            Text("You have a match with \(otherUserName)")
-                .appFont(size: 32, textWeight: .bold)
+            Text(String(format: Strings.haveMatchWith, otherUserName))
+                .appFont(size: 26, textWeight: .bold)
                 .multilineTextAlignment(.center)
 
 
@@ -47,37 +45,34 @@ struct MatchCardView: View {
 
             Group {
                 Button(action: openProfileView) {
-                    Text("Open \(otherUserName)'s Profile")
+                    Text(String(format: Strings.openProfile, otherUserName))
                         .lineLimit(1)
-                        .appButtonStyle(color: .white, type: .secondary, fullWidth: true)
+                        .appButtonStyle(color: .white, type: .secondary, textSize: 14, fullWidth: true)
                 }
 
                 Button(action: openMessageView) {
-                    Text("Write a message to \(otherUserName)")
+                    Text(String(format: Strings.writeMsgTo, otherUserName))
                         .lineLimit(1)
-                        .appButtonStyle(color: .white, type: .secondary, fullWidth: true)
+                        .appButtonStyle(color: .white, type: .secondary, textSize: 14, fullWidth: true)
                 }
+
+                Button(action: resetMatch) {
+                    Text("OK")
+                        .appButtonStyle(color: .red, type: .secondary, textSize: 14, fullWidth: true)
+                }
+
             }
             .padding(.horizontal)
 
-
-            .navigationDestination(isPresented: $navigateToUser, destination: {
-                let chatId = chatVm.returnChatIdIfExists(for: otherUser.id)
+            .fullScreenCover(isPresented: $navigateToUser) {
+                let chatId = ChatService.shared.returnChatIdIfExists(for: otherUser.id)
                 MessageAndProfileView(contentType: navigateTo, targetUser: otherUser, chatId: chatId, image: $otherUserImage)
-            })
-
-            Spacer()
-
-            Button(action: resetMatch) {
-                Text("OK")
-                    .appButtonStyle()
             }
 
-            Spacer()
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.secondaryAccent)
+        .background(.matchCard)
         .clipShape(RoundedRectangle(cornerRadius: 25))
         .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 0)
         .padding()
@@ -88,16 +83,17 @@ struct MatchCardView: View {
         withAnimation {
             navigateTo = .message
             navigateToUser = true
+            //resetMatch()
         }
-        resetMatch()
+
     }
 
     private func openProfileView() {
         withAnimation {
             navigateTo = .profile
             navigateToUser = true
+            //resetMatch()
         }
-        resetMatch()
     }
 
     private func resetMatch() {

@@ -12,27 +12,19 @@ enum FirebaseError: Error, CustomStringConvertible {
     
     var description: String {
         switch self {
-        case .notLoggedIn:
-            return "User is not logged in"
-        case .downloadUrlFailure:
-            return "URL of the picture couldn't be downloaded"
-        case .nopicturechosen:
-            return "No image chosen or the picture could not be set to the variable"
-        case .convertError:
-            return "An error occured while converting"
+        case .notLoggedIn: Strings.notLoggedIn
+        case .downloadUrlFailure: Strings.downloadUrlFail
+        case .nopicturechosen: Strings.noPictureChosen
+        case .convertError: Strings.convertError
         }
     }
     
     var displayMessage: String {
         switch self {
-        case .notLoggedIn:
-            "Oops! You are not logged in. If this should not be the case submit a bugreport."
-        case .downloadUrlFailure:
-            "We couldn't download the image from the server... Please check your connection and try again"
-        case .nopicturechosen:
-            "An error occured and it seems you have no image selected, try again"
-        case .convertError:
-            "Something went wrong... Please try again or submit a bugreport."
+        case .notLoggedIn: Strings.notLoggedInMsg
+        case .downloadUrlFailure: Strings.downloadUrlFailMsg
+        case .nopicturechosen: Strings.noPictureChosenMsg
+        case .convertError: Strings.convertErrorMsg
         }
     }
 }

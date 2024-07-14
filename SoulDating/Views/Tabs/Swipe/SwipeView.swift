@@ -6,16 +6,19 @@
 //
 import SwiftUI
 
-
-
-
 struct SwipeView: View {
-    @EnvironmentObject var userViewModel: UserViewModel
-    @EnvironmentObject var chatViewModel: ChatViewModel
+    // MARK: properties
     @StateObject private var swipeViewModel = SwipeViewModel()
     @State private var swipeSheet: SwipeViewSheet?
     @State private var activeCardID: String?  // State to track active card when options sheet is opened
-
+    @Binding var user: FireUser
+    
+    // MARK: init
+    init() {
+        // get user binding from userservice
+        _user = Binding(get: { UserService.shared.user }, set: { UserService.shared.user = $0 })
+        print("initialized swipe view")
+    }
 
     var body: some View {
         NavigationStack {
@@ -24,20 +27,20 @@ struct SwipeView: View {
                     noUserOptionsAndText
                         .padding()
                 } else {
-                    ForEach(swipeViewModel.displayedUsers.reversed()) { userVm in
-                        print("ALL DISPLAYED CARDS: \(swipeViewModel.displayedUsers.map { $0.otherUser.name })")
-                        return SwipeCardView(swipeUserVm: userVm, activeCardID: $activeCardID)
+                    ForEach(swipeViewModel.displayedUsers.reversed()) { user in
+                        SwipeCardView(swipeUserVm: user, activeCardID: $activeCardID)
                             .onTapGesture {
-                                activeCardID = userVm.otherUser.id
+                                activeCardID = user.otherUser.id
                             }
                             .shadow(color: .black.opacity(0.5), radius: 2, x: 0.0, y: 0.0)
                             .padding()
                             .clipped()
                     }
                 }
-
+                
+                // show matches
                 if let userMatch = swipeViewModel.userMatch {
-                    MatchCardView(currentMatch: $swipeViewModel.userMatch, currentUser: userViewModel.user, otherUser: userMatch)
+                    MatchCardView(currentMatch: $swipeViewModel.userMatch, currentUser: swipeViewModel.user, otherUser: userMatch)
                         .transition(.asymmetric(insertion: .push(from: .trailing), removal: .slide))
                         .zIndex(5) // holds the card in foreground
                 }
@@ -50,51 +53,39 @@ struct SwipeView: View {
                     let item = DatingPreferenceItem.ageRange
                     EditAgeRangeView(
                         title: item.title,
-                        agePreference: $userViewModel.user.preferences.agePreferences,
+                        agePreference: $user.preferences.agePreferences,
                         path: item.firebaseFieldName
                     )
+                    .environmentObject(EditUserViewModel())
                     .presentationDetents([.medium])
                 }
             }
             .alert(swipeViewModel.alertTitle, isPresented: $swipeViewModel.showAlert, actions: {
                 if let retryAction = swipeViewModel.onAcceptAction {
-                    Button("Cancel", role: .cancel, action: swipeViewModel.dismissAlert)
-                    Button("Retry", role: .destructive, action: retryAction)
+                    Button(Strings.cancel, role: .cancel, action: swipeViewModel.dismissAlert)
+                    Button(Strings.retry, role: .destructive, action: retryAction)
                 } else {
-                    Button("Cancel", role: .cancel, action: swipeViewModel.dismissAlert)
+                    Button(Strings.cancel, role: .cancel, action: swipeViewModel.dismissAlert)
                 }
             }, message: {
                 Text(swipeViewModel.alertMessage)
             })
 
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: userViewModel.logout) {
-                        Image(systemName: "power")
-                    }
-                }
-            }
-
             .navigationTitle(Tab.swipe.title)
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                swipeViewModel.subscribe()
-            }
-            .onDisappear {
-                swipeViewModel.unsubscribe()
-            }
+            .onAppear(perform: swipeViewModel.subscribe) // refetches user when changes to user prefs were made and listener for likes
+            .onDisappear(perform: swipeViewModel.unsubscribe)
         }
     }
 
     private var noUserOptionsAndText: some View {
         VStack {
-            Text("Unfortunately there are no other users in your area...")
-                .appFont(size: 30, textWeight: .bold)
+            Text(Strings.noSwipeUsers)
+                .appFont(size: 24, textWeight: .bold)
                 .multilineTextAlignment(.center)
 
             Button(action: fetchUsers) {
-                Text(swipeViewModel.isFetchingUsers ? "Fetching new users..." : "Try to fetch users again")
-                    .appFont(textWeight: .bold)
+                Text(swipeViewModel.isFetchingUsers ? Strings.fetchingUser : Strings.fetchAgain)
                     .appButtonStyle(fullWidth: true)
                     .animation(.smooth, value: swipeViewModel.isFetchingUsers)
             }
@@ -102,19 +93,19 @@ struct SwipeView: View {
             Button {
                 swipeSheet = .editRadiusOrLocation
             } label: {
-                Text("Update Location or radius?")
-                    .appFont(textWeight: .bold)
+                Text(Strings.updateLocationRadius)
                     .appButtonStyle(fullWidth: true)
             }
 
             Button {
                 swipeSheet = .editAgeRange
             } label: {
-                Text("Or change the age span?")
-                    .appFont(textWeight: .bold)
+                Text(Strings.changeAgeSpan)
                     .appButtonStyle(fullWidth: true)
             }
         }
+        .padding(.horizontal, 40)
+        .frame(maxWidth: .infinity)
     }
 
     private func fetchUsers() {

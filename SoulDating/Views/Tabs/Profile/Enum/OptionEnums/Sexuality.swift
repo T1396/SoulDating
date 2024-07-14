@@ -25,19 +25,6 @@ enum Sexuality: String, EditableItem, CaseIterable, Codable {
         }
     }
     
-    var description: String {
-        switch self {
-        case .hetero: "Attraction to a different gender."
-        case .homo: "Attraction to the same gender."
-        case .bi: "Attraction to two or more genders."
-        case .pan: "Attraction to people regardless of gender."
-        case .asexual: "Little or no sexual attraction to others."
-        case .queer: "A general term for sexual and gender minorities."
-        case .questioning: "Exploring or questioning one's own sexual orientation."
-        case .intersex: "Individuals born with reproductive or sexual anatomy that doesn’t fit typical definitions of female or male."
-        }
-    }
-    
     var icon: String {
         switch self {
         case .hetero: "figure.stand"

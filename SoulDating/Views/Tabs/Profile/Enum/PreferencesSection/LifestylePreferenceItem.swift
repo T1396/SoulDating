@@ -17,10 +17,10 @@ enum LifestylePreferenceItem: String, Identifiable, CaseIterable {
 
     var title: String {
         switch self {
-        case .smokingPref: "Do you date smokers?"
-        case .drinkingPref: "Do you date drinkers?"
-        case .childPref: "Do you want childs?"
-        case .sportPref: "Do you want a sportsman?"
+        case .smokingPref: Strings.acceptsSmokerTitleEdit
+        case .drinkingPref: Strings.acceptsDrinkerTitleEdit
+        case .childPref: Strings.wantsChildsTitleEdit
+        case .sportPref: Strings.wantsSportyPartnerTitleEdit
         }
     }
 
@@ -44,10 +44,10 @@ enum LifestylePreferenceItem: String, Identifiable, CaseIterable {
 
     var editText: String {
         switch self {
-        case .smokingPref: "Do you accept smoker?"
-        case .drinkingPref: "Do you accept drinkers?"
-        case .childPref: "Do you want childs"
-        case .sportPref: "Should your partner do sports?"
+        case .smokingPref: Strings.acceptsSmokerTitleEdit
+        case .drinkingPref: Strings.acceptsDrinkerTitleEdit
+        case .childPref: Strings.wantsChildsTitleEdit
+        case .sportPref: Strings.wantsSportyPartnerTitleEdit
         }
     }
 

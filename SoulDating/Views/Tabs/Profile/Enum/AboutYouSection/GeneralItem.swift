@@ -17,18 +17,18 @@ enum GeneralItem: String, Identifiable, CaseIterable {
 
     var title: String {
         switch self {
-        case .name: "Name"
-        case .birthDate: "Birthdate"
-        case .gender: "Gender"
-        case .sex: "Sexuality"
-        case .location: "Your location"
-        case .description: "Description about yourself"
+        case .name: Strings.name
+        case .birthDate: Strings.birthDate
+        case .gender: Strings.gender
+        case .sex: Strings.sexuality
+        case .location: Strings.yourLocation
+        case .description: Strings.descriptionTitle
         }
     }
 
     var firebaseFieldName: String {
         switch self {
-        case .name: "name"
+        case .name: Strings.name
         case .birthDate: "birthdate"
         case .gender: "gender"
         case .sex: "general.sexuality"
@@ -67,19 +67,19 @@ enum GeneralItem: String, Identifiable, CaseIterable {
 
     var updateText: String {
         switch self {
-        case .name: "Update your name"
-        case .birthDate: "Update your date of birth"
-        case .gender: "Update your current gender"
-        case .sex: "Update your sex identity"
-        case .location: "Updates your Location"
-        case .description: "Update your description"
+        case .name: Strings.updateName
+        case .birthDate: Strings.updatebirth
+        case .gender: Strings.updateOwnGender
+        case .sex: Strings.updateSexuality
+        case .location: Strings.updateLocationRadius
+        case .description: Strings.updateDescription
         }
     }
 
     var placeholderText: String {
         switch self {
-        case .name: "Enter your name"
-        case .description: "Enter a description about you"
+        case .name: Strings.enterNamePlaceholder
+        case .description: Strings.enterDescriptionPlaceholder
         default: ""
         }
     }
@@ -87,9 +87,9 @@ enum GeneralItem: String, Identifiable, CaseIterable {
 
     var supportText: String? {
         switch self {
-        case .gender, .sex: "This will change how you are suggested to others"
-        case .location: "This will change your suggestions of users"
-        case .description: "A good description can help you find more matches, write something special about you"
+        case .gender, .sex: Strings.willChangeOtherSuggestions
+        case .location: Strings.willUpdateSuggestions
+        case .description: Strings.descriptionHelpText
         default: nil
         }
     }

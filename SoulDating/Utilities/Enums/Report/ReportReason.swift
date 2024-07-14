@@ -11,30 +11,29 @@ enum ReportReason: String, CaseIterable, Identifiable {
     case inappropriatePicture, harrassmentOrMobbing, spam, fakeProfile, scam, offensiveLanguage, unwantedApproaches, other
     
     var id: String { rawValue }
-    
     var title: String {
         switch self {
-        case .inappropriatePicture: "Inappropriate Picture"
-        case .harrassmentOrMobbing: "Harassment or Mobbing"
-        case .spam: "Spam or Advertising"
-        case .fakeProfile: "Fake Profile or Identity"
-        case .scam: "Scam or deception"
-        case .offensiveLanguage: "Offensive or insulting language"
-        case .unwantedApproaches: "Unwanted approaches"
-        case .other: "Other reasons"
+        case .inappropriatePicture: Strings.inappropriatePicture
+        case .harrassmentOrMobbing: Strings.harrassmentOrMobbing
+        case .spam: Strings.spam
+        case .fakeProfile: Strings.fakeProfile
+        case .scam: Strings.scam
+        case .offensiveLanguage: Strings.offensiveLanguage
+        case .unwantedApproaches: Strings.unwantedApproaches
+        case .other: Strings.otherDescription
         }
     }
     
     var description: String {
         switch self {
-        case .inappropriatePicture: "The user has posted inappropriate or offensive images."
-        case .harrassmentOrMobbing: "The user is engaging in harassment or bullying behavior."
-        case .spam: "The user is sending spam or advertising content."
-        case .fakeProfile: "The user has a fake profile or is using a false identity."
-        case .scam: "The user is involved in fraudulent or deceptive activities."
-        case .offensiveLanguage: "The user is using offensive or abusive language."
-        case .unwantedApproaches: "The user is making unwanted approaches."
-        case .other: "Other reason."
+        case .inappropriatePicture: Strings.inappropriatePictureDescription
+        case .harrassmentOrMobbing: Strings.harrassmentOrMobbingDescription
+        case .spam: Strings.spamDescription
+        case .fakeProfile: Strings.fakeProfileDescription
+        case .scam: Strings.scamDescription
+        case .offensiveLanguage: Strings.offensiveLanguageDescription
+        case .unwantedApproaches: Strings.unwantedApproachesDescription
+        case .other: Strings.otherDescription
         }
     }
     

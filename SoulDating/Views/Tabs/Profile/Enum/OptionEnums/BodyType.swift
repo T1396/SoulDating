@@ -15,20 +15,10 @@ enum BodyType: String, EditableItem, CaseIterable, Identifiable, Codable {
     // Title for each body type
     var title: String {
         switch self {
-        case .slim: "Slim"
-        case .average: "Average"
-        case .athletic: "Athletic"
-        case .heavyset: "Heavyset"
-        }
-    }
-
-    // Description for each body type
-    var description: String {
-        switch self {
-        case .slim: "A narrow and slender build."
-        case .average: "A generally typical body build, neither notably slim nor particularly bulky."
-        case .athletic: "A sporty and muscular build."
-        case .heavyset: "A bulkier and broader body build."
+        case .slim: Strings.slimBody
+        case .average: Strings.avgBody
+        case .athletic: Strings.athleticBody
+        case .heavyset: Strings.heavysetBody
         }
     }
 

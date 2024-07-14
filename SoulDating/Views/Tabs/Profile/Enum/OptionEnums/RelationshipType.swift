@@ -14,10 +14,10 @@ enum RelationshipType: String, EditableItem, Identifiable, CaseIterable, Codable
     
     var title: String {
         switch self {
-        case .friendship: "Friendships"
-        case .undefined: "Lets see"
-        case .dating: "Dating"
-        case .longTerm: "Long-Term Relationships"
+        case .friendship: Strings.relationshipFriendships
+        case .undefined: Strings.relationshipUndefined
+        case .dating: Strings.relationshipDating
+        case .longTerm: Strings.relationshipLongTerm
         }
     }
     

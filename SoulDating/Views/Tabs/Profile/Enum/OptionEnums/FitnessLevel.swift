@@ -14,11 +14,11 @@ enum FitnessLevel: String, EditableItem, Identifiable, CaseIterable, Codable {
     
     var title: String {
         switch self {
-        case .unfit: "Very rarely"
-        case .lightly: "Sometimes"
-        case .moderateActive: "Regularly doing Sports"
-        case .veryActive: "Daily doing Sports"
-        case .athlete: "Professional sportsman"
+        case .unfit: Strings.unfit
+        case .lightly: Strings.lightly
+        case .moderateActive: Strings.moderateActive
+        case .veryActive: Strings.veryActive
+        case .athlete: Strings.athlete
         }
     }
     

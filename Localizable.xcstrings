@@ -4,14 +4,57 @@
     "" : {
 
     },
-    "%.0f%% completed" : {
-
+    "(Optional) Provide us additional information" : {
+      "comment" : "Text asking the user for additional information while bugreporting"
     },
-    "%.0fcm" : {
-
+    "%.0f%% completed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.0f%% Fortschritt"
+          }
+        }
+      }
     },
     "%@ away" : {
-
+      "comment" : "Format for displaying distance",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
+    },
+    "%@ has no description yet" : {
+      "comment" : "Text indicating that the user has no description yet.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ hat noch keine Beschreibung"
+          }
+        }
+      }
+    },
+    "%@ in age of %@" : {
+      "comment" : "String showing the desired gender and age preferences of a user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ im Alter von %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ in age of %2$@"
+          }
+        }
+      }
     },
     "%@, %lld" : {
       "localizations" : {
@@ -42,102 +85,1387 @@
     "%lldkm" : {
 
     },
-    "120cm" : {
-
+    "A good description can help you find more matches, write something special about you." : {
+      "comment" : "Help text for writing a good description",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine gute Beschreibung hilft dir mehr Likes und Matches zu bekommen. Schreib irgendwas cooles über dich."
+          }
+        }
+      }
     },
-    "240cm" : {
-
+    "A link is being sent to your new email address" : {
+      "comment" : "Message indicating a link is being sent to the new email address",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Link wird an die neue E-Mail Adresse gesendet"
+          }
+        }
+      }
     },
     "About me" : {
-
+      "comment" : "Section title for information about the user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Über mich"
+          }
+        }
+      }
+    },
+    "About SoulDating" : {
+      "comment" : "Problem setting: About SoulDating",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Über SoulDating"
+          }
+        }
+      }
+    },
+    "About you" : {
+      "comment" : "Title for the 'About you' section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Über dich"
+          }
+        }
+      }
     },
     "Account" : {
-
+      "comment" : "Header for account section"
     },
     "Account Settings" : {
-
+      "comment" : "Title for account settings section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account Einstellungen"
+          }
+        }
+      }
+    },
+    "Age" : {
+      "comment" : "Common label for age",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alter"
+          }
+        }
+      }
+    },
+    "All" : {
+      "comment" : "All text"
     },
     "Allow Notification" : {
-
+      "comment" : "Text for allowing notifications",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benachrichtigungen erlauben"
+          }
+        }
+      }
     },
-    "Apple" : {
-
+    "Already have an account? Click here" : {
+      "comment" : "Prompt for users already registered",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bereits registriert? Klick hier"
+          }
+        }
+      }
+    },
+    "An error occured and it seems you have no image selected, try again" : {
+      "comment" : "Detailed message when no image is chosen",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Irgendwas ist schief gelaufen, es wurde kein Bild gefunden. Versuche es erneut."
+          }
+        }
+      }
+    },
+    "An error occured and the languages could not be loaded. Please try again or make a bug report." : {
+      "comment" : "Error message when languages could not be loaded",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein unerwarteter Fehler ist aufgetreten, deine Sprachen konnten nicht gespeichert werden. Versuche es erneut oder mache einen Bug report"
+          }
+        }
+      }
+    },
+    "An error occured while converting" : {
+      "comment" : "Error message when conversion fails",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Bild konnte nicht umgewandelt werden"
+          }
+        }
+      }
+    },
+    "An error occured while fetching new people for you..." : {
+      "comment" : "Error message when there is an error fetching new people",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Fehler ist aufgetreten beim suchen neuer User für dich"
+          }
+        }
+      }
+    },
+    "An error occurred and the user could not be reported. Please try again or make a bug report." : {
+      "comment" : "Error message indicating failure to report a user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ups! Der User konnte nicht gemeldet werden. Versuch es erneut oder sende uns einen Bug Report"
+          }
+        }
+      }
+    },
+    "An error occurred and the user data could not be load. Please try it again or make a bug report." : {
+      "comment" : "Message indicating an error occurred while loading other user data",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die User Daten konnten nicht geladen werden. Versuch es bitte erneut oder sende uns einen Bug Report."
+          }
+        }
+      }
+    },
+    "An error occurred while saving your selection" : {
+      "comment" : "Message indicating an error occurred while saving the location selection",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Fehler ist aufgetreten beim setzen deiner Auswahl"
+          }
+        }
+      }
+    },
+    "An error occurred while updating your password. Please try again or do a bug report." : {
+      "comment" : "Error message indicating failure to update password",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Fehler ist aufgetreten beim aktualisieren deines Passwortes. Versuche es erneut oder sende uns einen Bug Report"
+          }
+        }
+      }
+    },
+    "An unexpected error occurred. Please try again or report a bug." : {
+      "comment" : "Message indicating an unexpected error occurred",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein unerwarteter Fehler ist aufgetreten. Versuche es bitte erneut oder sende einen Bug Report"
+          }
+        }
+      }
+    },
+    "An unexpected error occurred..." : {
+      "comment" : "Error title for unexpected error",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein unerwarteter Fehler ist aufgetreten..."
+          }
+        }
+      }
+    },
+    "Animals" : {
+      "comment" : "Interest: Animals",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiere"
+          }
+        }
+      }
+    },
+    "App Crashes" : {
+      "comment" : "Situations where the app unexpectedly quits."
+    },
+    "App Settings" : {
+      "comment" : "Title for the App Settings section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Einstellungen"
+          }
+        }
+      }
+    },
+    "Art" : {
+      "comment" : "Interest: Art",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunst"
+          }
+        }
+      }
+    },
+    "Ascending" : {
+      "comment" : "Sorting order: Ascending",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufsteigend"
+          }
+        }
+      }
+    },
+    "Asexual" : {
+      "comment" : "Sexual orientation: Asexual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asexuell"
+          }
+        }
+      }
+    },
+    "Ask ChatGPT" : {
+      "comment" : "Button label to ask ChatGPT",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frag ChatGPT"
+          }
+        }
+      }
+    },
+    "Associate Degree" : {
+      "comment" : "Education level: Associate Degree",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berufsakademieabschluss"
+          }
+        }
+      }
+    },
+    "Astrology" : {
+      "comment" : "Interest: Astrology",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Astrologie"
+          }
+        }
+      }
+    },
+    "Athletic" : {
+      "comment" : "Body type: Athletic",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Athletisch"
+          }
+        }
+      }
+    },
+    "Attention" : {
+      "comment" : "Common label for attention",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Achtung"
+          }
+        }
+      }
+    },
+    "Average" : {
+      "comment" : "Body type: Average",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durchschnittlich"
+          }
+        }
+      }
+    },
+    "Bachelors Degree" : {
+      "comment" : "Education level: Bachelor's Degree",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bachelor"
+          }
+        }
+      }
+    },
+    "Back" : {
+      "comment" : "Common label for back",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurück"
+          }
+        }
+      }
+    },
+    "Birdwatching" : {
+      "comment" : "Interest: Birdwatching",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vogelbeobachtung"
+          }
+        }
+      }
+    },
+    "Birthdate" : {
+      "comment" : "Common label for birthdate",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geburtsdatum"
+          }
+        }
+      }
+    },
+    "Bisexual" : {
+      "comment" : "Sexual orientation: Bisexual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bisexuell"
+          }
+        }
+      }
     },
     "Block" : {
-
+      "comment" : "Common label for block",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blockieren"
+          }
+        }
+      }
+    },
+    "Block and Report %@" : {
+      "comment" : "Title for blocking and reporting a user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ blockieren und melden."
+          }
+        }
+      }
+    },
+    "Body Type" : {
+      "comment" : "Title for the user's body type section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Körpertyp"
+          }
+        }
+      }
+    },
+    "Bug Report" : {
+      "comment" : "Bug Report Option title"
+    },
+    "Business Casual" : {
+      "comment" : "Fashion style: Business Casual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschäftskleidung"
+          }
+        }
+      }
     },
     "Button" : {
 
     },
     "Camera" : {
-
-    },
-    "Cancel" : {
-
-    },
-    "Change your description" : {
-
-    },
-    "Change your e-mail address" : {
-
-    },
-    "Change your password" : {
-
-    },
-    "Change your preference" : {
-
-    },
-    "Choose an option to upload a photo" : {
-
-    },
-    "Choose your preferred age range" : {
-
-    },
-    "Current: %lld - %lld" : {
+      "comment" : "Common label for camera",
       "localizations" : {
-        "en" : {
+        "de" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Current: %1$lld - %2$lld"
+            "state" : "translated",
+            "value" : "Kamera"
           }
         }
       }
     },
-    "Datum" : {
-
+    "Cancel" : {
+      "comment" : "Common label for cancel",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        }
+      }
+    },
+    "Casual" : {
+      "comment" : "Fashion style: Casual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Normal"
+          }
+        }
+      }
+    },
+    "Chain Smoker" : {
+      "comment" : "Smoking status: Chain Smoker",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kettenraucher"
+          }
+        }
+      }
+    },
+    "Change your description" : {
+      "comment" : "Option to change the user's description",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beschreibung ändern"
+          }
+        }
+      }
+    },
+    "Change your e-mail address" : {
+      "comment" : "Option to change the email address",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail adresse ändern"
+          }
+        }
+      }
+    },
+    "Change your password" : {
+      "comment" : "Option to change the password",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password ändern"
+          }
+        }
+      }
+    },
+    "Change your preference" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändere deine Vorlieben"
+          }
+        }
+      }
+    },
+    "Check the inbox of your mail to update your email address and log in again then." : {
+      "comment" : "Prompt to check the email inbox for the update link",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schau im Postfach deiner E-Mail nach um sie zu aktualisieren, und logge dich danach erneut ein."
+          }
+        }
+      }
+    },
+    "Chic" : {
+      "comment" : "Fashion style: Chic",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schick"
+          }
+        }
+      }
+    },
+    "Childs" : {
+      "comment" : "Childs text",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kinder"
+          }
+        }
+      }
+    },
+    "Choose an option to upload your photo" : {
+      "comment" : "Prompt for choosing an upload method for the photo",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle eine Methode zum Fotoupload"
+          }
+        }
+      }
+    },
+    "Choose random line" : {
+      "comment" : "Option to choose a random pickup line",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zufällig"
+          }
+        }
+      }
+    },
+    "Choose the type of bug you experienced" : {
+      "comment" : "Header text telling user to choose bug type to report"
+    },
+    "Choose your desired ages" : {
+      "comment" : "Prompt to choose desired age range",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle dein bevorzugtes Alter"
+          }
+        }
+      }
+    },
+    "Choose your favorite pickup line!" : {
+      "comment" : "Prompt to choose favorite pickup line",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle eine Pickup Line!"
+          }
+        }
+      }
+    },
+    "Choose your gender" : {
+      "comment" : "Common label for choosing gender",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle dein Geschlecht"
+          }
+        }
+      }
+    },
+    "Choose your preferred gender(s)" : {
+      "comment" : "Common label for choosing preferred gender(s)",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welche Geschlechter suchst du?"
+          }
+        }
+      }
+    },
+    "Continue" : {
+      "comment" : "Common label for continue",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiter"
+          }
+        }
+      }
+    },
+    "Cooking" : {
+      "comment" : "Interest: Cooking",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kochen"
+          }
+        }
+      }
+    },
+    "Could not send your message" : {
+      "comment" : "Error title indicating message could not be sent",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Nachricht konnte nicht gesendet werden."
+          }
+        }
+      }
+    },
+    "Create Pickup Lines" : {
+      "comment" : "Button label to create pickup lines",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PickupLines generieren"
+          }
+        }
+      }
+    },
+    "Current %@ - %@" : {
+      "comment" : "Text displaying the current age range",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktuell %1$@ - %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Current %1$@ - %2$@"
+          }
+        }
+      }
+    },
+    "Daily doing Sports" : {
+      "comment" : "Fitness level: Daily doing Sports",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Macht täglich Sport"
+          }
+        }
+      }
+    },
+    "Dancing" : {
+      "comment" : "Interest: Dancing",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanzen"
+          }
+        }
+      }
+    },
+    "Data Loss" : {
+      "comment" : "Issues where user data is not saved or unexpectedly deleted."
+    },
+    "Data protection" : {
+      "comment" : "Juridical setting: Data protection",
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenschutz"
+          }
+        }
+      }
+    },
+    "Dating" : {
+      "comment" : "Relationship type: Dating",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dating"
+          }
+        }
+      }
+    },
+    "Dating Preferences" : {
+      "comment" : "Title for the dating preferences section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dating Präferenzen"
+          }
+        }
+      }
     },
     "Delete" : {
-
+      "comment" : "Option to delete a photo",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen"
+          }
+        }
+      }
+    },
+    "Delete your Account" : {
+      "comment" : "Option to delete the account",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account löschen"
+          }
+        }
+      }
+    },
+    "Descending" : {
+      "comment" : "Sorting order: Descending",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Absteigend"
+          }
+        }
+      }
+    },
+    "Descripe what exactly happened" : {
+      "comment" : "Text telling the user to descripe what exactly happened while reporting a bug"
+    },
+    "Description about yourself" : {
+      "comment" : "Title for the user's description section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Beschreibung"
+          }
+        }
+      }
+    },
+    "Distance" : {
+      "comment" : "Common label for distance",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distanz"
+          }
+        }
+      }
+    },
+    "Diverse" : {
+      "comment" : "Gender: Diverse",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Divers"
+          }
+        }
+      }
+    },
+    "Do It Yourself" : {
+      "comment" : "Interest: Do It Yourself"
+    },
+    "Do you accept drinkers?" : {
+      "comment" : "Prompt for whether the user accepts drinkers",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datest du Trinker?"
+          }
+        }
+      }
+    },
+    "Do you date smokers?" : {
+      "comment" : "Prompt for whether the user dates smokers",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datest du Raucher?"
+          }
+        }
+      }
+    },
+    "Do you really want to block %@?" : {
+      "comment" : "Confirmation message for blocking a user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchtest du %@ wirklich blockieren?"
+          }
+        }
+      }
+    },
+    "Do you really want to delete your account and all stored chats and images you made? This cannot be undone!" : {
+      "comment" : "Confirmation message for deleting the account",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchtest du deinen Account wirklich löschen? Alle Bilder und Chats werden gelöscht. Das kann nicht rückgängig gemacht werden!"
+          }
+        }
+      }
+    },
+    "Do you really want to report and block %@?" : {
+      "comment" : "Confirmation message for reporting and blocking a user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchtest du %@ wirklich blockieren und melden?"
+          }
+        }
+      }
+    },
+    "Do you smoke?" : {
+      "comment" : "Title for the user's smoking behaviour section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rauchst du?"
+          }
+        }
+      }
+    },
+    "Do you want children?" : {
+      "comment" : "Prompt for whether the user wants children",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchtest du Kinder?"
+          }
+        }
+      }
+    },
+    "Do you want to swipe?" : {
+      "comment" : "Prompt asking if the user wants to swipe",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zum Swipe Tab gehen?"
+          }
+        }
+      }
+    },
+    "Doctoral Degree" : {
+      "comment" : "Education level: Doctoral Degree",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doktortitel"
+          }
+        }
+      }
     },
     "Download" : {
-
+      "comment" : "Option to download a photo",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download"
+          }
+        }
+      }
     },
-    "Enter a more detailed description" : {
-
+    "Drinker" : {
+      "comment" : "Drinker text",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trinker"
+          }
+        }
+      }
+    },
+    "Drinking Behaviour" : {
+      "comment" : "Drinking Behaviour label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trinkverhalten"
+          }
+        }
+      }
+    },
+    "Eclectic" : {
+      "comment" : "Fashion style: Eclectic",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eklektisch"
+          }
+        }
+      }
+    },
+    "Education" : {
+      "comment" : "Title for the user's education section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bildung"
+          }
+        }
+      }
+    },
+    "Email address" : {
+      "comment" : "Common label for email address",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail adresse"
+          }
+        }
+      }
+    },
+    "Enter a description about you" : {
+      "comment" : "Placeholder text for entering a description about the user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib eine Beschreibung von dir ein"
+          }
+        }
+      }
+    },
+    "Enter a detailed description about your issues..." : {
+      "comment" : "Placeholder text for the bug report textfield"
+    },
+    "Enter a message" : {
+      "comment" : "Prompt to enter a message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nachricht eingeben"
+          }
+        }
+      }
+    },
+    "Enter a more detailed description." : {
+      "comment" : "Prompt for entering a more detailed description about the user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Beschreibung sollte etwas länger sein."
+          }
+        }
+      }
     },
     "Enter a short description about yourself for other users" : {
-
+      "comment" : "Prompt for entering a short description about the user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beschreib dich damit andere Nutzer sich ein Bild von dir machen können"
+          }
+        }
+      }
+    },
+    "Enter a valid e-mail address" : {
+      "comment" : "Prompt to enter a valid e-mail address",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib eine gültige E-Mail Adresse ein"
+          }
+        }
+      }
+    },
+    "Enter any additional info that could help us to identify the bug" : {
+      "comment" : "Bug report additional info placeholder for textfield"
+    },
+    "Enter e-mail address" : {
+      "comment" : "Prompt to enter e-mail address",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail eingeben"
+          }
+        }
+      }
+    },
+    "Enter more detailed information" : {
+      "comment" : "Prompt to enter more detailed information",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genauere Informationen eingeben"
+          }
+        }
+      }
     },
     "Enter your approximate address" : {
-
+      "comment" : "Prompt for entering the user's approximate address",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib deine ungefähre Adresse ein"
+          }
+        }
+      }
     },
-    "Fetching new users..." : {
-
+    "Enter your jobname" : {
+      "comment" : "Placeholder text for entering the user's job name",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib den Namen deines Jobs ein"
+          }
+        }
+      }
+    },
+    "Enter your name" : {
+      "comment" : "Placeholder text for entering the user's name",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Namen eingeben"
+          }
+        }
+      }
+    },
+    "Enter your new e-mail address" : {
+      "comment" : "Prompt to enter new e-mail address",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue E-Mail Adresse eingeben"
+          }
+        }
+      }
+    },
+    "Enter your new password" : {
+      "comment" : "Prompt to enter new password",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neues Passwort eingeben"
+          }
+        }
+      }
+    },
+    "Enter your old password" : {
+      "comment" : "Prompt to enter old password",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altes Passwort eingeben"
+          }
+        }
+      }
+    },
+    "Enter your password" : {
+      "comment" : "Prompt to enter password",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort eingeben"
+          }
+        }
+      }
+    },
+    "Error" : {
+      "comment" : "Common label for error",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler"
+          }
+        }
+      }
+    },
+    "Failed to authorize. Check your password or email." : {
+      "comment" : "Error message shown when authorization fails",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Authentifizieren. Ist deine Email oder Passwort falsch?"
+          }
+        }
+      }
+    },
+    "Failed to lookup for users in your radius" : {
+      "comment" : "Error message indicating failure to fetch users within the radius",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Suchen von Usern in der Nähe..."
+          }
+        }
+      }
+    },
+    "Fake Profile or Identity" : {
+      "comment" : "Report reason for fake profile or identity",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geklautes Profil/ Identität"
+          }
+        }
+      }
+    },
+    "Fashion" : {
+      "comment" : "Interest: Fashion",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mode"
+          }
+        }
+      }
+    },
+    "Fashion Style" : {
+      "comment" : "Fashion Style label"
+    },
+    "Female" : {
+      "comment" : "Gender: Female",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiblich"
+          }
+        }
+      }
     },
     "Filter by" : {
-
+      "comment" : "Label for filtering by a specific attribute",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtern nach"
+          }
+        }
+      }
     },
-    "Gender: %@" : {
-
+    "Finish" : {
+      "comment" : "Common label for finish",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fertig"
+          }
+        }
+      }
     },
-    "Get help by ChatGPT!" : {
-
+    "Fitness" : {
+      "comment" : "Interest: Fitness",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fitness"
+          }
+        }
+      }
+    },
+    "Fitness Level" : {
+      "comment" : "Fitness Level label"
+    },
+    "Formal" : {
+      "comment" : "Fashion style: Formal",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formell"
+          }
+        }
+      }
+    },
+    "Friendships" : {
+      "comment" : "Relationship type: Friendships",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freundschaft"
+          }
+        }
+      }
+    },
+    "Functionality Issues" : {
+      "comment" : "Features of the app do not function as intended."
+    },
+    "Gaming" : {
+      "comment" : "Interest: Gaming"
+    },
+    "Gardening" : {
+      "comment" : "Interest: Gardening",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gärtnern"
+          }
+        }
+      }
+    },
+    "Gender" : {
+      "comment" : "Common label for gender",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschlecht"
+          }
+        }
+      }
+    },
+    "Gender %@" : {
+      "comment" : "Format for displaying gender",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschlecht %@"
+          }
+        }
+      }
+    },
+    "General Information" : {
+      "comment" : "Title for the 'General Information' section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allgemeine Info's"
+          }
+        }
+      }
+    },
+    "General terms and conditions" : {
+      "comment" : "Juridical setting: General terms and conditions",
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AGB's"
+          }
+        }
+      }
+    },
+    "Go to Photos Tab?" : {
+      "comment" : "Prompt to go to the Photos tab",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zum Photos Tab wechseln?"
+          }
+        }
+      }
+    },
+    "Go to Profile Tab?" : {
+      "comment" : "Message asking the user if he wants to enter the profile Tab",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zum Profil Tab wechseln?"
+          }
+        }
+      }
     },
     "Good to know" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die wichtigsten Dinge"
+          }
+        }
+      }
     },
     "Google" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
     },
     "Hallo" : {
 
@@ -145,26 +1473,307 @@
     "Hallo World" : {
 
     },
-    "Height: %lf" : {
-
+    "Harassment or Mobbing" : {
+      "comment" : "Report reason for harassment or mobbing",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belästigung oder Mobbing"
+          }
+        }
+      }
     },
-    "Hello, World!" : {
-
+    "Heavy Smoker" : {
+      "comment" : "Smoking status: Heavy Smoker",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starker Raucher"
+          }
+        }
+      }
+    },
+    "Heavyset" : {
+      "comment" : "Body type: Heavyset",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schwergewicht"
+          }
+        }
+      }
+    },
+    "Height %@" : {
+      "comment" : "Format for displaying height",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Größe %@"
+          }
+        }
+      }
+    },
+    "Help" : {
+      "comment" : "Problem setting: Help",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hilfe"
+          }
+        }
+      }
+    },
+    "Heterosexual" : {
+      "comment" : "Sexual orientation: Heterosexual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heterosexuell"
+          }
+        }
+      }
+    },
+    "Hide your profile" : {
+      "comment" : "Common label for hiding user profile",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Profil verstecken"
+          }
+        }
+      }
+    },
+    "Hide yourself" : {
+      "comment" : "Common label for hiding yourself",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbirg dein Profil"
+          }
+        }
+      }
+    },
+    "High School" : {
+      "comment" : "Education level: High School",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abitur"
+          }
+        }
+      }
+    },
+    "Hiking" : {
+      "comment" : "Interest: Hiking",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wandern"
+          }
+        }
+      }
+    },
+    "History" : {
+      "comment" : "Interest: History",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschichte"
+          }
+        }
+      }
+    },
+    "Hold on. Awesome pickup lines are being generated for you!" : {
+      "comment" : "Message indicating pickup lines are being generated",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einen Moment!  Fantastische Pickup Lines werden für dich generiert!"
+          }
+        }
+      }
+    },
+    "Homosexual" : {
+      "comment" : "Sexual orientation: Homosexual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Homosexuell"
+          }
+        }
+      }
+    },
+    "How fit are you?" : {
+      "comment" : "Title for the user's fitness level section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie fit bist du?"
+          }
+        }
+      }
+    },
+    "If you hide yourself, other users cannot find you anywhere in the app, but users you have already chats with can still message you." : {
+      "comment" : "Explanation of what happens when you hide your profile",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wenn du dein Profil verbirgst, können andere User dich nicht mehr finden beim Swipen usw., aber bestehende Chats können weitergeführt werden"
+          }
+        }
+      }
     },
     "In which radius do you want to search?" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In welchem Radius möchtest du Leute finden?"
+          }
+        }
+      }
+    },
+    "Inappropriate Picture" : {
+      "comment" : "Report reason for inappropriate picture",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unangebrachtes Bild"
+          }
+        }
+      }
     },
     "Interests" : {
-
+      "comment" : "Title for the user's interests section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interessen"
+          }
+        }
+      }
     },
-    "Job: %@" : {
-
+    "Intersex" : {
+      "comment" : "Sexual orientation: Intersex",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intersexuell"
+          }
+        }
+      }
+    },
+    "Job" : {
+      "comment" : "Job text"
+    },
+    "Job %@" : {
+      "comment" : "Format for displaying job",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Job %@"
+          }
+        }
+      }
+    },
+    "Juristics" : {
+      "comment" : "Section title for juridical information",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechtliches"
+          }
+        }
+      }
+    },
+    "Knitting" : {
+      "comment" : "Interest: Knitting",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stricken"
+          }
+        }
+      }
+    },
+    "Let's get started" : {
+      "comment" : "Prompt to start the onboarding process",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los geht's!"
+          }
+        }
+      }
+    },
+    "Let's see" : {
+      "comment" : "Relationship type: Undefined",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mal sehen"
+          }
+        }
+      }
     },
     "Library" : {
-
+      "comment" : "Common label for library",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bibliothek"
+          }
+        }
+      }
+    },
+    "Lifestyle Preferences" : {
+      "comment" : "Title for the lifestyle preferences section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lifestyle Präferenzen"
+          }
+        }
+      }
+    },
+    "Liked Users" : {
+      "comment" : "Label for users liked by the user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelikete User"
+          }
+        }
+      }
     },
     "Likes" : {
-      "extractionState" : "stale",
+      "comment" : "Title for the Likes tab",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -174,14 +1783,112 @@
         }
       }
     },
-    "Location: %@" : {
-
+    "Location %@" : {
+      "comment" : "Format for displaying location",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standort %@"
+          }
+        }
+      }
+    },
+    "Login" : {
+      "comment" : "Login button text",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einloggen"
+          }
+        }
+      }
     },
     "Logout" : {
-
+      "comment" : "Logout button text",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausloggen"
+          }
+        }
+      }
+    },
+    "Long-Term Relationships" : {
+      "comment" : "Relationship type: Long-Term Relationships",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langzeit Beziehungen"
+          }
+        }
+      }
+    },
+    "Look & Lifestyle" : {
+      "comment" : "Title for the 'Look & Lifestyle' section"
+    },
+    "Looking for" : {
+      "comment" : "Title for the 'looking for' section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf der Suche nach"
+          }
+        }
+      }
     },
     "Looks for" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf der Suche nach"
+          }
+        }
+      }
+    },
+    "Male" : {
+      "comment" : "Gender: Male",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Männlich"
+          }
+        }
+      }
+    },
+    "Master's Degree" : {
+      "comment" : "Education level: Master's Degree",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Master Abschluss"
+          }
+        }
+      }
+    },
+    "Matches" : {
+      "comment" : "Label for matches"
+    },
+    "Meditation" : {
+      "comment" : "Interest: Meditation"
+    },
+    "Men" : {
+      "comment" : "Gender: Men",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mann"
+          }
+        }
+      }
     },
     "Message...." : {
       "extractionState" : "stale",
@@ -200,44 +1907,556 @@
         }
       }
     },
-    "more" : {
-
+    "Messages" : {
+      "comment" : "Title for the Messages tab",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nachrichten"
+          }
+        }
+      }
     },
     "More" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mehr"
+          }
+        }
+      }
     },
     "More about me" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mehr über mich"
+          }
+        }
+      }
+    },
+    "More about you" : {
+      "comment" : "Title for the 'More about you' section"
     },
     "Move to first position" : {
-
+      "comment" : "Option to move a photo to the first position",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zur 1. Position"
+          }
+        }
+      }
     },
     "Move to last position" : {
-
+      "comment" : "Option to move a photo to the last position",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zur letzten Position"
+          }
+        }
+      }
+    },
+    "Movies" : {
+      "comment" : "Interest: Movies",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filme"
+          }
+        }
+      }
+    },
+    "Music" : {
+      "comment" : "Interest: Music",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Musik"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "comment" : "Common label for name"
+    },
+    "Network Problems" : {
+      "comment" : "Difficulties with network connections or loading content."
+    },
+    "Never" : {
+      "comment" : "Exercise frequency: Never",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niemals"
+          }
+        }
+      }
     },
     "New" : {
-
+      "comment" : "Common label for new",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu"
+          }
+        }
+      }
+    },
+    "No image chosen or the image could not be set to the variable" : {
+      "comment" : "Error message when no image is chosen",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es wurde kein Bild gefunden..."
+          }
+        }
+      }
+    },
+    "No interests provided" : {
+      "comment" : "Text that displays that the user has no interests provided.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Interessen angegeben"
+          }
+        }
+      }
+    },
+    "No languages selected" : {
+      "comment" : "Text signalizing that the user has no languages selected or provided yet.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Sprachen angegeben"
+          }
+        }
+      }
+    },
+    "No location set" : {
+      "comment" : "Text indicating that the user has no location saved.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Standort angegeben"
+          }
+        }
+      }
+    },
+    "No users found that matches your preferences..." : {
+      "comment" : "Message indicating that there are no users in found in RadarView that matches users preferences",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es wurden keine Nutzer gefunden die deinen Präferenzen entsprechen..."
+          }
+        }
+      }
+    },
+    "Non-Binary" : {
+      "comment" : "Gender: Non-Binary",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht Binär"
+          }
+        }
+      }
+    },
+    "Non-drinker" : {
+      "comment" : "Drinking behaviour: Non-drinker",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nichttrinker"
+          }
+        }
+      }
+    },
+    "Non-Smoker" : {
+      "comment" : "Smoking status: Non-Smoker",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nichtraucher"
+          }
+        }
+      }
+    },
+    "None" : {
+      "comment" : "Common label for none",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein"
+          }
+        }
+      }
+    },
+    "Not now" : {
+      "comment" : "Common label for not now",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht jetzt"
+          }
+        }
+      }
+    },
+    "Not registered yet? Click here" : {
+      "comment" : "Prompt for users not registered yet",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch nicht registriert? Hier klicken"
+          }
+        }
+      }
+    },
+    "Not specified" : {
+      "comment" : "Common label for not specified",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht angegeben"
+          }
+        }
+      }
+    },
+    "Notification" : {
+      "comment" : "App setting: Notification",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benachrichtigungen"
+          }
+        }
+      }
     },
     "Notification Settings" : {
-
+      "comment" : "Header for notification settings section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benachrichtigungseinstellungen"
+          }
+        }
+      }
     },
-    "Ok" : {
-
+    "Occasional Smoker" : {
+      "comment" : "Smoking status: Occasional Smoker",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelegenheitsraucher"
+          }
+        }
+      }
+    },
+    "Occasionally" : {
+      "comment" : "Exercise frequency: Occasionally",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelegentlich"
+          }
+        }
+      }
+    },
+    "Offensive or insulting language" : {
+      "comment" : "Report reason for offensive or insulting language",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anstößige oder beleidigende Sprache"
+          }
+        }
+      }
     },
     "OK" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Oops! You are not logged in. If this should not be the case submit a bugreport." : {
+      "comment" : "Detailed message when user is not logged in",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ups. Es scheint du bist nicht eingeloggt. Erstelle einen Bugreport falls das ein Fehler ist."
+          }
+        }
+      }
     },
     "Open %@'s Profile" : {
-
+      "comment" : "Prompt to open a user's profile",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffne %@'s Profil"
+          }
+        }
+      }
+    },
+    "Open Sheet" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sheet öffnen"
+          }
+        }
+      }
+    },
+    "Options" : {
+      "comment" : "Label for various options",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optionen"
+          }
+        }
+      }
     },
     "Or change the age span?" : {
-
+      "comment" : "Prompt to change the age span",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altersbereich ändern?"
+          }
+        }
+      }
+    },
+    "Other Issues" : {
+      "comment" : "Other issues not listed above."
     },
     "Other photos" : {
-
+      "comment" : "Section title for other photos of the user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Andere Bilder"
+          }
+        }
+      }
+    },
+    "Other reason." : {
+      "comment" : "Description for other report reason",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anderer Grund"
+          }
+        }
+      }
+    },
+    "Other reasons" : {
+      "comment" : "Report reason for other reasons",
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Andere Gründe"
+          }
+        }
+      }
+    },
+    "Pansexual" : {
+      "comment" : "Sexual orientation: Pansexual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pansexuell"
+          }
+        }
+      }
+    },
+    "Password" : {
+      "comment" : "Common label for password",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort"
+          }
+        }
+      }
+    },
+    "Performance Issues" : {
+      "comment" : "Issues that affect the app's speed and responsiveness."
     },
     "Personal Details" : {
-
+      "comment" : "Header for personal details section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Persönliche Details"
+          }
+        }
+      }
+    },
+    "Photography" : {
+      "comment" : "Interest: Photography",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotographie"
+          }
+        }
+      }
+    },
+    "Photos" : {
+      "comment" : "Title for the 'Photos' section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos"
+          }
+        }
+      }
+    },
+    "Pickup lines generator" : {
+      "comment" : "Title for the pickup lines generator",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PickUpline Generator"
+          }
+        }
+      }
+    },
+    "Please generate exactly five pickup lines, numbered 1 through 5. Each pickup line should be enclosed in quotation marks, without any extra quotation marks around the entire response or additional text. Ensure the format is adhered to strictly with each line on a new line, like this:\n\n1. \"Example of a pickup line\"\n2. \"Example of a pickup line\"\n3. \"Example of a pickup line\"\n4. \"Example of a pickup line\"\n5. \"Example of a pickup line\"\n\nPlease output the pickup lines individually, following the numbering precisely, and make sure no additional formatting or characters are included outside of the required quotation marks and text.\n\nAlso try to match the pickup line if possible with the following user details:" : {
+      "comment" : "Prompt for generating pickup lines using GPT",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte generiere genau fünf Anmachsprüche, nummeriert von 1 bis 5. Jeder Anmachspruch sollte in Anführungszeichen stehen, ohne zusätzliche Anführungszeichen um die gesamte Antwort oder zusätzlichen Text. Stelle sicher, dass das Format genau eingehalten wird, wobei jeder Spruch in einer neuen Zeile steht, so wie dies:\n\n1. \"Beispiel für einen Anmachspruch\"\n2. \"Beispiel für einen Anmachspruch\"\n3. \"Beispiel für einen Anmachspruch\"\n4. \"Beispiel für einen Anmachspruch\"\n\"Beispiel für einen Anmachspruch\"\n\nBitte gib die Anmachsprüche einzeln aus, unter genauer Beachtung der Nummerierung, und stelle sicher, dass keine zusätzlichen Formatierungen oder Zeichen außerhalb der erforderlichen Anführungszeichen und des Textes enthalten sind.\n\nVersuche auch, den Anmachspruch möglichst passend zu den folgenden Benutzerdetails zu gestalten."
+          }
+        }
+      }
+    },
+    "Please try it again or make a bug report." : {
+      "comment" : "Error message indicating to try again or make a bug report",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versuche es erneut oder sende einen Bug report"
+          }
+        }
+      }
+    },
+    "Politics" : {
+      "comment" : "Interest: Politics",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Politik"
+          }
+        }
+      }
+    },
+    "Preferences" : {
+      "comment" : "Title for the 'Preferences' section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Präferenzen"
+          }
+        }
+      }
+    },
+    "Privacy and security" : {
+      "comment" : "App setting: Privacy and security",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privatsphäre und Sicherheit"
+          }
+        }
+      }
+    },
+    "Problems or questions?" : {
+      "comment" : "Section title for problems or questions",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probleme oder Fragen?"
+          }
+        }
+      }
+    },
+    "Professional Degree" : {
+      "comment" : "Education level: Professional Degree",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berufsabschluss"
+          }
+        }
+      }
+    },
+    "Professional sportsman" : {
+      "comment" : "Fitness level: Professional sportsman",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profisportler"
+          }
+        }
+      }
     },
     "Profilbild" : {
       "extractionState" : "stale",
@@ -250,17 +2469,217 @@
         }
       }
     },
-    "Radius: %lldkm" : {
-
+    "Profile" : {
+      "comment" : "Title for the Profile tab",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil"
+          }
+        }
+      }
     },
-    "Retry" : {
-
+    "Queer" : {
+      "comment" : "Sexual orientation: Queer",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
+    },
+    "Questioning" : {
+      "comment" : "Sexual orientation: Questioning",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht sicher"
+          }
+        }
+      }
+    },
+    "Radar" : {
+      "comment" : "Title for the Radar tab",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
+    },
+    "Reading" : {
+      "comment" : "Interest: Reading",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lesen"
+          }
+        }
+      }
+    },
+    "Register" : {
+      "comment" : "Register button text",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrieren"
+          }
+        }
+      }
+    },
+    "Registration failed: %@" : {
+      "comment" : "Error message shown when registration fails",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrierung fehlgeschlagen %@"
+          }
+        }
+      }
+    },
+    "Regular drinker" : {
+      "comment" : "Drinking behaviour: Regular drinker",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stammtrinker"
+          }
+        }
+      }
+    },
+    "Regular Smoker" : {
+      "comment" : "Smoking status: Regular Smoker",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regelmäßiger Raucher"
+          }
+        }
+      }
+    },
+    "Regularly" : {
+      "comment" : "Exercise frequency: Regularly",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regelmäßig"
+          }
+        }
+      }
+    },
+    "Regularly doing Sports" : {
+      "comment" : "Fitness level: Regularly doing Sports",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Macht regelmäßig Sport"
+          }
+        }
+      }
+    },
+    "Repeat password" : {
+      "comment" : "Common label for repeat password",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort wiederholen"
+          }
+        }
+      }
+    },
+    "Report %@" : {
+      "comment" : "Title for reporting a user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ melden"
+          }
+        }
+      }
+    },
+    "Reporting %@ ..." : {
+      "comment" : "Message indicating that a user is being reported",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wird gemeldet..."
+          }
+        }
+      }
     },
     "Save" : {
-
+      "comment" : "Common label for save",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speichern"
+          }
+        }
+      }
+    },
+    "Scam or deception" : {
+      "comment" : "Report reason for scam or deception",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betrug oder Täuschung"
+          }
+        }
+      }
+    },
+    "Security Issues" : {
+      "comment" : "Potential security risks that could endanger user privacy."
+    },
+    "Seems like you don't have any other images uploaded..." : {
+      "comment" : "Message indicating no other images are uploaded",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieht so aus als hättest du keine anderen Bilder hochgeladen"
+          }
+        }
+      }
+    },
+    "Seems like you have no likes yet." : {
+      "comment" : "Message indicating the user has no likes",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast scheinbar noch keine Likes bekommen..."
+          }
+        }
+      }
     },
     "Select as display picture" : {
-
+      "comment" : "Option to select a photo as the display picture",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Als Profilbild wählen"
+          }
+        }
+      }
     },
     "Select Image" : {
       "extractionState" : "stale",
@@ -279,12 +2698,40 @@
         }
       }
     },
+    "Select main picture" : {
+      "comment" : "Option to select the main picture",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profilbild wählen"
+          }
+        }
+      }
+    },
+    "Send" : {
+      "comment" : "Send action label"
+    },
     "Send Report" : {
-
+      "comment" : "Button label to send a report",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report senden"
+          }
+        }
+      }
     },
     "Senden" : {
       "extractionState" : "stale",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Absenden"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -294,24 +2741,293 @@
       }
     },
     "Settings" : {
-
+      "comment" : "Title for settings screen",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen"
+          }
+        }
+      }
+    },
+    "Sexuality" : {
+      "comment" : "Common label for sexuality",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sexualität"
+          }
+        }
+      }
     },
     "Share" : {
-
+      "comment" : "Option to share a photo",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teilen"
+          }
+        }
+      }
+    },
+    "Should your partner do sports?" : {
+      "comment" : "Prompt for whether the user wants a sporty partner",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sollte dein Partner Sport treiben?"
+          }
+        }
+      }
+    },
+    "Show only" : {
+      "comment" : "Label for showing only specific items",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeige nur"
+          }
+        }
+      }
     },
     "Sign in options" : {
-
+      "comment" : "Text for sign-in options",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign In Optionen"
+          }
+        }
+      }
+    },
+    "Slim" : {
+      "comment" : "Body type: Slim",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dünn"
+          }
+        }
+      }
+    },
+    "Smoker" : {
+      "comment" : "Smoker text\n   Title for the user's smoking status section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raucher"
+          }
+        }
+      }
+    },
+    "Smoking behaviour" : {
+      "comment" : "Smoking behaviour label text",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raucherverhalten"
+          }
+        }
+      }
+    },
+    "Social drinker" : {
+      "comment" : "Drinking behaviour: Social drinker",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partytrinker"
+          }
+        }
+      }
+    },
+    "Social Smoker" : {
+      "comment" : "Smoking status: Social Smoker",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partyraucher"
+          }
+        }
+      }
+    },
+    "Some College" : {
+      "comment" : "Education level: Some College",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Universität"
+          }
+        }
+      }
+    },
+    "Something went wrong... Please try again or submit a bugreport." : {
+      "comment" : "Detailed message when conversion fails",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Irgendwas ist schief gelaufen, probiere es erneut oder erstelle einen Bug - Report."
+          }
+        }
+      }
+    },
+    "Sometimes" : {
+      "comment" : "Fitness level: Sometimes",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manchmal"
+          }
+        }
+      }
     },
     "Sort by" : {
-
+      "comment" : "Label for sorting by a specific attribute",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sortieren nach"
+          }
+        }
+      }
     },
-    "Speed" : {
-
+    "Sort order" : {
+      "comment" : "Label for sorting order",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sortierreihenfolge"
+          }
+        }
+      }
+    },
+    "SoulDating lets you interact with OpenAI ChatGPT! You can either let GPT create pickup lines for you or start a conversation to learn more about dating!" : {
+      "comment" : "Information about interacting with OpenAI ChatGPT",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SoulDating lässt sich mit ChatGPT interagieren. Du kannst dir entweder ganz direkt PickupLines generieren lassen oder ganze Konversationen führen!"
+          }
+        }
+      }
+    },
+    "Spam or Advertising" : {
+      "comment" : "Report reason for spam or advertising",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spam oder Werbung"
+          }
+        }
+      }
+    },
+    "Sports" : {
+      "comment" : "Interest: Sports",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sport"
+          }
+        }
+      }
+    },
+    "Sporty" : {
+      "comment" : "Fashion style: Sporty",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sportlich"
+          }
+        }
+      }
     },
     "Start" : {
-
+      "comment" : "Common label for start",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
+          }
+        }
+      }
+    },
+    "Streetwear" : {
+      "comment" : "Fashion style: Streetwear",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
+    },
+    "Success" : {
+      "comment" : "Common label for success",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erfolg"
+          }
+        }
+      }
+    },
+    "Successfully changed your password!" : {
+      "comment" : "Message indicating the password was successfully changed",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort erfolgreich aktualisiert!"
+          }
+        }
+      }
+    },
+    "Swipe" : {
+      "comment" : "Title for the Swipe tab",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swipe"
+          }
+        }
+      }
+    },
+    "Technology" : {
+      "comment" : "Interest: Technology",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Technologie"
+          }
+        }
+      }
     },
     "Telefon" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -321,59 +3037,1030 @@
         }
       }
     },
+    "Tell us more about you" : {
+      "comment" : "Title for the section asking for more information about the user",
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erzähl uns mehr über dich"
+          }
+        }
+      }
+    },
     "Tell us the reason why you want to report %@" : {
-
+      "comment" : "Prompt asking for the reason to report a user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenne uns den Grund warum du %@ melden möchtest"
+          }
+        }
+      }
+    },
+    "Tell us your date of birth" : {
+      "comment" : "Prompt to ask for the user's date of birth",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenn uns dein Geburtsdatum"
+          }
+        }
+      }
+    },
+    "The messages could not be found, please try again or make a bug report." : {
+      "comment" : "Error message indicating messages could not be found",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Nachrichten konnten nicht gefunden werden, versuch es erneut oder sende uns einen Bug Report"
+          }
+        }
+      }
+    },
+    "The user could not be loaded. Please try again or make a bug report." : {
+      "comment" : "Error message indicating user could not be loaded",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der User konnte nicht geladen werden, versuch es erneut oder sende uns einen Bug Report"
+          }
+        }
+      }
+    },
+    "The user has a fake profile or is using a false identity." : {
+      "comment" : "Description for fake profile report reason",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Nutzer nutzt ein Fake Profil oder nutzt eine andere Identität."
+          }
+        }
+      }
+    },
+    "The user has posted inappropriate or offensive images." : {
+      "comment" : "Description for inappropriate picture report reason",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Nutzer hat unangebrachte Bilder veröffentlicht"
+          }
+        }
+      }
+    },
+    "The user is engaging in harassment or bullying behavior." : {
+      "comment" : "Description for harassment or mobbing report reason",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Nutzer ist belästigend oder schikanierend."
+          }
+        }
+      }
+    },
+    "The user is involved in fraudulent or deceptive activities." : {
+      "comment" : "Description for scam report reason",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Nutzer macht einen betrügerischen Eindruck."
+          }
+        }
+      }
+    },
+    "The user is making unwanted approaches." : {
+      "comment" : "Description for unwanted approaches report reason",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Nutzer macht unerwünschte Annäherungen"
+          }
+        }
+      }
+    },
+    "The user is sending spam or advertising content." : {
+      "comment" : "Description for spam report reason",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Nutzer sendet Spam oder Werbenachrichten für andere Plattformen"
+          }
+        }
+      }
+    },
+    "The user is using offensive or abusive language." : {
+      "comment" : "Description for offensive language report reason",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der User nutzt beleidigende Sprache."
+          }
+        }
+      }
+    },
+    "The verification mail could not be sent. Try again or make a bug report." : {
+      "comment" : "Error message indicating failure to send verification email",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Verifizierungsmail konnte nicht gesendet werden... versuche es erneut oder sende einen Bug Report"
+          }
+        }
+      }
+    },
+    "There was an error while blocking %@, please try again or report a bug" : {
+      "comment" : "Error message when blocking a user fails",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Fehler trat auf beim blockieren von %@, bitte versuch es erneut oder sende uns einen Bug Report"
+          }
+        }
+      }
+    },
+    "There was an technical issue. Please try it again or if that doesn't help contact us." : {
+      "comment" : "Text describing that there were issues with chat gpt and telling the user to contact us."
+    },
+    "This information is used to suggest users to you and provide better suggestions for other users." : {
+      "comment" : "Subtitle explaining the purpose of collecting more information",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wir benötigen diese Informationen um anderen Nutzern und dir bessere Vorschläge machen zu können."
+          }
+        }
+      }
+    },
+    "This will be your public profile name" : {
+      "comment" : "Prompt indicating this will be the user's public profile name",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das wird dein öffentlicher Profilname"
+          }
+        }
+      }
+    },
+    "This will change how you are suggested to others" : {
+      "comment" : "Message indicating that updating location and radius will change how the user is suggested to others",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dadurch wirst du anderen Nutzern vorgeschlagen"
+          }
+        }
+      }
     },
     "This will change your user suggestions" : {
-
+      "comment" : "Message indicating that updating location and radius will change user suggestions",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das wird deine Nutzervorschläge ändern"
+          }
+        }
+      }
+    },
+    "Toggle Sort Order" : {
+      "comment" : "Button label to toggle the sorting order",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sortierreihenfolge tauschen"
+          }
+        }
+      }
+    },
+    "Traveling" : {
+      "comment" : "Interest: Traveling",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reisen"
+          }
+        }
+      }
+    },
+    "Try again" : {
+      "comment" : "Common label for retry",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nochmal"
+          }
+        }
+      }
     },
     "Try to fetch users again" : {
-
+      "comment" : "Prompt to try fetching users again",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue User suchen"
+          }
+        }
+      }
+    },
+    "Try to register again." : {
+      "comment" : "Prompt to try registering again",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versuch es noch einmal."
+          }
+        }
+      }
+    },
+    "Trying to fetch new users..." : {
+      "comment" : "Message indicating an attempt to fetch new users",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User werden gesucht..."
+          }
+        }
+      }
     },
     "Turn on notifications" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benachrichtigungen anschalten"
+          }
+        }
+      }
     },
     "Turn on Notifications?" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benachrichtigungen anschalten?"
+          }
+        }
+      }
     },
     "Turn on your notifications so that you will be informed when you have new message matches or likes" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schalte Benachrichtigungen ein damit du benachrichtigt wirst wenn du neue Nachrichten oder Matches bekommst"
+          }
+        }
+      }
     },
-    "Unfortunately there are no other users in your area..." : {
-
+    "Unfortunately there are no more users in your area..." : {
+      "comment" : "Message indicating there are no more users in the area",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leider gibt es keine weiteren Nutzer in deiner Umgebung"
+          }
+        }
+      }
+    },
+    "Unfortunately there happened a critical bug. We can't create an account for you. If you have not already, please report us this bug so that we can investigate what happened." : {
+      "comment" : "Message indicating a critical bug occurred and account creation failed",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein kritischer Fehler ist aufgetreten und dein Account konnte nicht erstellt werden. "
+          }
+        }
+      }
+    },
+    "Unfortunately we could not delete your image, please try again or contact us." : {
+      "comment" : "Error message when an image could not be deleted",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Bild konnte leider nicht gelöscht werden, versuch es erneut oder sende uns einen Bug report."
+          }
+        }
+      }
+    },
+    "Unfortunately your account could not be deleted. Please try again or make a bug report." : {
+      "comment" : "Error message shown when account deletion fails",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leider konnte dein Account nicht gelöscht werden. Versuch es erneut oder sende uns einen Bug Report."
+          }
+        }
+      }
+    },
+    "Unwanted approaches" : {
+      "comment" : "Report reason for unwanted approaches",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unerwünschte Annäherungen"
+          }
+        }
+      }
     },
     "Update" : {
-
+      "comment" : "Common label for update",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändern"
+          }
+        }
+      }
     },
-    "Update Location or radius?" : {
-
+    "Update main picture" : {
+      "comment" : "Option to update the main picture",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profilbild aktualisieren"
+          }
+        }
+      }
     },
-    "Update picture" : {
-
+    "Update what kind of fashion you prefer" : {
+      "comment" : "Option to update the user's fashion style",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändere deinen Fashion Style"
+          }
+        }
+      }
+    },
+    "Update which genders you prefer" : {
+      "comment" : "Option to update the user's preferred genders",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändere deine bevorzugten Geschlechter"
+          }
+        }
+      }
+    },
+    "Update which languages you speak" : {
+      "comment" : "Option to update the user's spoken languages",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändere deine gesprochenen Sprachen"
+          }
+        }
+      }
+    },
+    "Update your alcoholic behaviour" : {
+      "comment" : "Option to update the user's alcoholic behaviour",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändere dein Trinkverhalten"
+          }
+        }
+      }
+    },
+    "Update your body type" : {
+      "comment" : "Option to update the user's body type",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändere deinen Körpertyp"
+          }
+        }
+      }
+    },
+    "Update your current gender" : {
+      "comment" : "Option to update the user's current gender",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualisiere dein Geschlecht"
+          }
+        }
+      }
+    },
+    "Update your current job" : {
+      "comment" : "Option to update the user's current job",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändere deinen Job"
+          }
+        }
+      }
+    },
+    "Update your date of birth" : {
+      "comment" : "Option to update the user's date of birth",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geburtstag ändern"
+          }
+        }
+      }
+    },
+    "Update your description" : {
+      "comment" : "Option to update the user's description",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beschreibung ändern"
+          }
+        }
+      }
+    },
+    "Update your fitness level" : {
+      "comment" : "Option to update the user's fitness level",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändere dein Fitnesslevel"
+          }
+        }
+      }
+    },
+    "Update your height" : {
+      "comment" : "Option to update the user's height",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Größe ändern"
+          }
+        }
+      }
+    },
+    "Update your interests" : {
+      "comment" : "Option to update the user's interests",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interessen aktualisieren"
+          }
+        }
+      }
+    },
+    "Update your level of education" : {
+      "comment" : "Option to update the user's level of education",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bildungsgrad aktualisieren"
+          }
+        }
+      }
     },
     "Update your location & radius" : {
-
+      "comment" : "Option to update the user's location and radius",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standort & Umkreis ändern"
+          }
+        }
+      }
     },
-    "Upload Picture" : {
-
+    "Update your name" : {
+      "comment" : "Option to update the user's name",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Namen ändern"
+          }
+        }
+      }
+    },
+    "Update your sex identity" : {
+      "comment" : "Option to update the user's sexual identity",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschlechtsidentität ändern"
+          }
+        }
+      }
+    },
+    "Update your smoking status" : {
+      "comment" : "Option to update the user's smoking status",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändere deinen Raucherstatus"
+          }
+        }
+      }
+    },
+    "Upload picture" : {
+      "comment" : "Prompt to upload a picture",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bild hochladen"
+          }
+        }
+      }
+    },
+    "URL of the picture couldn't be downloaded" : {
+      "comment" : "Error message when picture URL cannot be downloaded",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die BildURL konnte nicht geladen werden..."
+          }
+        }
+      }
+    },
+    "User Interface Issues" : {
+      "comment" : "Problems with the user interface, such as layout errors or unexpected behavior of UI elements."
+    },
+    "User is not logged in" : {
+      "comment" : "Error message when user is not logged in",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzer ist nicht eingeloggt"
+          }
+        }
+      }
+    },
+    "Username" : {
+      "comment" : "Common label for username"
+    },
+    "Very rarely" : {
+      "comment" : "Fitness level: Very rarely",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sehr selten"
+          }
+        }
+      }
+    },
+    "Vintage" : {
+      "comment" : "Fashion style: Vintage"
+    },
+    "Volunteering" : {
+      "comment" : "Interest: Volunteering",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ehrenamtliche Arbeit"
+          }
+        }
+      }
+    },
+    "We could not save your %@. Please try again or make a bug report." : {
+      "comment" : "Error message when a swipe could not be saved",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wir konnten deinen %@ nicht Speicher... Versuch es erneut oder sende einen Bug report."
+          }
+        }
+      }
+    },
+    "We could not save your selected languages... Please try again or make a bug report." : {
+      "comment" : "Message indicating an error occurred while saving the selected languages",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Sprachen konnte nicht gespeichert werden, versuche es erneut oder sende uns einen Report."
+          }
+        }
+      }
+    },
+    "We could not update your profile... Please try again or make a bug report." : {
+      "comment" : "Message indicating an error occurred while updating the profile",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wir konnten dein Profil nicht aktualisieren, bitte versuch es erneut oder sende einen Bug Report."
+          }
+        }
+      }
+    },
+    "We couldn't download the image from the server... Please check your connection and try again" : {
+      "comment" : "Detailed message when picture URL download fails",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Bild konnte nicht heruntergeladen werden... Prüfe deine Verbindung und versuch es erneut"
+          }
+        }
+      }
     },
     "We need a location to show you users in this area" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wir brauchen einen Standort um dir Nutzer in der Nähe anzuzeigen"
+          }
+        }
+      }
     },
-    "We need more information what exactly happened" : {
-
+    "We need more information on what exactly happened" : {
+      "comment" : "Message indicating more information is needed",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wir brauchen genauere Informationen was genau passiert ist"
+          }
+        }
+      }
+    },
+    "Welcome!" : {
+      "comment" : "Welcome message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Willkommen!"
+          }
+        }
+      }
+    },
+    "What is your name?" : {
+      "comment" : "Prompt to ask for the user's name",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie ist dein Name?"
+          }
+        }
+      }
+    },
+    "What kind of relationship type fits you the most?" : {
+      "comment" : "Prompt for updating the user's relationship type preference",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Was für ein Beziehungsmensch bist du?"
+          }
+        }
+      }
+    },
+    "Woman" : {
+      "comment" : "Gender: Woman",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frau"
+          }
+        }
+      }
     },
     "Write a message to %@" : {
-
+      "comment" : "Prompt to write a message to a user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schreib %@ eine Nachricht"
+          }
+        }
+      }
+    },
+    "Writing" : {
+      "comment" : "Interest: Writing",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schreiben"
+          }
+        }
+      }
     },
     "You can turn off the notifications in the settings at each time." : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kannst die Benachrichtigungen jederzeit deaktivieren in den Einstellungen"
+          }
+        }
+      }
     },
-    "You have a match with %@" : {
-
+    "You can unblock %@ at every time, but your report cannot be undone!" : {
+      "comment" : "Message indicating that the user can be unblocked at any time but the report cannot be undone",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kannst %@ jederzeit entlocken, aber die Meldung kann nicht rückgängig gemacht werden!"
+          }
+        }
+      }
+    },
+    "You can unblock %@ at every time." : {
+      "comment" : "Message indicating that the user can be unblocked at any time",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kannst %@ jederzeit entlocken."
+          }
+        }
+      }
+    },
+    "You can use the well known swipe gestures to resize your image.\n You can also move your Picture or turn it around." : {
+      "comment" : "Instructions for editing the profile picture"
+    },
+    "You don't have any messages with other users" : {
+      "comment" : "Text indicating that there exists no chats for the current user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast noch keine Chats mit anderen Nutzern"
+          }
+        }
+      }
+    },
+    "You have 0 matches right now." : {
+      "comment" : "Message indicating the user has no matches",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast noch kein Match..."
+          }
+        }
+      }
+    },
+    "You have a match with %@!" : {
+      "comment" : "Message indicating a match with a user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast ein Match mit %@!"
+          }
+        }
+      }
+    },
+    "You have not liked any users yet." : {
+      "comment" : "Message indicating the user has not liked any users",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast noch keine User geliked..."
+          }
+        }
+      }
+    },
+    "You made a match with %@!" : {
+      "comment" : "Match notification template"
+    },
+    "You must be at least 18 years old..." : {
+      "comment" : "Error message indicating the user must be at least 18 years old",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du musst mindestens 18 Jahre alt sein..."
+          }
+        }
+      }
+    },
+    "You will be signed out if you attempt to update your e-mail. You will receive a link to your current email address. If you decide not to change your e-mail, just log in again." : {
+      "comment" : "Information about updating email address",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wenn du versuchst deine Email zu ändern wirst du vorerst ausgeloggt. Du wirst einen Link bekommen und sobald du ih geklickt hast kannst du dich mit der neuen E-Mail Adresse einloggen."
+          }
+        }
+      }
+    },
+    "Your account has been successfully deleted." : {
+      "comment" : "Message indicating the account was successfully deleted",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Account wurde erfolgreich gelöscht"
+          }
+        }
+      }
+    },
+    "Your account is being created and your details saved! Hold on a second." : {
+      "comment" : "Message indicating the account is being created",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Account wird gerade erstellt! Warte einen moment"
+          }
+        }
+      }
+    },
+    "Your alcoholic behaviour" : {
+      "comment" : "Title for the user's alcoholic behaviour section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Alkoholverhalten"
+          }
+        }
+      }
+    },
+    "Your body type" : {
+      "comment" : "Title for the user's body type section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Körpertyp"
+          }
+        }
+      }
+    },
+    "Your bug report could not be send... Please try it again later" : {
+      "comment" : "Text describing that the bug report failed"
+    },
+    "Your bug report was successful. We will investigate the issue as soon as possible. Sorry for the inconveniences." : {
+      "comment" : "Message indicating the bug report was successful",
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Bug report wurde erfolgreich abgesendet. Wir werden uns so schnell wie möglich darum kümmern! Entschuldige die Unannehmlichkeiten"
+          }
+        }
+      }
+    },
+    "Your bug report was successful. We will take actions as soon as possible!" : {
+      "comment" : "Message indicating the bug report was successful"
+    },
+    "Your bug report was successfully send" : {
+      "comment" : "Text telling the user the bug report was successfully"
+    },
+    "Your chats are beeing loaded..." : {
+      "comment" : "Text indicating that the chats of current users are beeing loaded.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Chats werden geladen..."
+          }
+        }
+      }
+    },
+    "Your current job" : {
+      "comment" : "Title for the user's current job section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein ausgeübter Beruf"
+          }
+        }
+      }
+    },
+    "Your e-mail address should be at least 6 chars long." : {
+      "comment" : "Help text indicating the e-mail address should be at least 6 characters long",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine E-Mail Adresse muss mindestens 6 Zeichen lang sein"
+          }
+        }
+      }
+    },
+    "Your education level" : {
+      "comment" : "Title for the user's education level section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Bildungsgrad"
+          }
+        }
+      }
+    },
+    "Your fashion style" : {
+      "comment" : "Title for the user's fashion style section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Fashion Style"
+          }
+        }
+      }
+    },
+    "Your height" : {
+      "comment" : "Title for the user's height section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Größe"
+          }
+        }
+      }
+    },
+    "Your image could not be saved... please try it again or make a bug report." : {
+      "comment" : "Error message when an image could not be saved",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Bild konnte nicht gespeichert werden, versuche es erneut oder sende uns einen Bug Report."
+          }
+        }
+      }
     },
     "Your image should nearly fit in this rectangle" : {
-
+      "comment" : "Guidance for fitting the image into the designated area",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Bild sollte idealerweise ungefähr den Rahmen füllen"
+          }
+        }
+      }
+    },
+    "Your interests" : {
+      "comment" : "Title for the user's interests section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Interessen"
+          }
+        }
+      }
     },
     "Your latest likes" : {
       "extractionState" : "stale",
@@ -386,8 +4073,118 @@
         }
       }
     },
+    "Your likes" : {
+      "comment" : "Label for items liked by the user",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Likes"
+          }
+        }
+      }
+    },
     "Your location" : {
-
+      "comment" : "Title for the user's location section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Standort"
+          }
+        }
+      }
+    },
+    "Your name must have at least 3 characters" : {
+      "comment" : "Error message indicating the name must have at least 3 characters",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Name muss mindestens 3 Zeichen haben"
+          }
+        }
+      }
+    },
+    "Your new account was created. You can continue with SoulDating!" : {
+      "comment" : "Message indicating the account was successfully created",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Account wurde erstellt! Du kannst nun mit SoulDating starten!"
+          }
+        }
+      }
+    },
+    "Your password is being changed" : {
+      "comment" : "Message indicating the password is being changed",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Password wird geändert..."
+          }
+        }
+      }
+    },
+    "Your password must be at least 6 chars long." : {
+      "comment" : "Help text indicating the password should be at least 6 characters long",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Password muss mindestens 6 Zeichen lang sein."
+          }
+        }
+      }
+    },
+    "Your preferred age span" : {
+      "comment" : "Title for the user's preferred age span section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein bevorzugter Altersbereich"
+          }
+        }
+      }
+    },
+    "Your preferred genders" : {
+      "comment" : "Title for the user's preferred genders section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine bevorzugten Geschlechter"
+          }
+        }
+      }
+    },
+    "Your preferred height" : {
+      "comment" : "Title for the user's preferred height section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine bevorzugte Mindestgröße"
+          }
+        }
+      }
+    },
+    "Your report is beeing send. Hold on a second" : {
+      "comment" : "Text indicating that the report is beeing send"
+    },
+    "Your spoken languages" : {
+      "comment" : "Title for the user's spoken languages section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Sprachen"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

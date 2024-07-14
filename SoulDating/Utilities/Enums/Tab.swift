@@ -39,12 +39,12 @@ enum Tab: String, CaseIterable, Identifiable {
     }
     
     @ViewBuilder
-    func view(user: FireUser) -> some View {
+    func view(activeTab: Binding<Tab>) -> some View {
         switch self {
         case .swipe: SwipeView()
-        case .likes: LikesView(user: user)
-        case .messages: MessagesView()
-        case .radar: RadarView(user: user)
+        case .likes: LikesView(activeTabViewTab: activeTab)
+        case .messages: MessagesView(activeTabViewTab: activeTab)
+        case .radar: RadarView(activeTabViewTab: activeTab)
         case .profile: ProfileView()
         }
     }

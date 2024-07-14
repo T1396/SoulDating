@@ -10,10 +10,9 @@ import SwiftUI
 /// view for a single swipeable card view
 struct SwipeCardView: View {
     // MARK: properties
-    @EnvironmentObject var chatViewModel: ChatViewModel
     @ObservedObject var swipeUserVm: SwipeUserViewModel
-    
     @Binding var activeCardID: String?
+
     @State private var image: Image?
     @State private var dragAmount: CGSize = .zero // state for the actual position of the card
     @State private var showOptionsSheet = false
@@ -43,10 +42,11 @@ struct SwipeCardView: View {
                     )
                 }
             }
-            .navigationDestination(isPresented: $navigateToProfileOrMessage) {
-                let chatId = chatViewModel.returnChatIdIfExists(for: swipeUserVm.otherUser.id)
+            .fullScreenCover(isPresented: $navigateToProfileOrMessage) {
+                let chatId = ChatService.shared.returnChatIdIfExists(for: swipeUserVm.otherUser.id)
                 MessageAndProfileView(targetUser: swipeUserVm.otherUser, chatId: chatId, image: $image)
             }
+
             .frame(width: geometry.size.width, height: geometry.size.height)
             .clipShape(RoundedRectangle(cornerRadius: 25))
             .clipped()
@@ -74,5 +74,5 @@ struct SwipeCardView: View {
 
 #Preview {
     SwipeCardView(swipeUserVm: SwipeUserViewModel(otherUser: FireUser(id: "2")), activeCardID: .constant("2"))
-        .environmentObject(ChatViewModel())
+        .environmentObject(MessagesViewModel())
 }

@@ -17,26 +17,26 @@ enum DatingPreferenceItem: String, Identifiable, CaseIterable {
 
     var title: String {
         switch self {
-        case .relationshipType: "Looking for"
-        case .prefGenders: "Your preferred genders"
-        case .ageRange: "Your preferred age span"
-        case .heightPref: "Your preferred height"
+        case .relationshipType: Strings.relationshipTitle
+        case .prefGenders: Strings.prefGenderTitle
+        case .ageRange: Strings.prefAgeTitle
+        case .heightPref: Strings.prefHeightTitle
         }
     }
 
     var supportText: String? {
         switch self {
-        case .prefGenders, .ageRange: "This will change your suggestions you reveice."
+        case .prefGenders, .ageRange: Strings.willUpdateSuggestions
         default: nil
         }
     }
 
     var editText: String {
         switch self {
-        case .relationshipType: "What kind of relationship type fits you the most?"
-        case .prefGenders: "Update what genders you prefer"
-        case .ageRange: "Update your minimum and maximum desired age"
-        case .heightPref: "Update how tall your partners should be at least"
+        case .relationshipType: Strings.relationshipTitleEdit
+        case .prefGenders: Strings.prefGenderTitleEdit
+        case .ageRange: Strings.prefAgeTitle
+        case .heightPref: Strings.prefHeightTitle
         }
     }
 
@@ -68,7 +68,7 @@ enum DatingPreferenceItem: String, Identifiable, CaseIterable {
             user.preferences.agePreferences.wrappedValue?.rangeString
         case .heightPref:
             if let height = user.preferences.height.wrappedValue {
-                String(height)
+                String(height.formatted(as: .decimal, maxFractionDigits: 0, locale: .autoupdatingCurrent) ?? "No height provided") + "cm"
             } else {
                 nil
             }

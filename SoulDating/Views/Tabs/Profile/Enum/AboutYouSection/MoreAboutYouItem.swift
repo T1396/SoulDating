@@ -24,10 +24,10 @@ enum MoreAboutYouItem: String, Identifiable, CaseIterable {
 
     var title: String {
         switch self {
-        case .interests: "Your interests"
-        case .languages: "Your spoken languages"
-        case .fashionStyle: "Your fashion style"
-        case .fitnessLevel: "How fit are you?"
+        case .interests: Strings.interestsTitle
+        case .languages: Strings.languagesTitle
+        case .fashionStyle: Strings.fashionStyleTitle
+        case .fitnessLevel: Strings.fitnessLevelTitle
         }
     }
 
@@ -51,10 +51,10 @@ enum MoreAboutYouItem: String, Identifiable, CaseIterable {
 
     var updateText: String {
         switch self {
-        case .interests: "Update your interests"
-        case .languages: "Update what languages you speak"
-        case .fashionStyle: "Update what kind of fashion you prefer"
-        case .fitnessLevel: "Update your fitness level"
+        case .interests: Strings.interestsEdit
+        case .languages: Strings.languagesEdit
+        case .fashionStyle: Strings.fashionstyleEdit
+        case .fitnessLevel: Strings.fitnessLevelEdit
         }
     }
 
@@ -98,16 +98,16 @@ enum MoreAboutYouItem: String, Identifiable, CaseIterable {
         switch self {
         case .interests:
             let interests = user.general.interests.wrappedValue ?? []
-            let value = interests.map { $0.title }.seperated(emptyText: "No interests provided")
+            let value = interests.map { $0.title }.seperated(emptyText: Strings.noInterestsProvided)
             return value
 
         case .languages:
-            let languages = user.general.languages.wrappedValue ?? []
-            let value = languages.seperated(emptyText: "No languages selected")
+            let languageCodes = user.general.languages.wrappedValue ?? []
+            let languageNames = languageCodes.compactMap { LanguageRepository.shared.languageName(for: $0)}
+            let value = languageNames.seperated(emptyText: Strings.noLanguagesProvided)
             return value
-            
         case .fashionStyle:
-            return user.look.fashionStyle.wrappedValue?.title
+            return user.look.fashionStyle.wrappedValue.title
         case .fitnessLevel:
             return user.look.fitnessLevel.wrappedValue?.title
         }

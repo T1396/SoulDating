@@ -15,15 +15,15 @@ enum AuthentificationMode {
     
     var title: String {
         switch self {
-        case .login: "Login"
-        case .register: "Register"
+        case .login: Strings.login
+        case .register: Strings.register
         }
     }
     
     var altTitle: String {
         switch self {
-        case .login: "Not registered yet? Click here"
-        case .register: "Already have an account? Click here to login"
+        case .login: Strings.notRegisteredYet
+        case .register: Strings.alreadyRegistered
         }
     }
 }

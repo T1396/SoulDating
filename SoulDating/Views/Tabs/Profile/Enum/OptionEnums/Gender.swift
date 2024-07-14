@@ -14,17 +14,17 @@ enum Gender: String, EditableItem, Codable, Identifiable, CaseIterable {
     
     var title: String {
         switch self {
-        case .male: "Male"
-        case .female: "Female"
-        case .divers: "Divers"
+        case .male: Strings.male
+        case .female: Strings.female
+        case .divers: Strings.divers
         }
     }
     
     var secTitle: String {
         switch self {
-        case .male: "Men"
-        case .female: "Woman"
-        case .divers: "Non-Binary"
+        case .male: Strings.maleSecondary
+        case .female: Strings.femaleSecondary
+        case .divers: Strings.diversSecondary
         }
     }
     

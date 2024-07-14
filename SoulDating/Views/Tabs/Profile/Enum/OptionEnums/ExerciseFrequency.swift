@@ -14,9 +14,9 @@ enum ExerciseFrequency: String, EditableItem, CaseIterable {
     
     var title: String {
         switch self {
-        case .never: "Never"
-        case .occasionally: "Occasionally"
-        case .regularly: "Regularly"
+        case .never: Strings.never
+        case .occasionally: Strings.occasionally
+        case .regularly: Strings.regularly
         }
     }
     

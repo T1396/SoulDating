@@ -14,8 +14,8 @@ enum ReportOption: String, CaseIterable, Identifiable {
     
     func title(for userName: String) -> String {
         switch self {
-        case .block: "Block \(userName)"
-        case .blockReport: "Block and report \(userName)"
+        case .block: String(format: Strings.blockTitle, userName)
+        case .blockReport: String(format: Strings.blockReportTitle, userName)
         }
     }
     
@@ -28,15 +28,15 @@ enum ReportOption: String, CaseIterable, Identifiable {
     
     func confirmationTitle(for userName: String) -> String {
         switch self {
-        case .block: "Do you really want to block \(userName)?"
-        case .blockReport: "Do you really want to report and block \(userName)?"
+        case .block: String(format: Strings.confirmationBlock, userName)
+        case .blockReport: String(format: Strings.confirmationReport, userName)
         }
     }
     
     func confirmationMessage(for userName: String) -> String {
         switch self {
-        case .block: "You can unblock \(userName) at every time."
-        case .blockReport: "You can unblock \(userName), but your report cannot be undone!"
+        case .block: String(format: Strings.confirmationMsgBlock, userName)
+        case .blockReport: String(format: Strings.confirmationMsgReport, userName)
         }
     }
 }

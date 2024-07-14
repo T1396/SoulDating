@@ -8,28 +8,28 @@
 import Foundation
 import SwiftUI
 
-enum ProfileTab: String, CaseIterable, Identifiable {
+enum ProfileTab: String, TabEnum {
     case aboutyou, preferences, fotos
     
     var id: String { rawValue }
     
     var title: String {
         switch self {
-        case .aboutyou: "About you"
-        case .preferences: "Preferences"
-        case .fotos: "Photos"
+        case .aboutyou: Strings.aboutYouTitle
+        case .preferences: Strings.preferencesTitle
+        case .fotos: Strings.photosTitle
         }
     }
     
     @ViewBuilder
-    func view() -> some View {
+    func view(profileVm: ImagesViewModel) -> some View {
         switch self {
         case .aboutyou:
             AboutYouView()
         case .preferences:
             PreferencesView()
         case .fotos:
-            PhotosView()
+            PhotosView(imagesVm: profileVm)
         }
     }
 }

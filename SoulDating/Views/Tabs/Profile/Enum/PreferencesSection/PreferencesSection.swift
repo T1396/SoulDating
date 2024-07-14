@@ -14,8 +14,8 @@ enum PreferencesSection: String, Identifiable, CaseIterable {
     
     var displayName: String {
         switch self {
-        case .datingPreferences: "Dating Preferences"
-        case .lifestylePreferences: "Lifestyle Preferences"
+        case .datingPreferences: Strings.datingPrefTitle
+        case .lifestylePreferences: Strings.lifestylePrefTitle
         }
     }
 

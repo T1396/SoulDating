@@ -13,51 +13,49 @@ struct SwipeImageOverlay: View {
     @Binding var showOptionsSheet: Bool
     @Binding var navigateToProfileOrMessage: Bool
     @State private var isListVisible = false
-    
+
     // MARK: computed properties
     var user: FireUser {
         viewModel.otherUser
     }
-    
+
     // MARK: body
     var body: some View {
         VStack {
             userNameOptionsRow
-            
+
             HStack {
                 Image(systemName: "location.fill")
                     .appFont(size: 12)
                     .frame(width: 16)
                     .foregroundStyle(.white)
                 if let distance = viewModel.distance {
-                    Text("\(distance) away")
+                    Text(String(format: Strings.distanceValue, distance))
                         .appFont(size: 14)
                         .foregroundStyle(.white.opacity(0.8))
                 }
             }
             .itemBackgroundStyleAlt(.black.opacity(0.6), padding: 8, cornerRadius: 20)
             .frame(maxWidth: .infinity, alignment: .leading)
-            
+
             if viewModel.isNewUser {
                 HStack {
                     Image(systemName: "fan.fill")
                         .appFont(size: 12)
                         .frame(width: 16)
                         .foregroundStyle(.green.opacity(0.9))
-                    Text("New")
+                    Text(Strings.new)
                         .appFont(size: 12)
+                        .foregroundStyle(.black.opacity(0.8))
                 }
                 .itemBackgroundStyleAlt(.white, padding: 8, cornerRadius: 20)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            
+
             Button {
                 withAnimation {
                     isListVisible.toggle()
                 }
-                
-
-
             } label: {
                 VStack {
                     HStack {
@@ -72,40 +70,26 @@ struct SwipeImageOverlay: View {
                     }
                     .frame(maxWidth: isListVisible ? .infinity : nil, alignment: .leading)
 
-                    
                     if isListVisible {
                         VStack {
-                            Text("Location: \(user.location.name)")
-                                .appFont(size: 12)
-                                .padding(5)
-                                .background(.gray.opacity(0.2), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                            
+
+                            textItem(text: String(format: Strings.locationValue, user.location.name))
                             if let gender = user.gender {
-                                Text("Gender: \(gender.title)")
-                                    .appFont(size: 12)
-                                    .padding(8)
-                                    .background(.gray.opacity(0.2), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                textItem(text: String(format: Strings.genderValue, gender.title))
+
                             }
-                            
+
                             if let job = user.general.job {
-                                Text("Job: \(job)")
-                                    .appFont(size: 12)
-                                    .padding(8)
-                                    .background(.gray.opacity(0.2), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                textItem(text: String(format: Strings.jobValue, job))
                             }
-                            
+
                             if let height = user.look.height {
-                                Text("Height: \(height)")
-                                    .appFont(size: 12)
-                                    .padding(8)
-                                    .background(.gray.opacity(0.2), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                textItem(text: String(format: Strings.heightValue, height))
                             }
-                            
-                            ForEach(user.general.interests ?? []) { interest in
-                                Text(interest.title)
-                                    .padding(8)
-                                    .appFont(size: 12)
-                                    .background(.gray.opacity(0.2), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+
+                            ForEach(user.general.interests?.dropLast(3) ?? []) { interest in
+                                textItem(text: interest.title)
+                                    .lineLimit(1)
                             }
                         }
                         .foregroundStyle(.white)
@@ -117,20 +101,29 @@ struct SwipeImageOverlay: View {
                 .background(isListVisible ? .black.opacity(0.4) : .blue.opacity(0.6), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-                        
+
             Spacer()
-            
+
             OverlayControlIcons {
                 // dislike
                 viewModel.setActionAfterSwipe(.dislike)
             } onMessage: {
-                navigateToProfileOrMessage.toggle()
+                withAnimation {
+                    navigateToProfileOrMessage.toggle()
+                }
             } onLike: {
                 viewModel.setActionAfterSwipe(.like)
             }
         }
     }
-    
+
+    func textItem(text: String) -> some View {
+        Text(text)
+            .padding(8)
+            .appFont(size: 12)
+            .background(.gray.opacity(0.2), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+    }
+
     var userNameOptionsRow: some View {
         HStack {
             Text(user.nameAgeString)
@@ -138,9 +131,10 @@ struct SwipeImageOverlay: View {
                 .foregroundStyle(.white)
                 .font(.title2)
                 .fontWeight(.heavy)
-            
+
             Spacer()
-            
+
+            // opens report sheet
             Button(action: {
                 showOptionsSheet.toggle()
             }, label: {
@@ -151,8 +145,6 @@ struct SwipeImageOverlay: View {
         }
     }
 }
-
-
 
 #Preview {
     SwipeImageOverlay(
