@@ -1,26 +1,6 @@
 # Xcode
 ## User settings
 xcuserdata/
-# Xcode Derived Data
-DerivedData/
-
-# Xcode build output
-build/
-Build/
-*.pbxuser
-!default.pbxuser
-*.mode1v3
-!default.mode1v3
-*.mode2v3
-!default.mode2v3
-*.perspectivev3
-!default.perspectivev3
-xcuserdata/
-*.xccheckout
-*.xcscmblueprint
-*.mov
-*.ipa
-*.xcuserstate
 
 ## Obj-C/Swift specific
 *.hmap
@@ -29,17 +9,6 @@ xcuserdata/
 *.ipa
 *.dSYM.zip
 *.dSYM
-
-# Swift Package Manager
-.build/
-
-# Various settings
-*.swp
-*~
-*.lock
-*.DS_Store
-*.swp
-*~.nib
 
 # Compiled source #
 ###################
@@ -62,10 +31,6 @@ xcuserdata/
 *.rar
 *.tar
 *.zip
-
-# Temporary files
-tmp/
-temp/
 
 # Logs and databases #
 ######################
