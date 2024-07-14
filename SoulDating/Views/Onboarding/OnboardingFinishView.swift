@@ -10,19 +10,26 @@ import SwiftUI
 struct OnboardingFinishView: View {
     @Binding var isOnboardingFinished: Bool
 
+    @EnvironmentObject var userVm: UserViewModel
+
     var body: some View {
-        if !isOnboardingFinished {
-            LoadingView(message: "Your account is beeing created and your details saved! Hold on a second")
-        } else {
-            SuccessView(message: "Your new account was created. You can continue with SoulDating!")
+        VStack {
+            if !isOnboardingFinished {
+                LoadingView(message: Strings.accBeeingCreated)
+            } else {
+                SuccessView(message: Strings.accWasCreated)
 
-            Button {
-
-            } label: {
-                Text(Strings.continues)
-                    .appButtonStyle(fullWidth: true)
+                Button {
+                    withAnimation {
+                        userVm.updateOnboardingStatus()
+                    }
+                } label: {
+                    Text(Strings.continues)
+                        .appButtonStyle(fullWidth: true)
+                }
             }
         }
+        .padding()
     }
 }
 
