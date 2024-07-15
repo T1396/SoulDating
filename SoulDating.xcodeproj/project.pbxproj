@@ -17,7 +17,6 @@
 		720DDF8D2C1683E000A1098B /* EditLocationRangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDF8C2C1683E000A1098B /* EditLocationRangeView.swift */; };
 		720DDF942C16875700A1098B /* LocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDF932C16875700A1098B /* LocationPickerView.swift */; };
 		720DDF982C16F2E200A1098B /* FireUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDF972C16F2E200A1098B /* FireUser.swift */; };
-		720DDF9A2C16F2F400A1098B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 720DDF992C16F2F400A1098B /* Preview Assets.xcassets */; };
 		720DDF9C2C16F30100A1098B /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DDF9B2C16F30100A1098B /* FirebaseManager.swift */; };
 		72229C782C41A97100B364DE /* SortMenuSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72229C772C41A97000B364DE /* SortMenuSections.swift */; };
 		72229C7C2C42EF0E00B364DE /* ConversationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72229C7B2C42EF0E00B364DE /* ConversationManager.swift */; };
@@ -65,7 +64,6 @@
 		7271D42D2C10DDD900E473B6 /* FirebaseInAppMessagingSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 7271D42C2C10DDD900E473B6 /* FirebaseInAppMessagingSwift-Beta */; };
 		7271D42F2C10DDD900E473B6 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 7271D42E2C10DDD900E473B6 /* FirebaseMessaging */; };
 		7271D4312C10DDD900E473B6 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 7271D4302C10DDD900E473B6 /* FirebaseStorage */; };
-		7271D4352C10E08A00E473B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7271D4342C10E08A00E473B6 /* GoogleService-Info.plist */; };
 		7271D43C2C11032700E473B6 /* AuthentificationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7271D43B2C11032700E473B6 /* AuthentificationMode.swift */; };
 		7271D43E2C1103BC00E473B6 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7271D43D2C1103BC00E473B6 /* Gender.swift */; };
 		7271D4412C11048700E473B6 /* OnboardingLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7271D4402C11048700E473B6 /* OnboardingLocationView.swift */; };
@@ -228,6 +226,8 @@
 		72D9BC642C206272006673BC /* MessagesDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D9BC632C206272006673BC /* MessagesDetailViewModel.swift */; };
 		72D9BC662C2062F4006673BC /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D9BC652C2062F4006673BC /* Message.swift */; };
 		72D9BC682C206E0D006673BC /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D9BC672C206E0D006673BC /* MessagesViewModel.swift */; };
+		72DEDF6A2C454C2100AE32B3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 72DEDF692C454C2100AE32B3 /* GoogleService-Info.plist */; };
+		72DEDF752C454C7F00AE32B3 /* Preview Content in Resources */ = {isa = PBXBuildFile; fileRef = 72DEDF742C454C7F00AE32B3 /* Preview Content */; };
 		72E90A1E2C29820700AE790B /* ImageWithGradientAndName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E90A1D2C29820700AE790B /* ImageWithGradientAndName.swift */; };
 		72E97E612C3839D900DD3B90 /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E97E602C3839D800DD3B90 /* SuccessView.swift */; };
 		72E97E632C383A9000DD3B90 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E97E622C383A9000DD3B90 /* LoadingView.swift */; };
@@ -270,7 +270,6 @@
 		720DDF8C2C1683E000A1098B /* EditLocationRangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLocationRangeView.swift; sourceTree = "<group>"; };
 		720DDF932C16875700A1098B /* LocationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerView.swift; sourceTree = "<group>"; };
 		720DDF972C16F2E200A1098B /* FireUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireUser.swift; sourceTree = "<group>"; };
-		720DDF992C16F2F400A1098B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		720DDF9B2C16F30100A1098B /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		72229C772C41A97000B364DE /* SortMenuSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortMenuSections.swift; sourceTree = "<group>"; };
 		72229C7B2C42EF0E00B364DE /* ConversationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationManager.swift; sourceTree = "<group>"; };
@@ -308,7 +307,6 @@
 		726099182C27397900213B65 /* ProfileImageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageHeaderView.swift; sourceTree = "<group>"; };
 		7260991A2C27A4DE00213B65 /* OverlayImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayImageView.swift; sourceTree = "<group>"; };
 		7271313A2C18B1FD006CA687 /* SwipeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCardView.swift; sourceTree = "<group>"; };
-		7271D4342C10E08A00E473B6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7271D43B2C11032700E473B6 /* AuthentificationMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationMode.swift; sourceTree = "<group>"; };
 		7271D43D2C1103BC00E473B6 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		7271D4402C11048700E473B6 /* OnboardingLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLocationView.swift; sourceTree = "<group>"; };
@@ -468,6 +466,8 @@
 		72D9BC632C206272006673BC /* MessagesDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesDetailViewModel.swift; sourceTree = "<group>"; };
 		72D9BC652C2062F4006673BC /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		72D9BC672C206E0D006673BC /* MessagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
+		72DEDF692C454C2100AE32B3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		72DEDF742C454C7F00AE32B3 /* Preview Content */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Preview Content"; sourceTree = "<group>"; };
 		72E90A1D2C29820700AE790B /* ImageWithGradientAndName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWithGradientAndName.swift; sourceTree = "<group>"; };
 		72E97E602C3839D800DD3B90 /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
 		72E97E622C383A9000DD3B90 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
@@ -805,7 +805,7 @@
 				72FB4B0A2C25C9B4007B8695 /* Info.plist */,
 				729074002C0F447C00C5A997 /* SoulDating */,
 				72CAA1392C1B880F004BDAA6 /* Localizable.xcstrings */,
-				7271D4342C10E08A00E473B6 /* GoogleService-Info.plist */,
+				72DEDF692C454C2100AE32B3 /* GoogleService-Info.plist */,
 				729073FF2C0F447C00C5A997 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -830,17 +830,9 @@
 				7271D43F2C11047F00E473B6 /* Views */,
 				729074232C0F467700C5A997 /* ViewModels */,
 				729074052C0F447E00C5A997 /* Assets.xcassets */,
-				729074072C0F447E00C5A997 /* Preview Content */,
+				72DEDF742C454C7F00AE32B3 /* Preview Content */,
 			);
 			path = SoulDating;
-			sourceTree = "<group>";
-		};
-		729074072C0F447E00C5A997 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				720DDF992C16F2F400A1098B /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		729074232C0F467700C5A997 /* ViewModels */ = {
@@ -1322,14 +1314,12 @@
 				72CAA1BC2C1DF723004BDAA6 /* Montserrat-Black.ttf in Resources */,
 				72CAA19B2C1DF715004BDAA6 /* MerriweatherSans-Bold.ttf in Resources */,
 				72362A382C32BF0900A18C75 /* languages-en.json in Resources */,
-				720DDF9A2C16F2F400A1098B /* Preview Assets.xcassets in Resources */,
 				72362A362C32BEDF00A18C75 /* languages-de.json in Resources */,
 				72CAA19E2C1DF715004BDAA6 /* MerriweatherSans-LightItalic.ttf in Resources */,
 				72CAA1992C1DF715004BDAA6 /* MerriweatherSans-SemiBoldItalic.ttf in Resources */,
 				72CAA1722C1DF68B004BDAA6 /* Lato-Bold.ttf in Resources */,
 				72CAA1712C1DF68B004BDAA6 /* Lato-Black.ttf in Resources */,
 				72CAA1C62C1DF723004BDAA6 /* Montserrat-BoldItalic.ttf in Resources */,
-				7271D4352C10E08A00E473B6 /* GoogleService-Info.plist in Resources */,
 				72CAA18B2C1DF6ED004BDAA6 /* Merriweather-Italic.ttf in Resources */,
 				72CAA1C82C1DF723004BDAA6 /* Montserrat-Italic.ttf in Resources */,
 				72CAA1C32C1DF723004BDAA6 /* Montserrat-Light.ttf in Resources */,
@@ -1359,9 +1349,11 @@
 				72CAA1B92C1DF723004BDAA6 /* Montserrat-LightItalic.ttf in Resources */,
 				72CAA1A32C1DF715004BDAA6 /* MerriweatherSans-Light.ttf in Resources */,
 				72CAA1862C1DF6ED004BDAA6 /* Merriweather-Black.ttf in Resources */,
+				72DEDF6A2C454C2100AE32B3 /* GoogleService-Info.plist in Resources */,
 				72CAA13A2C1B880F004BDAA6 /* Localizable.xcstrings in Resources */,
 				72CAA1A12C1DF715004BDAA6 /* MerriweatherSans-ExtraBoldItalic.ttf in Resources */,
 				72CAA1C42C1DF723004BDAA6 /* Montserrat-ExtraBold.ttf in Resources */,
+				72DEDF752C454C7F00AE32B3 /* Preview Content in Resources */,
 				729074062C0F447E00C5A997 /* Assets.xcassets in Resources */,
 				72CAA16F2C1DF68B004BDAA6 /* Lato-LightItalic.ttf in Resources */,
 				72CAA1A42C1DF715004BDAA6 /* MerriweatherSans-SemiBold.ttf in Resources */,
