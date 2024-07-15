@@ -73,7 +73,7 @@ class ReportViewModel: BaseAlertViewModel {
             if let error {
                 print("Error blocking user", error.localizedDescription)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self.resultMessage = String(format: Strings.errorBlockMsg, self.reportedUser.name ?? "")
+                    self.resultMessage = String(format: Strings.blockUserFailedMsg, self.reportedUser.name ?? "")
                     self.reportStatus = .failure
                 }
             } else {
@@ -126,4 +126,3 @@ extension ReportViewModel {
         return dict
     }
 }
-

@@ -16,7 +16,6 @@ struct SoulDatingApp: App {
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
         let currentLanguageCode = Locale.current.language.languageCode?.identifier
-        print("LanguageIdentifier: \(currentLanguageCode)")
         LanguageRepository.shared.loadLanguageData(for: currentLanguageCode ?? "en")
     }
     

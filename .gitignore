@@ -40,6 +40,9 @@ xcuserdata/
 
 # OS generated files #
 ######################
+.build/
+.swiftpm/xcode/package.xcworkspace
+.swiftpm/xcode/xcuserdata/
 .DS_Store
 .DS_Store?
 ._*
@@ -47,5 +50,9 @@ xcuserdata/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+.build/
+.swiftpm/xcode/package.xcworkspace
+.swiftpm/xcode/xcuserdata/
 
 Pods/

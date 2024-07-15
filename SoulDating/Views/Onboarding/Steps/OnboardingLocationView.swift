@@ -8,17 +8,42 @@
 import SwiftUI
 import MapKit
 
+class KeyboardResponsiveViewModel: ObservableObject {
+    @Published var keyboardHeight: CGFloat = 0
+
+    init() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc func keyboardWillShow(notification: Notification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        DispatchQueue.main.async {
+            self.keyboardHeight = keyboardSize.height
+        }
+    }
+
+    @objc func keyboardWillHide() {
+        DispatchQueue.main.async {
+            self.keyboardHeight = 0
+        }
+    }
+}
+
 struct OnboardingLocationView: View {
     // MARK: properties
     @ObservedObject var viewModel: OnboardingViewModel
     @EnvironmentObject var userViewModel: UserViewModel
+    @StateObject private var keyboardVm = KeyboardResponsiveViewModel()
+
     @Binding var progress: Double
     @Binding var stepIndex: Int
     @Binding var isOnboardingSuccessfully: Bool
-    @State private var keyboardHeight: CGFloat = 0
 
-    @State private var navigate = false
-    
     // MARK: body
     var body: some View {
         NavigationStack {
@@ -26,7 +51,7 @@ struct OnboardingLocationView: View {
                 ScrollView {
                     VStack(spacing: 16) {
 
-                        if keyboardHeight == 0 {
+                        if keyboardVm.keyboardHeight == 0 {
                             Text("Your location")
                                 .appFont(size: 32, textWeight: .bold)
 
@@ -55,12 +80,9 @@ struct OnboardingLocationView: View {
                             selectedSuggestion: $viewModel.selectedSuggestion,
                             onPlaceSelected: saveLocation
                         )
-
-
                     }
-                    .padding(.bottom, keyboardHeight)
-                    
-
+                    .animation(.easeInOut, value: keyboardVm.keyboardHeight)
+                    .padding(.bottom, keyboardVm.keyboardHeight)
 
                 }
                 Button(action: finishOnboarding) {
@@ -71,25 +93,6 @@ struct OnboardingLocationView: View {
                 .buttonStyle(PressedButtonStyle())
                 .padding(.bottom)
             }
-            .onAppear {
-                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
-                    guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-                    keyboardHeight = keyboardSize.height
-                    print(keyboardHeight)
-                }
-
-                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
-                    keyboardHeight = 0
-                }
-
-                withAnimation {
-                    progress = 1.0
-                }
-            }
-            .onDisappear {
-                NotificationCenter.default.removeObserver(self)
-            }
-
             .onAppear {
                 withAnimation {
                     progress = 1.0
@@ -108,7 +111,6 @@ struct OnboardingLocationView: View {
         withAnimation {
             stepIndex += 1
             viewModel.updateUserDocument {
-                print("updated user document")
                 isOnboardingSuccessfully = true
             }
         }

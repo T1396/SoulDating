@@ -66,7 +66,6 @@ class RadarViewModel: BaseAlertViewModel {
     // filters out users that are not in range, ( range query gives square root results so it need further filtering )
     func filterRange(_ users: [FireUser]) -> [FireUser] {
         users.filter {
-            let radius = $0.location.radius
             let isInDistance = rangeManager.checkForDistance($0.location, self.user.location)
             return isInDistance
         }

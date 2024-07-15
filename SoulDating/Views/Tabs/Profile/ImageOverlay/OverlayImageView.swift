@@ -88,7 +88,7 @@ struct OverlayImageView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onChange(of: newMainPicture, { _, newValue in
-            if let newValue {
+            if newValue != nil {
                 overlayState = .save
             } else {
                 overlayState = .select

@@ -50,12 +50,13 @@ struct PhotosView: View {
                                     PhotosContextOptions(image: item)
                                 }
                             // sets preview shapes
-                                //.contentShape(.dragPreview, RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                // .contentShape(.dragPreview, RoundedRectangle(cornerRadius: 12, style: .continuous))
                                 .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 12, style: .continuous))
                         } preview: { item in
                             UserImage(url: item.imageUrl, minWidth: width, minHeight: height)
                                 .imageStrokeStyle()
                                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                .clipped()
                         } moveAction: { from, to in
                             imagesVm.userImages.move(fromOffsets: from, toOffset: to)
                         }

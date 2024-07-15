@@ -106,7 +106,7 @@ extension EditLocationViewModel {
         search.start { response, error in
             guard let response = response, error == nil else {
                 print("error executing search request: \(error?.localizedDescription ?? "unknown error")")
-                self.createAlert(title: Strings.error, message: Strings.updateLocationSelection )
+                self.createAlert(title: Strings.error, message: Strings.updateLocationSelectionError )
                 return
             }
             

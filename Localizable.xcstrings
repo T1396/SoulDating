@@ -1424,6 +1424,9 @@
         }
       }
     },
+    "Get help by ChatGPT!" : {
+
+    },
     "Go to Photos Tab?" : {
       "comment" : "Prompt to go to the Photos tab",
       "localizations" : {
