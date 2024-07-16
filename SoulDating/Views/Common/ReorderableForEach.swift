@@ -52,19 +52,10 @@ public struct ReorderableForEach<Item: Reorderable, Content: View, Preview: View
 
     public var body: some View {
         ForEach(items) { item in
-            if let preview {
-                contentView(for: item)
-                    .onDrag {
-                        dragData(for: item)
-                    } preview: {
-                        preview(item)
-                    }
-            } else {
-                contentView(for: item)
-                    .onDrag {
-                        dragData(for: item)
-                    }
-            }
+            contentView(for: item)
+                .onDrag {
+                    dragData(for: item)
+                }
         }
     }
 

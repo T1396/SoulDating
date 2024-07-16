@@ -9,8 +9,14 @@ import SwiftUI
 
 struct PhotosContextOptions: View {
     // MARK: properties
-    @EnvironmentObject var imagesVm: ImagesViewModel
-    let image: SortedImage
+    @ObservedObject var imagesVm: ImagesViewModel
+    var image: SortedImage
+
+    init(imagesVm: ImagesViewModel, image: SortedImage) {
+        self.imagesVm = imagesVm
+        self.image = image
+        print("context init")
+    }
 
     var body: some View {
         ControlGroup {
@@ -21,20 +27,22 @@ struct PhotosContextOptions: View {
             Button(action: downloadImage) {
                 Label(Strings.download, systemImage: "arrow.down.doc")
             }
-            
+
             Button(role: .destructive, action: deleteImage) {
                 Label(Strings.delete, systemImage: "trash.fill")
             }
+            .disabled(imagesVm.mainImageUrl == image.imageUrl)
         }
         Button(Strings.moveFirst) {
-
+            imagesVm.moveImageToFirst(image: image)
         }
         Button(Strings.moveLast) {
-
+            imagesVm.moveImageToLast(image: image)
         }
         Button(Strings.selectAsPicture) {
             imagesVm.updateMainPicture(newPicture: image.imageUrl)
         }
+        .disabled(imagesVm.mainImageUrl == image.imageUrl)
 
     }
     
@@ -56,5 +64,5 @@ struct PhotosContextOptions: View {
 }
 
 #Preview {
-    PhotosContextOptions(image: SortedImage(imageUrl: "dklsa", position: 1))
+    PhotosContextOptions(imagesVm: ImagesViewModel(), image: SortedImage(imageUrl: "dklsa", position: 1))
 }

@@ -41,33 +41,24 @@ struct PhotosView: View {
                                 imageSelectionOptions
                             }
 
-
                         ReorderableForEach(imagesVm.userImages, active: $active) { item in
                             UserImage(url: item.imageUrl, minWidth: width, minHeight: height)
                                 .imageStrokeStyle()
-
                                 .contextMenu {
-                                    PhotosContextOptions(image: item)
+                                    PhotosContextOptions(imagesVm: imagesVm, image: item)
                                 }
-                            // sets preview shapes
-                                // .contentShape(.dragPreview, RoundedRectangle(cornerRadius: 12, style: .continuous))
-                                .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        } preview: { item in
-                            UserImage(url: item.imageUrl, minWidth: width, minHeight: height)
-                                .imageStrokeStyle()
-                                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                                .clipped()
+                                .contentShape([.contextMenuPreview, .dragPreview], RoundedRectangle(cornerRadius: 12, style: .continuous))
                         } moveAction: { from, to in
-                            imagesVm.userImages.move(fromOffsets: from, toOffset: to)
+                            imagesVm.moveImage(fromIndex: from, toIndex: to)
                         }
+
                     }
                     .padding([.horizontal, .top])
                 }
-                .scrollContentBackground(.hidden)
-                .background(Color(.systemGroupedBackground))
             }
-            .reorderableForEachContainer(active: $active)
-
+            .onDisappear {
+                imagesVm.updateImageOrderInFirestore()
+            }
         }
     }
 
