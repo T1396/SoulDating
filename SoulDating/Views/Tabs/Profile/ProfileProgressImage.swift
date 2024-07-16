@@ -27,7 +27,7 @@ struct ProfileProgressImage: View {
                 Image(systemName: "exclamationmark.triangle")
                     .resizable()
                     .scaledToFit()
-                    .padding(2)
+                    .padding(4)
                     .frame(width: width, height: height)
                     .clipShape(Circle())
                     .background(Color.gray.opacity(0.5))
@@ -37,7 +37,7 @@ struct ProfileProgressImage: View {
                         .resizable()
                         .scaledToFill()
                         .clipShape(Circle())
-                        .padding(2)
+                        .padding(4)
                         .frame(width: width, height: height)
                         .onAppear {
                             isLoaded = true
@@ -65,7 +65,7 @@ struct ProfileProgressImage: View {
                     .resizable()
                     .scaledToFill()
                     .clipShape(Circle())
-                    .padding(2)
+                    .padding(4)
                     .frame(width: width, height: height)
                     .onAppear {
                         withAnimation {
@@ -77,8 +77,8 @@ struct ProfileProgressImage: View {
             // progress circle
             Circle()
                 .trim(from: 0, to: progress)
-                .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
-                .foregroundColor(.accent)
+                .stroke(style: StrokeStyle(lineWidth: 3, lineCap: .butt, lineJoin: .bevel))
+                .foregroundColor(.tertiaryAccent)
                 .rotationEffect(Angle(degrees: 270.0))
                 .frame(width: width, height: height)
                 .animation(.bouncy, value: progress)
