@@ -41,7 +41,6 @@ struct OnboardingHostView: View {
                                 progress -= 0.2
                             }
                         }
-                        .padding([.horizontal, .top])
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
 

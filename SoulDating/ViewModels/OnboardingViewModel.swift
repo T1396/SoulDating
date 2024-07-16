@@ -57,7 +57,7 @@ class OnboardingViewModel: BaseNSViewModel, MKLocalSearchCompleterDelegate {
     
     // MARK: computed properties
     var isValidUserName: Bool {
-        userDisplayName.count > 3
+        userDisplayName.count > 2
     }
 
     var isValidLocation: Bool {
