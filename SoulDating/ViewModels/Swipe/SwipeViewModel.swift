@@ -12,23 +12,25 @@ import Firebase
 import MapKit
 import CoreData
 
+/// ViewModel to manage all swipeable users, makes a fetch respecting the user preferences
 class SwipeViewModel: BaseAlertViewModel, SwipeUserDelegate {
     // MARK: properties
     private let firebaseManager = FirebaseManager.shared
     private let rangeManager = RangeManager.shared
+    private let likesService: LikesService = .shared // to obtain already likes user ids
     private let userService: UserService
     private (set) var user: FireUser
     private var cancellables = Set<AnyCancellable>()
 
-    private var userLikes: [String] = [] // to show matches
-    private var likesListener: ListenerRegistration?
+    private var userLikes: Set<String> = [] // to show matches
     private var removedUsers: [FireUser] = []
     private var lastDocumentSnapshot: DocumentSnapshot?
 
+    private var allSwipeableUsers: [SwipeUserViewModel] = []
     @Published private(set) var displayedUsers: [SwipeUserViewModel] = []
+
     @Published private(set) var noMoreUsersAvailable = false
     @Published private(set) var isFetchingUsers = false
-    private var allSwipeableUsers: [SwipeUserViewModel] = []
     @Published var userMatch: FireUser?
 
     // MARK: init
@@ -59,10 +61,18 @@ class SwipeViewModel: BaseAlertViewModel, SwipeUserDelegate {
 
 
     func subscribe() {
-        setUserLikesListener()
+        // subscripe to likeService to get new likes to show matches
+        likesService.$userIdsWhoLikedCurrent
+            .compactMap { $0 }
+            .sink { [weak self] ids in
+                self?.userLikes.formUnion(ids)
+            }
+            .store(in: &cancellables)
+
         let oldUser = self.user
         self.user = userService.user
         if user.hasRelevantDataChangesToRefetch(from: oldUser) {
+            print("had relevant changes")
             // reset the last doc snapshot from where the query begins to search because otherwise
             // users could be skipped due to the sorting after registration date
             lastDocumentSnapshot = nil
@@ -70,11 +80,33 @@ class SwipeViewModel: BaseAlertViewModel, SwipeUserDelegate {
         }
     }
 
+    func checkForReportedUser() {
+        let oldBlockedUsers = user.blockedUsers
+        user.blockedUsers = userService.user.blockedUsers
+        if user.blockedUsers != oldBlockedUsers {
+            removeBlockedUsers()
+        }
+    }
+
+    private func removeBlockedUsers() {
+        if let blockedUserIds = user.blockedUsers {
+            for blockedUserId in blockedUserIds {
+                if let index = allSwipeableUsers.firstIndex(where: { $0.otherUser.id == blockedUserId }) {
+                    print("removed from all swipeable")
+                    allSwipeableUsers.remove(at: index)
+                }
+                if let index = displayedUsers.firstIndex(where: { $0.otherUser.id == blockedUserId }) {
+                    displayedUsers.remove(at: index)
+                    updateDisplayedUsers()
+                    print("removed from displayed")
+                }
+            }
+        }
+    }
+
     func unsubscribe() {
         cancellables.forEach { $0.cancel() }
         cancellables.removeAll()
-        likesListener?.remove()
-        likesListener = nil
     }
 
     /// delegate function, gets called from swipeViewModels when user swiped another user to remove him from the list
@@ -107,25 +139,6 @@ class SwipeViewModel: BaseAlertViewModel, SwipeUserDelegate {
         return nil
     }
 }
-
-// MARK: LIKES LISTENER
-extension SwipeViewModel {
-    /// fetches the userIds who liked the current user to show matches when user liked anotherone that liked him too
-    private func setUserLikesListener() {
-        likesListener = firebaseManager.database.collection("userLikes").document(user.id)
-            .collection("like")
-            .addSnapshotListener { querySnapshot, error in
-                if let error {
-                    print("Error fetching likes", error.localizedDescription)
-                    return
-                }
-                self.userLikes = querySnapshot?.documents.compactMap { doc in
-                    doc.data()["fromUserId"] as? String
-                } ?? []
-            }
-    }
-}
-
 
 // MARK: range fetch
 extension SwipeViewModel {

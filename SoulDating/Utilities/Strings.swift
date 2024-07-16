@@ -149,7 +149,7 @@ struct Strings {
     /// app setting section enum
     static let appSettings = NSLocalizedString("App Settings", comment: "Title for the App Settings section")
     static let problems = NSLocalizedString("Problems or questions?", comment: "Section title for problems or questions")
-    static let juridical = NSLocalizedString("Juristics", comment: "Section title for juridical information")
+    static let blockedUsersTitle = NSLocalizedString("Blocked users", comment: "Section title for blocked users")
 
 
     // MARK: ONBOARDING
@@ -182,9 +182,10 @@ struct Strings {
 
 
     /// repor user texts
-    static let blockTitle = NSLocalizedString("Report %@", comment: "Title for reporting a user")
+    static let blockTitle = NSLocalizedString("Block %@", comment: "Title for blocking a user")
     static let blockReportTitle = NSLocalizedString("Block and Report %@", comment: "Title for blocking and reporting a user")
     static let confirmationBlock = NSLocalizedString("Do you really want to block %@?", comment: "Confirmation message for blocking a user")
+    static let confirmationUnblock = NSLocalizedString("Do you really want to unblock %@?", comment: "Confirmation message for unblocking a user")
     static let confirmationReport = NSLocalizedString("Do you really want to report and block %@?", comment: "Confirmation message for reporting and blocking a user")
     static let confirmationMsgBlock = NSLocalizedString("You can unblock %@ at every time.", comment: "Message indicating that the user can be unblocked at any time")
     static let confirmationMsgReport = NSLocalizedString("You can unblock %@ at every time, but your report cannot be undone!", comment: "Message indicating that the user can be unblocked at any time but the report cannot be undone")
@@ -193,6 +194,7 @@ struct Strings {
     static let reasonForReport = NSLocalizedString("Tell us the reason why you want to report %@", comment: "Prompt asking for the reason to report a user")
     static let reportingText = NSLocalizedString("Reporting %@ ...", comment: "Message indicating that a user is being reported")
     static let sendReport = NSLocalizedString("Send Report", comment: "Button label to send a report")
+    static let unblockUser = NSLocalizedString("Unblock %@", comment: "Title for unblocking a user")
 
     // report reasons
     static let inappropriatePicture = NSLocalizedString("Inappropriate Picture", comment: "Report reason for inappropriate picture")

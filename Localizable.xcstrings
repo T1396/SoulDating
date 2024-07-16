@@ -490,6 +490,9 @@
         }
       }
     },
+    "Block %@" : {
+      "comment" : "Title for blocking a user"
+    },
     "Block and Report %@" : {
       "comment" : "Title for blocking and reporting a user",
       "localizations" : {
@@ -500,6 +503,9 @@
           }
         }
       }
+    },
+    "Blocked users" : {
+      "comment" : "Section title for blocked users"
     },
     "Body Type" : {
       "comment" : "Title for the user's body type section",
@@ -672,7 +678,15 @@
       }
     },
     "Choose the type of bug you experienced" : {
-      "comment" : "Header text telling user to choose bug type to report"
+      "comment" : "Header text telling user to choose bug type to report",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welche Art von Fehler hast du bemerkt?"
+          }
+        }
+      }
     },
     "Choose your desired ages" : {
       "comment" : "Prompt to choose desired age range",
@@ -802,7 +816,15 @@
       }
     },
     "Data Loss" : {
-      "comment" : "Issues where user data is not saved or unexpectedly deleted."
+      "comment" : "Issues where user data is not saved or unexpectedly deleted.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenverlust"
+          }
+        }
+      }
     },
     "Data protection" : {
       "comment" : "Juridical setting: Data protection",
@@ -872,7 +894,15 @@
       }
     },
     "Descripe what exactly happened" : {
-      "comment" : "Text telling the user to descripe what exactly happened while reporting a bug"
+      "comment" : "Text telling the user to descripe what exactly happened while reporting a bug",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beschreibe uns was vorgefallen ist"
+          }
+        }
+      }
     },
     "Description about yourself" : {
       "comment" : "Title for the user's description section",
@@ -964,6 +994,9 @@
           }
         }
       }
+    },
+    "Do you really want to unblock %@?" : {
+      "comment" : "Confirmation message for unblocking a user"
     },
     "Do you smoke?" : {
       "comment" : "Title for the user's smoking behaviour section",
@@ -1087,7 +1120,15 @@
       }
     },
     "Enter a detailed description about your issues..." : {
-      "comment" : "Placeholder text for the bug report textfield"
+      "comment" : "Placeholder text for the bug report textfield",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib uns eine Beschreibung deines Fehlers"
+          }
+        }
+      }
     },
     "Enter a message" : {
       "comment" : "Prompt to enter a message",
@@ -1134,7 +1175,15 @@
       }
     },
     "Enter any additional info that could help us to identify the bug" : {
-      "comment" : "Bug report additional info placeholder for textfield"
+      "comment" : "Bug report additional info placeholder for textfield",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib alle zusätzlichen Info's ein, die helfen könnten den Fehler zu identifizieren"
+          }
+        }
+      }
     },
     "Enter e-mail address" : {
       "comment" : "Prompt to enter e-mail address",
@@ -1363,7 +1412,15 @@
       }
     },
     "Functionality Issues" : {
-      "comment" : "Features of the app do not function as intended."
+      "comment" : "Features of the app do not function as intended.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funktionalität"
+          }
+        }
+      }
     },
     "Gaming" : {
       "comment" : "Interest: Gaming"
@@ -1425,7 +1482,14 @@
       }
     },
     "Get help by ChatGPT!" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hilfe von ChatGPT"
+          }
+        }
+      }
     },
     "Go to Photos Tab?" : {
       "comment" : "Prompt to go to the Photos tab",
@@ -1700,6 +1764,7 @@
     },
     "Juristics" : {
       "comment" : "Section title for juridical information",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1992,7 +2057,15 @@
       "comment" : "Common label for name"
     },
     "Network Problems" : {
-      "comment" : "Difficulties with network connections or loading content."
+      "comment" : "Difficulties with network connections or loading content.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Netzwerkprobleme"
+          }
+        }
+      }
     },
     "Never" : {
       "comment" : "Exercise frequency: Never",
@@ -2268,7 +2341,15 @@
       }
     },
     "Other Issues" : {
-      "comment" : "Other issues not listed above."
+      "comment" : "Other issues not listed above.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Andere "
+          }
+        }
+      }
     },
     "Other photos" : {
       "comment" : "Section title for other photos of the user",
@@ -2327,7 +2408,15 @@
       }
     },
     "Performance Issues" : {
-      "comment" : "Issues that affect the app's speed and responsiveness."
+      "comment" : "Issues that affect the app's speed and responsiveness.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Performance"
+          }
+        }
+      }
     },
     "Personal Details" : {
       "comment" : "Header for personal details section",
@@ -2606,6 +2695,7 @@
     },
     "Report %@" : {
       "comment" : "Title for reporting a user",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2649,7 +2739,15 @@
       }
     },
     "Security Issues" : {
-      "comment" : "Potential security risks that could endanger user privacy."
+      "comment" : "Potential security risks that could endanger user privacy.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sicherheit / Daten"
+          }
+        }
+      }
     },
     "Seems like you don't have any other images uploaded..." : {
       "comment" : "Message indicating no other images are uploaded",
@@ -2713,7 +2811,15 @@
       }
     },
     "Send" : {
-      "comment" : "Send action label"
+      "comment" : "Send action label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senden"
+          }
+        }
+      }
     },
     "Send Report" : {
       "comment" : "Button label to send a report",
@@ -3196,7 +3302,15 @@
       }
     },
     "There was an technical issue. Please try it again or if that doesn't help contact us." : {
-      "comment" : "Text describing that there were issues with chat gpt and telling the user to contact us."
+      "comment" : "Text describing that there were issues with chat gpt and telling the user to contact us.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es gab einen technischen Fehler. Bitte versuch es erneut oder kontaktiere uns wenn das nicht hilft."
+          }
+        }
+      }
     },
     "This information is used to suggest users to you and provide better suggestions for other users." : {
       "comment" : "Subtitle explaining the purpose of collecting more information",
@@ -3337,6 +3451,9 @@
           }
         }
       }
+    },
+    "Unblock %@" : {
+      "comment" : "Title for unblocking a user"
     },
     "Unfortunately there are no more users in your area..." : {
       "comment" : "Message indicating there are no more users in the area",
@@ -3625,7 +3742,15 @@
       }
     },
     "User Interface Issues" : {
-      "comment" : "Problems with the user interface, such as layout errors or unexpected behavior of UI elements."
+      "comment" : "Problems with the user interface, such as layout errors or unexpected behavior of UI elements.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzeroberfläche"
+          }
+        }
+      }
     },
     "User is not logged in" : {
       "comment" : "Error message when user is not logged in",
@@ -3843,6 +3968,9 @@
         }
       }
     },
+    "You dont have any blocked users yet" : {
+
+    },
     "You have 0 matches right now." : {
       "comment" : "Message indicating the user has no matches",
       "localizations" : {
@@ -3877,7 +4005,15 @@
       }
     },
     "You made a match with %@!" : {
-      "comment" : "Match notification template"
+      "comment" : "Match notification template",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast ein Match mit %@!"
+          }
+        }
+      }
     },
     "You must be at least 18 years old..." : {
       "comment" : "Error message indicating the user must be at least 18 years old",
@@ -3946,7 +4082,15 @@
       }
     },
     "Your bug report could not be send... Please try it again later" : {
-      "comment" : "Text describing that the bug report failed"
+      "comment" : "Text describing that the bug report failed",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Bug report konnte nicht abgesendet werden... bitte versuche es später nochmal erneut."
+          }
+        }
+      }
     },
     "Your bug report was successful. We will investigate the issue as soon as possible. Sorry for the inconveniences." : {
       "comment" : "Message indicating the bug report was successful",
@@ -3961,10 +4105,26 @@
       }
     },
     "Your bug report was successful. We will take actions as soon as possible!" : {
-      "comment" : "Message indicating the bug report was successful"
+      "comment" : "Message indicating the bug report was successful",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Report wurde erfolgreich gesendet! Wir werden uns schnellstmöglich darum kümmern"
+          }
+        }
+      }
     },
     "Your bug report was successfully send" : {
-      "comment" : "Text telling the user the bug report was successfully"
+      "comment" : "Text telling the user the bug report was successfully",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Report wurde erfolgreich gesendet."
+          }
+        }
+      }
     },
     "Your chats are beeing loaded..." : {
       "comment" : "Text indicating that the chats of current users are beeing loaded.",
@@ -3987,6 +4147,9 @@
           }
         }
       }
+    },
+    "Your currently blocked users" : {
+
     },
     "Your e-mail address should be at least 6 chars long." : {
       "comment" : "Help text indicating the e-mail address should be at least 6 characters long",
@@ -4176,7 +4339,15 @@
       }
     },
     "Your report is beeing send. Hold on a second" : {
-      "comment" : "Text indicating that the report is beeing send"
+      "comment" : "Text indicating that the report is beeing send",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Report wird übermittelt"
+          }
+        }
+      }
     },
     "Your spoken languages" : {
       "comment" : "Title for the user's spoken languages section",

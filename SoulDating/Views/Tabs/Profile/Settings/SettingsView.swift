@@ -27,6 +27,14 @@ struct SettingsView: View {
                     }
                 }
 
+                Section("More") {
+                    NavigationLink {
+                        BlockedUsersView()
+                    } label: {
+                        CustomLabel(text: Strings.blockedUsersTitle, systemName: "nosign")
+                    }
+                }
+
                 Section("Logout") {
                     Button(action: logout) {
                         CustomLabel(text: Strings.logout, systemName: "rectangle.portrait.and.arrow.right.fill", labelRole: .delete)

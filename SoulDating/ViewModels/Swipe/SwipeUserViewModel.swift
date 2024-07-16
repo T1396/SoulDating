@@ -14,6 +14,7 @@ protocol SwipeUserDelegate: AnyObject {
     func userDidReport(_ userId: String)
 }
 
+/// ViewModel to swipe (like, dislike superlike) a single user, with a weak reference to the swipeViewModel to remove swiped users from the list
 class SwipeUserViewModel: BaseAlertViewModel, Identifiable {
     // MARK: properties
     weak var delegate: SwipeUserDelegate?
@@ -22,12 +23,16 @@ class SwipeUserViewModel: BaseAlertViewModel, Identifiable {
     private let firebaseManager = FirebaseManager.shared
     private let rangeManager = RangeManager.shared
     private let userService: UserService
-    @Published var otherUser: FireUser
+
+    private (set) var isLikedOrDislikedAlready: Bool
+
+    @Published private (set) var otherUser: FireUser
 
     // MARK: init
     init(otherUser: FireUser, userService: UserService = .shared) {
         self.otherUser = otherUser
         self.userService = userService
+        self.isLikedOrDislikedAlready = LikesService.shared.userAlreadyInteractedWithUser(with: otherUser.id)
     }
 
     // MARK: computed properties
@@ -37,6 +42,10 @@ class SwipeUserViewModel: BaseAlertViewModel, Identifiable {
         } else {
             return false
         }
+    }
+
+    var distance: String? {
+        rangeManager.distanceString(from: userService.user.location, to: otherUser.location)
     }
 
     // MARK: functions
@@ -54,11 +63,8 @@ class SwipeUserViewModel: BaseAlertViewModel, Identifiable {
     }
 }
 
+// MARK: save action
 extension SwipeUserViewModel {
-    var distance: String? {
-        rangeManager.distanceString(from: userService.user.location, to: otherUser.location)
-    }
-
     /// Sets a like dislike  or superlike after a swipe and updates it to firestore,
     /// sets one document for the current user where all likes of himself are saved
     /// sets another document for the targetUser so all likes can be accessed easier in e.g. LikesView

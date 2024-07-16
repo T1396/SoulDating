@@ -12,12 +12,13 @@ struct SwipeView: View {
     @State private var swipeSheet: SwipeViewSheet?
     @State private var activeCardID: String?  // State to track active card when options sheet is opened
     @Binding var user: FireUser
+
     
+
     // MARK: init
     init() {
         // get user binding from userservice
         _user = Binding(get: { UserService.shared.user }, set: { UserService.shared.user = $0 })
-        print("initialized swipe view")
     }
 
     var body: some View {
@@ -28,7 +29,7 @@ struct SwipeView: View {
                         .padding()
                 } else {
                     ForEach(swipeViewModel.displayedUsers.reversed()) { user in
-                        SwipeCardView(swipeUserVm: user, activeCardID: $activeCardID)
+                        SwipeCardView(swipeUserVm: user, activeCardID: $activeCardID, onMessageOrProfileCoverClosed: checkForReportedUser)
                             .onTapGesture {
                                 activeCardID = user.otherUser.id
                             }
@@ -78,6 +79,7 @@ struct SwipeView: View {
         }
     }
 
+    // MARK: views
     private var noUserOptionsAndText: some View {
         VStack {
             Text(Strings.noSwipeUsers)
@@ -106,6 +108,13 @@ struct SwipeView: View {
         }
         .padding(.horizontal, 40)
         .frame(maxWidth: .infinity)
+    }
+
+    // MARK: functions
+    private func checkForReportedUser() {
+        withAnimation {
+            swipeViewModel.checkForReportedUser()
+        }
     }
 
     private func fetchUsers() {

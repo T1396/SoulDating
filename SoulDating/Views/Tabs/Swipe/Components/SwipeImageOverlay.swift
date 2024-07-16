@@ -104,7 +104,7 @@ struct SwipeImageOverlay: View {
 
             Spacer()
 
-            OverlayControlIcons {
+            OverlayControlIcons(alreadyInteracted: false) {
                 // dislike
                 viewModel.setActionAfterSwipe(.dislike)
             } onMessage: {
