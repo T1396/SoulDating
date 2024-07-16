@@ -29,11 +29,11 @@ extension View {
                             .superLike.opacity(Double(-dragAmount.wrappedValue.height / 500)) :
                             // Check if right swipe
                         dragAmount.wrappedValue.width > 0 ?
-                        Color.green.opacity(Double(dragAmount.wrappedValue.width / 300)) :
+                        .green.opacity(Double(dragAmount.wrappedValue.width / 300)) :
                             // Check if left swipe
                         dragAmount.wrappedValue.width < 0 ?
-                        Color.red.opacity(Double(-dragAmount.wrappedValue.width / 300)) :
-                            Color.clear
+                        .red.opacity(Double(-dragAmount.wrappedValue.width / 300)) :
+                            .clear
                     )
                     .clipShape(RoundedRectangle(cornerRadius: CGFloat(overlayRadius)))
             )
