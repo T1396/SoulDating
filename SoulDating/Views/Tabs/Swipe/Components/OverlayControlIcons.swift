@@ -8,31 +8,38 @@
 import SwiftUI
 
 struct OverlayControlIcons: View {
+    // MARK: properties
+    var alreadyInteracted: Bool
+
     var onDislike: () -> Void
     var onMessage: () -> Void
     var onLike: () -> Void
+
+    // MARK: computed properties
+    var likeDislikeColor: Color {
+        alreadyInteracted ? .gray : .red
+    }
+
+    // MARK: body
     var body: some View {
         HStack(spacing: 30) {
-            controlIcon("xmark.circle.fill", color: .red) {
+            controlIcon("xmark.circle.fill", color: likeDislikeColor, disabled: alreadyInteracted) {
                 withAnimation {
                     onDislike()
                 }
             }
-            controlIcon("message.fill", color: .green) {
+            controlIcon("message.fill", color: .green, disabled: false) {
                 onMessage()
             }
-            controlIcon("heart.fill", color: .red) {
+            controlIcon("heart.fill", color: likeDislikeColor, disabled: alreadyInteracted) {
                 onLike()
             }
         }
         .padding(.bottom)
     }
-    
-    @ViewBuilder
-    private func controlIcon(_ systemName: String, color: Color, action: @escaping() -> Void) -> some View {
-        Button {
-            action()
-        } label: {
+
+    private func controlIcon(_ systemName: String, color: Color, disabled: Bool, action: @escaping() -> Void) -> some View {
+        Button(action: action) {
             Image(systemName: systemName)
                 .font(.title)
                 .foregroundStyle(color)
@@ -40,9 +47,10 @@ struct OverlayControlIcons: View {
                 .background()
                 .clipShape(Circle())
         }
+        .disabled(disabled)
     }
 }
 
 #Preview {
-    OverlayControlIcons(onDislike: {}, onMessage: {}, onLike: {})
+    OverlayControlIcons(alreadyInteracted: false, onDislike: {}, onMessage: {}, onLike: {})
 }
