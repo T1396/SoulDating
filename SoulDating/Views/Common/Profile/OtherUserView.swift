@@ -8,7 +8,6 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-
 struct OtherUserProfileView: View {
     // MARK: properties
     @EnvironmentObject var userViewModel: UserViewModel
@@ -25,7 +24,7 @@ struct OtherUserProfileView: View {
     @Environment(\.dismiss) var dismiss
 
     // MARK: init
-    init(image: Binding<Image?>, targetUser: FireUser, contentType: Binding<MessageAndProfileView.ContentType>) {
+    init(image: Binding<Image?>, targetUser: FireUser, contentType: Binding<MessageAndProfileView.ContentType>, isLikedOrDislikedAlready: Bool = false) {
         self._otherVm = StateObject(wrappedValue: OtherProfileViewModel(otherUser: targetUser))
         self._swipeUserVm = StateObject(wrappedValue: SwipeUserViewModel(otherUser: targetUser))
         self._image = image
@@ -51,12 +50,13 @@ struct OtherUserProfileView: View {
                     }
                     Spacer()
                 }
+
                 BackArrow {
                     withAnimation {
                         dismiss()
                     }
                 }
-                .shadow(color: .black.opacity(0.7), radius: 3, x: 0, y: 0)
+                .foregroundStyle(.black)
                 .padding(.top, 49)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 
@@ -80,18 +80,13 @@ struct OtherUserProfileView: View {
             }
         }
         .sheet(isPresented: $showSheet) {
-            ProfileSheet(otherVm: otherVm, swipeUserVm: swipeUserVm, contentType: $contentType)
+            ProfileSheet(otherVm: otherVm, swipeUserVm: swipeUserVm, contentType: $contentType, otherUser: otherVm.otherUser)
                 .transition(.move(edge: .bottom))
                 .interactiveDismissDisabled()
                 .presentationDragIndicator(.visible)
                 .presentationBackgroundInteraction(.enabled)
                 .presentationDetents([.fraction(0.4), .fraction(0.8)])
         }
-        .alert(otherVm.alertTitle, isPresented: $otherVm.showAlert, actions: {
-            Button("OK", action: otherVm.dismissAlert)
-        }, message: {
-            Text(otherVm.alertMessage)
-        })
         .toolbar(.hidden)
         .navigationBarBackButtonHidden(false)
         .ignoresSafeArea(edges: .top)

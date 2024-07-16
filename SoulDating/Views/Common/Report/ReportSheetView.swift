@@ -38,7 +38,7 @@ struct ReportSheetView: View {
                     }
                 }
             case .input:
-                reportView
+                ReportReasonList(reportViewModel: reportViewModel)
             case .loading:
                 LoadingView(message: reportViewModel.loadingMessage)
             case .success:
@@ -79,37 +79,6 @@ struct ReportSheetView: View {
                     presentationHeight = 0.25
                 }
             }
-        }
-    }
-    
-    // MARK: REPORT OPTIONS VIEW
-    var reportView: some View {
-        VStack(alignment: .leading) {
-            BackArrow(action: resetToInitial)
-            Text(String(format: Strings.reasonForReport, reportViewModel.reportedUser.name ?? ""))
-                .appFont(size: 24, textWeight: .bold)
-                .padding(.top, 8)
-                
-            ScrollView {
-                ForEach(ReportReason.allCases) { reason in
-                    OptionToggleRow(systemName: reason.icon, text: reason.title, isSelected: reportViewModel.reportReasons.contains(where: { $0 == reason })) {
-                        reportViewModel.toggleReason(reason)
-                    }
-                }
-            }
-            .scrollIndicators(.never)
-            Text(Strings.needMoreInfo)
-                .appFont(size: 14, textWeight: .extralight)
-            AppTextField(Strings.enterMoreInfo, text: $reportViewModel.reportMessage)
-
-            Button(action: reportUser) {
-                Text(Strings.sendReport)
-                    .appButtonStyle(color: .red, fullWidth: true)
-            }
-            .buttonStyle(PressedButtonStyle())
-            .disabled(!reportViewModel.isReportEnabled)
-
-
         }
     }
 
