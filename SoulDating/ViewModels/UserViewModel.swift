@@ -19,6 +19,11 @@ class UserViewModel: BaseAlertViewModel {
         return service
     }()
 
+    private (set) lazy var likesService: LikesService = {
+        let service = LikesService.shared
+        return service
+    }()
+
     private var cancellables = Set<AnyCancellable>()
     private let firebaseManager = FirebaseManager.shared
     private let userService: UserService
@@ -34,8 +39,9 @@ class UserViewModel: BaseAlertViewModel {
     @Published private (set) var userIsLoggedIn: Bool = false {
         didSet {
             if userIsLoggedIn {
-                // initialized the chatservice once user is logged in
+                // initialize the chatservice/likesService once user is logged in
                 _ = chatService
+                _ = likesService
             }
         }
     }
