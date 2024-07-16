@@ -11,10 +11,10 @@ import Foundation
 
 class LikesViewModel: BaseAlertViewModel {
     // MARK: properties
-    private let TAG = "(LikesViewModel)"
     private let firebaseManager = FirebaseManager.shared
     private let rangeManager: RangeManager = .shared
     private let userService: UserService
+    private let likeService: LikesService
 
     private var finishedLoadingUserLikes = false
     private var finishedLoadingLikedUsers = false
@@ -23,6 +23,7 @@ class LikesViewModel: BaseAlertViewModel {
     private var userIdsWhoLikedCurrent: Set<String> = []
     private var userIdsCurrentUserLiked: Set<String> = []
     private var superLikedUserIds: Set<String> = []
+
 
     @Published private (set) var usersWhoLikedCurrentUser: [FireUser] = []
     @Published private (set) var superLikedUsers: [FireUser] = []
@@ -33,12 +34,10 @@ class LikesViewModel: BaseAlertViewModel {
     @Published var sortOrder: SortOrder = .ascending
 
     // MARK: init
-    init(userService: UserService = .shared) {
+    init(userService: UserService = .shared, likeService: LikesService = .shared) {
         self.userService = userService
+        self.likeService = likeService
         super.init()
-        fetchUsersWhoLiked()
-        fetchUsersCurrentUserLiked()
-        fetchUsersCurrentUserSuperLiked()
     }
 
     // MARK: computed properties
@@ -68,96 +67,59 @@ class LikesViewModel: BaseAlertViewModel {
     var currentUserId: String? {
         firebaseManager.userId
     }
-    
+
 
     // MARK: functions
     func distance(to targetLocation: Location) -> String? {
         rangeManager.distanceString(from: userService.user.location, to: targetLocation)
     }
 
-
-    private func fetchUsersWhoLiked() {
-        guard let currentUserId else { return }
-        firebaseManager.database.collection("userLikes").document(currentUserId)
-            .collection("like")
-            .addSnapshotListener { querySnapshot, error in
-                if let error {
-                    print("\(self.TAG) error in snapshotlistener for likes", error.localizedDescription)
-                    return
-                }
-                let userIds = querySnapshot?.documents.compactMap { doc in
-                    doc.data()["fromUserId"] as? String
-                } ?? []
-                self.userIdsWhoLikedCurrent.formUnion(userIds)
-                // filter the ids of the users to only fetch users that werent fetched already
-                let usersToFetch = self.userIdsWhoLikedCurrent.filter { id in
-                    !self.usersWhoLikedCurrentUser.contains(where: { $0.id == id })
-                }
-                // fetch the new users and append them
-                self.fetchUsers(userIds: Array(usersToFetch)) { fetchedUsers in
-                    self.usersWhoLikedCurrentUser.append(contentsOf: fetchedUsers)
-                    self.finishedLoadingUserLikes = true
-                }
-            }
+    func updateLikesIdsAndFetchUsers() {
+        self.userIdsWhoLikedCurrent = likeService.userIdsWhoLikedCurrent
+        self.userIdsCurrentUserLiked = likeService.userIdsCurrentUserLiked
+        self.superLikedUserIds = likeService.superLikedUserIds
+        fetchAllUsers()
     }
 
-    private func fetchUsersCurrentUserLiked() {
-        guard let currentUserId else { return }
-        firebaseManager.database.collection("userActions").document(currentUserId)
-            .collection("actions")
-            .whereField("action", isEqualTo: SwipeAction.like.rawValue)
-            .addSnapshotListener { docSnapshot, error in
-                if let error {
-                    print("Error fetching the users the current user likes", error.localizedDescription)
-                    return
-                }
-                let usersWhoLikedIds = docSnapshot?.documents.compactMap { doc in
-                    doc.data()["targetUserId"] as? String
-                } ?? []
-                self.userIdsCurrentUserLiked.formUnion(usersWhoLikedIds)
-                // filter the ids of the users to only fetch users that werent fetched already
-                let usersToFetch = self.userIdsCurrentUserLiked.filter { id in
-                    !self.usersCurrentUserLiked.contains(where: { $0.id == id })
-                }
-                // fetch the new users and append them
-                self.fetchUsers(userIds: Array(usersToFetch)) { fetchedUsers in
-                    self.usersCurrentUserLiked.append(contentsOf: fetchedUsers)
-                    self.finishedLoadingLikedUsers = true
-                }
-            }
-    }
-
-    private func fetchUsersCurrentUserSuperLiked() {
-        guard let currentUserId else { return }
-        firebaseManager.database.collection("userActions").document(currentUserId)
-            .collection("actions")
-            .whereField("action", isEqualTo: SwipeAction.superlike.rawValue)
-            .addSnapshotListener { docSnapshot, error in
-                if let error {
-                    print("Error fetching the users the current user likes", error.localizedDescription)
-                    return
-                }
-
-                let superLikedUserIds = docSnapshot?.documents.compactMap { doc in
-                    doc.data()["targetUserId"] as? String
-                } ?? []
-                self.superLikedUserIds.formUnion(superLikedUserIds)
-                // filter the ids of the users to only fetch users that werent fetched already
-                let usersToFetch = self.superLikedUserIds.filter { id in
-                    !self.superLikedUsers.contains(where: { $0.id == id })
-                }
-                // fetch the new users and append them
-                self.fetchUsers(userIds: Array(usersToFetch)) { fetchedUsers in
-                    self.superLikedUsers.append(contentsOf: fetchedUsers)
-                    self.finishedLoadingSuperLikedUsers = true
-                }
-            }
+    /// called from view when onAppear executes
+    func subscripe() {
+        print("subscriped likesViewModel)")
+        updateLikesIdsAndFetchUsers()
     }
 }
 
 
 // MARK: fetch users
 extension LikesViewModel {
+    // fetch users for each category (ownLikes, likes, superlikes), as well as filter out already existing users
+    private func fetchAllUsers() {
+        var userIdsWhoLikedCurrent = userIdsWhoLikedCurrent.filter { id in
+            !usersWhoLikedCurrentUser.contains(where: { $0.id == id })
+        }
+        print(userIdsWhoLikedCurrent)
+        fetchUsers(userIds: Array(userIdsWhoLikedCurrent)) { userList in
+            self.usersWhoLikedCurrentUser.append(contentsOf: userList)
+            self.finishedLoadingUserLikes = true
+        }
+
+        var userIdsCurrentUserLiked = userIdsCurrentUserLiked.filter { id in
+            !usersCurrentUserLiked.contains(where: { $0.id == id })
+        }
+        fetchUsers(userIds: Array(userIdsCurrentUserLiked)) { userList in
+            self.usersCurrentUserLiked.append(contentsOf: userList)
+            self.finishedLoadingLikedUsers = true
+        }
+
+        var superLikedUserIds = superLikedUserIds.filter { id in
+            !superLikedUsers.contains(where: { $0.id == id })
+        }
+        fetchUsers(userIds: Array(superLikedUserIds)) { userList in
+            self.superLikedUsers.append(contentsOf: userList)
+            self.finishedLoadingSuperLikedUsers = true
+        }
+
+    }
+
     private func fetchUsers(userIds: [String], completion: @escaping ([FireUser]) -> Void) {
         guard !userIds.isEmpty else {
             completion([])
