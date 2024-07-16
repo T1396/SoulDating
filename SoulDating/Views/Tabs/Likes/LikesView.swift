@@ -7,35 +7,7 @@
 
 import SwiftUI
 
-enum LikesTab: String, Identifiable, CaseIterable, Equatable, TabEnum {
-    case likes, likedUsers, matches
 
-    var id: String { rawValue }
-
-    var title: String {
-        switch self {
-        case .likes: Strings.yourLikes
-        case .likedUsers: Strings.likedUsers
-        case .matches: Strings.matches
-        }
-    }
-
-    var index: Int {
-        switch self {
-        case .likes: 0
-        case .likedUsers: 1
-        case .matches: 2
-        }
-    }
-
-    var emptyText: String {
-        switch self {
-        case .likes: Strings.noLikes
-        case .likedUsers: Strings.noLikedUsers
-        case .matches: Strings.noMatches
-        }
-    }
-}
 
 struct LikesView: View {
     // MARK: properties
@@ -68,7 +40,8 @@ struct LikesView: View {
                 }
                 Spacer()
             }
-
+            .onAppear(perform: likesViewModel.subscripe)
+            
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {

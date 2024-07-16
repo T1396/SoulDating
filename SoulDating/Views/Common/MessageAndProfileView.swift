@@ -30,9 +30,13 @@ struct MessageAndProfileView: View {
             WriteMessageView(targetUser: targetUser, chatId: chatId, contentType: $contentType)
                 .navigationBarBackButtonHidden()
         case .profile:
-            OtherUserProfileView(image: $userImage, targetUser: targetUser, contentType: $contentType)
+            OtherUserProfileView(image: $userImage, targetUser: targetUser, contentType: $contentType, isLikedOrDislikedAlready: isLikedOrDislikedAlready())
 
         }
+    }
+
+    private func isLikedOrDislikedAlready() -> Bool {
+        LikesService.shared.userAlreadyInteractedWithUser(with: targetUser.id)
     }
 }
 

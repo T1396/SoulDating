@@ -32,7 +32,7 @@ struct ProfileImageHeaderView: View {
             Text("\(user.totalPercent, specifier: "%.0f")% completed")
                 .appFont(size: 16, textWeight: .semibold)
                 .itemBackgroundStyleAlt(colorScheme == .light ? .white.opacity(0.9) : .gray.opacity(0.6), padding: 6, cornerRadius: 12)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
         }
     }
 }
