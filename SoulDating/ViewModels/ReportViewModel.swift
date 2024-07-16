@@ -38,6 +38,13 @@ class ReportViewModel: BaseAlertViewModel {
     }
     
     // MARK: functions
+    private var isAlreadyBlocked: Bool {
+        if let blockedUsers = userService.user.blockedUsers {
+            return blockedUsers.contains(where: { $0 == reportedUser.id })
+        }
+        return false
+    }
+
     /// checks/unchecks the inserted reportReason
     func toggleReason(_ reason: ReportReason) {
         if let index = reportReasons.firstIndex(of: reason) {
@@ -107,9 +114,11 @@ class ReportViewModel: BaseAlertViewModel {
                     return
                 }
                 
-                self.executeDelayed(completion: {
-                    self.blockUser()
-                }, delay: 0.75)
+                if !self.isAlreadyBlocked {
+                    self.executeDelayed(completion: {
+                        self.blockUser()
+                    }, delay: 0.75)
+                }
             }
     }
 }
