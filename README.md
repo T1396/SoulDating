@@ -45,3 +45,6 @@ OpenAI Api zur Generierung von Anmachsprüchen, und als Assistenz um sich Tipps 
 
 Firebase SDK: Für Benutzerauthentifizierung und Datenbankdienste.
 Swift Open AI: https://github.com/SwiftBeta/SwiftOpenAI für Interaktion mit OpenAI Api
+
+#### Attention
+If you might want to test the app and access the chatgpt functionality u must replace the api-Key inside the "GptViewModel" class with your own OpenAI Api Key
